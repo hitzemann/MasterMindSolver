@@ -24,6 +24,9 @@ public class DefaultErgebnisBerechner implements IErgebnisBerechnung {
 		int korrekt = 0;
 		int position = 0;
 		// Trivial: beide gleich
+		if (geheim.getSpielSteineCount() != geraten.getSpielSteineCount()) {
+			throw new IllegalArgumentException("Spielsteine haben unterschiedliche Größen!");
+		}
 		if (geheim.equals(geraten)) {
 			korrekt = geheim.getSpielSteineCount();
 			position = 0;
