@@ -14,7 +14,7 @@ import org.hitzemann.mms.model.SpielStein;
 import org.junit.Test;
 
 /**
- * Tests f¸r {@link DefaultErgebnisBerechner}.
+ * Tests f√ºr {@link DefaultErgebnisBerechner}.
  * 
  * @author schusterc
  */
@@ -31,7 +31,7 @@ public class DefaultErgebnisBerechnerTest {
 
         int kombinationsGroesse = 20;
 
-        // zuf‰llige geheime Kombination erzeugen
+        // zuf√§llige geheime Kombination erzeugen
         List<SpielStein> geheimListe = new ArrayList<SpielStein>(kombinationsGroesse);
         SpielStein[] alleSteine = SpielStein.values();
         for (int i = 0; i < kombinationsGroesse; i++) {
@@ -42,7 +42,7 @@ public class DefaultErgebnisBerechnerTest {
         SpielKombination geheim = new SpielKombination(geheimArray);
 
         for (int i = 0; i < 10000; i++) {
-            // zuf‰llige Permutation der geheimen Kombination raten
+            // zuf√§llige Permutation der geheimen Kombination raten
             List<SpielStein> geratenListe = new LinkedList<SpielStein>(geheimListe);
             Collections.shuffle(geratenListe, rng);
             SpielStein[] geratenArray = geratenListe.toArray(new SpielStein[geratenListe.size()]);
@@ -50,13 +50,13 @@ public class DefaultErgebnisBerechnerTest {
 
             ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
-            // Anzahl weiﬂer und schwarzer Steine im Ergebnis muss Kombinationsgrˆﬂe sein
+            // Anzahl wei√üer und schwarzer Steine im Ergebnis muss Kombinationsgr√∂√üe sein
             assertEquals(geheimArray.length, ergebnis.getSchwarz() + ergebnis.getWeiss());
         }
     }
 
     /**
-     * Test mit unterschiedlichen Eingabel‰ngen. Muss eine {@link IllegalArgumentException} werfen.
+     * Test mit unterschiedlichen Eingabel√§ngen. Muss eine {@link IllegalArgumentException} werfen.
      */
     @Test(expected = IllegalArgumentException.class)
     public void testUnterschiedlicheGroessen() {
@@ -97,5 +97,4 @@ public class DefaultErgebnisBerechnerTest {
         assertEquals(1, ergebnis.getSchwarz());
         assertEquals(2, ergebnis.getWeiss());
     }
-
 }
