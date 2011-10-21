@@ -50,12 +50,12 @@ public class SetVerwaltung {
 	}
 
 	public void findeBesteMoeglichkeit() {
-		// TODO: iteriere über alle eliminierungs_möglichkeiten
-		// TODO: für jede eleminierungsmöglichkeit, iteriere über alle
-		// ergebnismöglichkeiten
-		// TODO: errechne anzahl der eleminierten ratemöglichkeiten für jede
+		// TODO: iteriere √ºber alle eliminierungs_m√∂glichkeiten
+		// TODO: f√ºr jede eleminierungsm√∂glichkeit, iteriere √ºber alle
+		// ergebnism√∂glichkeiten
+		// TODO: errechne anzahl der eleminierten ratem√∂glichkeiten f√ºr jede
 		// dieser kombinationen, behalte die minimale
-		// TODO: behalte die ratemöglichkeit mit der höchsten wertung
+		// TODO: behalte die ratem√∂glichkeit mit der h√∂chsten wertung
 	}
 
 	private int errechneScore(SpielKombination geraten,
