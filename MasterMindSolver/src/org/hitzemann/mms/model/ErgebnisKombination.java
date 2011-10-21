@@ -13,7 +13,7 @@ public class ErgebnisKombination {
 		this.schwarz = schwarz;
 		this.weiss = weiss;
 	}
-
+	// schwarz sind korrekte Steine, weiss sind korrekte Farben mit falschen Positionen
 	private final int schwarz;
 	private final int weiss;
 
