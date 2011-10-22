@@ -183,4 +183,8 @@ public class Solver {
 	private void entferneMoeglichkeiten(SpielKombination geraten, ErgebnisKombination ergebnis) {
 		eleminiereMoeglichkeiten(geraten, ergebnis, geheimMoeglichkeiten);
 	}
+	
+	public static void main(String[] args) {
+		
+	}
 }

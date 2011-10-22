@@ -186,7 +186,7 @@ public final class ErgebnisBerechnerTest {
     @Test(expected = IllegalArgumentException.class)
     public void testUnterschiedlicheGroessen() {
         SpielKombination geheim = new SpielKombination();
-        SpielKombination geraten = new SpielKombination(SpielStein.BLUE);
+        SpielKombination geraten = new SpielKombination(SpielStein.BLAU);
 
         berechner.berechneErgebnis(geheim, geraten);
     }
@@ -210,10 +210,10 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testVollSchwarz() {
-        SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.GREEN, SpielStein.RED,
-                SpielStein.BLUE);
-        SpielKombination geraten = new SpielKombination(SpielStein.RED, SpielStein.GREEN, SpielStein.RED,
-                SpielStein.BLUE);
+        SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.GRUEN, SpielStein.ROT,
+                SpielStein.BLAU);
+        SpielKombination geraten = new SpielKombination(SpielStein.ROT, SpielStein.GRUEN, SpielStein.ROT,
+                SpielStein.BLAU);
 
         ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
@@ -226,10 +226,10 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testVollWeiss() {
-        SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.BLUE, SpielStein.RED,
-                SpielStein.YELLOW);
-        SpielKombination geraten = new SpielKombination(SpielStein.YELLOW, SpielStein.RED, SpielStein.BLUE,
-                SpielStein.RED);
+        SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.BLAU, SpielStein.ROT,
+                SpielStein.GELB);
+        SpielKombination geraten = new SpielKombination(SpielStein.GELB, SpielStein.ROT, SpielStein.BLAU,
+                SpielStein.ROT);
 
         ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
@@ -242,10 +242,10 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testLeeresErgebnis() {
-        SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.RED, SpielStein.YELLOW,
-                SpielStein.YELLOW);
-        SpielKombination geraten = new SpielKombination(SpielStein.GREEN, SpielStein.BLUE, SpielStein.BLUE,
-                SpielStein.GREEN);
+        SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.ROT, SpielStein.GELB,
+                SpielStein.GELB);
+        SpielKombination geraten = new SpielKombination(SpielStein.GRUEN, SpielStein.BLAU, SpielStein.BLAU,
+                SpielStein.GRUEN);
 
         ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
