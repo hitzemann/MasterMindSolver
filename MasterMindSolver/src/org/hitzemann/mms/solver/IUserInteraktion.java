@@ -6,4 +6,5 @@ import org.hitzemann.mms.model.SpielKombination;
 public interface IUserInteraktion {
 
 	public abstract ErgebnisKombination frageantwort(SpielKombination geraten);
+	public abstract void gewonnen();
 }

@@ -61,5 +61,10 @@ public class TextUserInteraktion implements IUserInteraktion {
 		
 		return new ErgebnisKombination(richtig, position);
 	}
-
+	
+	@Override
+	public void gewonnen() {
+		System.out.println("Gewonnen!");
+		System.exit(0);
+	}
 }
