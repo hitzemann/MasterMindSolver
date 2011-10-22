@@ -190,7 +190,7 @@ public final class ErgebnisBerechnerTest {
      * Test mit leerem Ergebnis.
      */
     @Test
-    public void testVollDaneben() {
+    public void testLeeresErgebnis() {
         SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.RED, SpielStein.YELLOW,
                 SpielStein.YELLOW);
         SpielKombination geraten = new SpielKombination(SpielStein.GREEN, SpielStein.BLUE, SpielStein.BLUE,
