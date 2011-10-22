@@ -18,7 +18,7 @@ import org.hitzemann.mms.model.SpielStein;
  * @author simon
  * 
  */
-public class SetVerwaltung {
+public class Solver {
 
 	private Map<Pair<SpielKombination, SpielKombination>, ErgebnisKombination> ergebnisMap;
 	private IErgebnisBerechnung ergebnisBerechner;
@@ -26,7 +26,7 @@ public class SetVerwaltung {
 	private Set<ErgebnisKombination> ergebnisMoeglichkeiten;
 	private Map<SpielKombination, Integer> scoreMap;
 
-	public SetVerwaltung() {
+	public Solver() {
 		scoreMap = new HashMap<SpielKombination, Integer>();
 		initialisiere_geheimMoeglichkeiten();
 		initialisiere_ergebnisMoeglichkeiten();
