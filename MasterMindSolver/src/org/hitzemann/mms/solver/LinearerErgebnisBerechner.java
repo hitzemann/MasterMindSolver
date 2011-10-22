@@ -32,6 +32,13 @@ public final class LinearerErgebnisBerechner implements IErgebnisBerechnung {
 
     @Override
     public ErgebnisKombination berechneErgebnis(final SpielKombination geheim, final SpielKombination geraten) {
+        if (geheim == null) {
+            throw new IllegalArgumentException("Geheime Kombination ist null!");
+        }
+        if (geraten == null) {
+            throw new IllegalArgumentException("Geratene Kombination ist null!");
+        }
+
         int groesse = geheim.getSpielSteineCount();
         if (geraten.getSpielSteineCount() != groesse) {
             throw new IllegalArgumentException("Spielkombinationen haben unterschiedliche Größen!");
