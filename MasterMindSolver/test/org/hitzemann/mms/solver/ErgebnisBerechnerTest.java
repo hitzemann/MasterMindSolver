@@ -3,6 +3,7 @@ package org.hitzemann.mms.solver;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,15 +13,44 @@ import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests für {@link DefaultErgebnisBerechner}.
+ * Tests für {@link DefaultErgebnisBerechner} und {@link LinearerErgebnisBerechner}.
  * 
  * @author schusterc
  */
-public class DefaultErgebnisBerechnerTest {
+@RunWith(Parameterized.class)
+public final class ErgebnisBerechnerTest {
 
-    private IErgebnisBerechnung berechner = new DefaultErgebnisBerechner();
+    /**
+     * Die aktuell zu testende Implementierung von {@link IErgebnisBerechnung}.
+     */
+    private final IErgebnisBerechnung berechner;
+
+    /**
+     * Erzeugt einen parametrisierten Testdurchlauf mit der angegebenen Implementierung von {@link IErgebnisBerechnung}.
+     * 
+     * @param aktuellerBerechner
+     *            Die zu testende Implementierung von {@link IErgebnisBerechnung}.
+     */
+    public ErgebnisBerechnerTest(final IErgebnisBerechnung aktuellerBerechner) {
+        berechner = aktuellerBerechner;
+    }
+
+    /**
+     * Erzeugt die Parameter für den Test, die dann vom {@link Parameterized}-Runner als Argument an den Konstruktor
+     * übergeben werden.
+     * 
+     * @return Liste mit einem {@link Object}-Array pro parametrisiertem Testlauf.
+     */
+    @Parameters
+    public static List<Object[]> erzeugeParameter() {
+        return Arrays.asList(new Object[] { new DefaultErgebnisBerechner() },
+                new Object[] { new LinearerErgebnisBerechner() });
+    }
 
     /**
      * Test mit Permutationen der geheimen Kombination. Muss immer eine "volle" Antwort liefern.
@@ -29,7 +59,7 @@ public class DefaultErgebnisBerechnerTest {
     public void testPermutationenLiefernKorrekteAnzahl() {
         Random rng = new Random();
 
-        int kombinationsGroesse = 20;
+        int kombinationsGroesse = 100;
 
         // zufällige geheime Kombination erzeugen
         List<SpielStein> geheimListe = new ArrayList<SpielStein>(kombinationsGroesse);
@@ -41,7 +71,7 @@ public class DefaultErgebnisBerechnerTest {
         SpielStein[] geheimArray = geheimListe.toArray(new SpielStein[geheimListe.size()]);
         SpielKombination geheim = new SpielKombination(geheimArray);
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1000; i++) {
             // zufällige Permutation der geheimen Kombination raten
             List<SpielStein> geratenListe = new LinkedList<SpielStein>(geheimListe);
             Collections.shuffle(geratenListe, rng);
