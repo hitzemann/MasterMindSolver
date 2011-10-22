@@ -56,6 +56,50 @@ public class DefaultErgebnisBerechnerTest {
     }
 
     /**
+     * Test mit einfarbigen geratenen Kombination. Darf nie "weiße" Ergebnisse liefern, und die Summe der "schwarzen"
+     * Ergebnisse über alle geratenen Farben muss die Kombinationsgröße sein.
+     */
+    @Test
+    public void testEinfarbigesRaten() {
+        Random rng = new Random();
+
+        int kombinationsGroesse = 20;
+
+        // zufällige geheime Kombination erzeugen
+        SpielStein[] geheimArray = new SpielStein[kombinationsGroesse];
+        SpielStein[] alleSteine = SpielStein.values();
+        for (int i = 0; i < kombinationsGroesse; i++) {
+            SpielStein zufallsStein = alleSteine[rng.nextInt(alleSteine.length)];
+            geheimArray[i] = zufallsStein;
+        }
+        SpielKombination geheim = new SpielKombination(geheimArray);
+
+        // Summe der Anzahl schwarzer Ergebnissteine über alle Farben
+        int gesamtSchwarz = 0;
+
+        // alle Farben nacheinander raten
+        for (SpielStein stein : alleSteine) {
+            // einfarbige geratene Kombination erzeugen
+            SpielStein[] geratenArray = new SpielStein[kombinationsGroesse];
+            for (int i = 0; i < kombinationsGroesse; i++) {
+                geratenArray[i] = stein;
+            }
+            SpielKombination geraten = new SpielKombination(geratenArray);
+
+            ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+
+            // Anzahl weißer Steine im Ergebnis muss immer 0 sein
+            assertEquals(0, ergebnis.getWeiss());
+
+            // Anzahl schwarze Steine aufsummieren
+            gesamtSchwarz += ergebnis.getSchwarz();
+        }
+
+        // Gesamtzahl schwarzer Steine muss Kombinationsgröße sein
+        assertEquals(kombinationsGroesse, gesamtSchwarz);
+    }
+
+    /**
      * Test mit unterschiedlichen Eingabelängen. Muss eine {@link IllegalArgumentException} werfen.
      */
     @Test(expected = IllegalArgumentException.class)
@@ -81,20 +125,50 @@ public class DefaultErgebnisBerechnerTest {
     }
 
     /**
-     * Test mit definierten Spielkombinationen.
+     * Test mit voll korrekter Spielkombination.
      */
     @Test
-    public void testKombination() {
-        SpielKombination geheim;
-        SpielKombination geraten;
-        ErgebnisKombination ergebnis;
+    public void testVollSchwarz() {
+        SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.GREEN, SpielStein.RED,
+                SpielStein.BLUE);
+        SpielKombination geraten = new SpielKombination(SpielStein.RED, SpielStein.GREEN, SpielStein.RED,
+                SpielStein.BLUE);
 
-        geheim = new SpielKombination(SpielStein.RED, SpielStein.GREEN, SpielStein.RED, SpielStein.BLUE);
-        geraten = new SpielKombination(SpielStein.RED, SpielStein.RED, SpielStein.GREEN, SpielStein.RED);
+        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
-        ergebnis = berechner.berechneErgebnis(geheim, geraten);
+        assertEquals(4, ergebnis.getSchwarz());
+        assertEquals(0, ergebnis.getWeiss());
+    }
 
-        assertEquals(1, ergebnis.getSchwarz());
-        assertEquals(2, ergebnis.getWeiss());
+    /**
+     * Test mit voll vertauschter Spielkombination.
+     */
+    @Test
+    public void testVollWeiss() {
+        SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.BLUE, SpielStein.RED,
+                SpielStein.YELLOW);
+        SpielKombination geraten = new SpielKombination(SpielStein.YELLOW, SpielStein.RED, SpielStein.BLUE,
+                SpielStein.RED);
+
+        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+
+        assertEquals(0, ergebnis.getSchwarz());
+        assertEquals(4, ergebnis.getWeiss());
+    }
+
+    /**
+     * Test mit leerem Ergebnis.
+     */
+    @Test
+    public void testVollDaneben() {
+        SpielKombination geheim = new SpielKombination(SpielStein.RED, SpielStein.RED, SpielStein.YELLOW,
+                SpielStein.YELLOW);
+        SpielKombination geraten = new SpielKombination(SpielStein.GREEN, SpielStein.BLUE, SpielStein.BLUE,
+                SpielStein.GREEN);
+
+        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+
+        assertEquals(0, ergebnis.getSchwarz());
+        assertEquals(0, ergebnis.getWeiss());
     }
 }
