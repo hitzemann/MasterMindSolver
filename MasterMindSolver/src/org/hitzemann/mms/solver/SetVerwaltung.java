@@ -70,15 +70,39 @@ public class SetVerwaltung {
 		}
 	}
 	// TODO: Berechnen, welche SpielKombinationen durch das Paar SpielKombination,ErgebnisKombination keine möglichen SpielKombinationen mehr sind
+	private void eleminiereMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis) {
+		if (ratekombi.getSpielSteineCount() != 4) {
+			throw new IllegalArgumentException("Im Moment können nur 4 Pins gelöst werden");
+		}
+		
+		for (SpielStein geheim1 : SpielStein.values()) {
+			for (SpielStein geheim2 : SpielStein.values()) {
+				for (SpielStein geheim3 : SpielStein.values()) {
+					for (SpielStein geheim4 : SpielStein.values()) {
+						SpielKombination potentielleLoesung = new SpielKombination(geheim1,geheim2,geheim3,geheim4);
+						if (!ergebnis.equals(ergebnisBerechner.berechneErgebnis(potentielleLoesung, ratekombi))) {
+							ergebnisMoeglichkeiten.remove(potentielleLoesung);
+						}
+					}
+				}
+			}
+		}
+		if (ergebnisMoeglichkeiten.size() < 1) {
+			throw new RuntimeException("Liste der potentiellen Möglichkeiten ist leer!");
+		}
+	}
 	// TODO: Berechnen, wieviele der noch möglichen SpielKombinationen durch das Paar SpielKombination,ErgebnisKombination eleminiert werden
 	// TODO: Für alle Kombinationen aus einer SpielKombination mit allen ErgebnisKombinationen die niedrigste Anzahl an Eleminierungen aus dem ergebnisMoeglichkeiten Set merken
 	// TODO: Aus allen Paaren SpielKombination, Eleminierungen die SpielKombination mit der höchsten Anzahl an Eleminierungen auswählen
 	// TODO: Für die letzte Geratene SpielKombination und die zurückgegebene ErgebnisKombination alle ungültigen SpielKombinationen aus dem ergebnisMoeglichkeiten Set entfernen
-	private void eleminiereMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis) {
-		throw new UnsupportedOperationException("not yet implemented");
-	}
 	
-	private int zaehleEleminierungen(SpielKombination geheim, SpielKombination greraten, ErgebnisKombination ergebnis) {
+	private int zaehleEleminierungen(SpielKombination geheim, SpielKombination geraten, ErgebnisKombination ergebnis) {
+		if (geheim.getSpielSteineCount() != 4) {
+			throw new IllegalArgumentException("Im Moment können nur 4 Pins gelöst werden");
+		}
+		if (geheim.getSpielSteineCount() != geraten.getSpielSteineCount()) {
+			throw new IllegalArgumentException("Geheime Kombination und geratene Kombination müssen gleich lang sein.");
+		}
 		int eleminiert=9999;
 		return eleminiert;
 	}
