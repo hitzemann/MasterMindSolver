@@ -184,7 +184,20 @@ public class Solver {
 		eleminiereMoeglichkeiten(geraten, ergebnis, geheimMoeglichkeiten);
 	}
 	
+	public int getNumLoesungen() {
+		return ergebnisMoeglichkeiten.size();
+	}
+	
 	public static void main(String[] args) {
-		
+		IUserInteraktion userInterface = new TextUserInteraktion();
+		Solver spielSolver = new Solver();
+		while (spielSolver.getNumLoesungen() > 1) {
+			SpielKombination ratekombi = spielSolver.errechneBesteKombination();
+			ErgebnisKombination ergebnis = userInterface.frageantwort(ratekombi);
+			if (ergebnis.getSchwarz()==4) {
+				userInterface.gewonnen();
+			}
+			spielSolver.entferneMoeglichkeiten(ratekombi, ergebnis);
+		}
 	}
 }
