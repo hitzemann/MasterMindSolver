@@ -5,6 +5,7 @@ package org.hitzemann.mms.solver;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -107,13 +108,16 @@ public class Solver {
 	 * @param ratekombi
 	 * @param ergebnis
 	 */
-	private void eleminiereMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis, Set<SpielKombination> moeglichkeitenMap) {
+	private void eleminiereMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis, Set<SpielKombination> moeglichkeitenSet) {
 		if (ratekombi.getSpielSteineCount() != 4) {
 			throw new IllegalArgumentException("Im Moment können nur 4 Pins gelöst werden");
 		}
-		for (SpielKombination geheim : moeglichkeitenMap) {
+		//for (SpielKombination geheim : moeglichkeitenSet) {
+		for (Iterator<SpielKombination> setIterator = moeglichkeitenSet.iterator(); setIterator.hasNext();) {
+			SpielKombination geheim = setIterator.next();
 			if (!ergebnis.equals(ergebnisMap.get(new Pair<SpielKombination, SpielKombination>(geheim, ratekombi)))) {
-				moeglichkeitenMap.remove(geheim);
+				//moeglichkeitenSet.remove(geheim);
+				setIterator.remove();
 			}
 		}
 	}
