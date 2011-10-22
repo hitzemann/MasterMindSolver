@@ -165,6 +165,22 @@ public final class ErgebnisBerechnerTest {
     }
 
     /**
+     * Test mit <code>null</code> als geheime Kombination.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullGeheim() {
+        berechner.berechneErgebnis(new SpielKombination(), null);
+    }
+
+    /**
+     * Test mit <code>null</code> als geratene Kombination.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullGeraten() {
+        berechner.berechneErgebnis(null, new SpielKombination());
+    }
+
+    /**
      * Test mit unterschiedlichen Eingabelängen. Muss eine {@link IllegalArgumentException} werfen.
      */
     @Test(expected = IllegalArgumentException.class)
