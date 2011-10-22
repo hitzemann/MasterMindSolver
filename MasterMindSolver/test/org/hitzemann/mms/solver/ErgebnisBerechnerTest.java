@@ -57,7 +57,8 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testPermutationenLiefernKorrekteAnzahl() {
-        Random rng = new Random();
+        // Deterministischer Zufallszahlengenerator
+        Random rng = new Random(1);
 
         int kombinationsGroesse = 100;
 
@@ -86,12 +87,46 @@ public final class ErgebnisBerechnerTest {
     }
 
     /**
+     * Test der Symmetrie. Vertauschung von "geraten" und "geheim" muss das gleiche Ergebnis liefern.
+     */
+    @Test
+    public void testSymmetrie() {
+        // Deterministischer Zufallszahlengenerator
+        Random rng = new Random(1);
+
+        SpielStein[] alleSteine = SpielStein.values();
+
+        for (int i = 0; i < 1000; i++) {
+            int kombinationsGroesse = rng.nextInt(100);
+
+            // 2 zufällige Kombinationen erzeugen
+            SpielStein[] kombi1Array = new SpielStein[kombinationsGroesse];
+            SpielStein[] kombi2Array = new SpielStein[kombinationsGroesse];
+            for (int j = 0; j < kombinationsGroesse; j++) {
+                kombi1Array[j] = alleSteine[rng.nextInt(alleSteine.length)];
+                kombi2Array[j] = alleSteine[rng.nextInt(alleSteine.length)];
+            }
+            SpielKombination kombi1 = new SpielKombination(kombi1Array);
+            SpielKombination kombi2 = new SpielKombination(kombi2Array);
+
+            // mit beiden Argumentreihenfolgen aufrufen
+            ErgebnisKombination ergebnis1 = berechner.berechneErgebnis(kombi1, kombi2);
+            ErgebnisKombination ergebnis2 = berechner.berechneErgebnis(kombi2, kombi1);
+
+            // Ergebnisse müssen gleich sein
+            assertEquals(ergebnis1.getSchwarz(), ergebnis2.getSchwarz());
+            assertEquals(ergebnis1.getWeiss(), ergebnis2.getWeiss());
+        }
+    }
+
+    /**
      * Test mit einfarbigen geratenen Kombination. Darf nie "weiße" Ergebnisse liefern, und die Summe der "schwarzen"
      * Ergebnisse über alle geratenen Farben muss die Kombinationsgröße sein.
      */
     @Test
     public void testEinfarbigesRaten() {
-        Random rng = new Random();
+        // Deterministischer Zufallszahlengenerator
+        Random rng = new Random(1);
 
         int kombinationsGroesse = 20;
 
