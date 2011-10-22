@@ -69,7 +69,11 @@ public class SetVerwaltung {
 			}
 		}
 	}
-	// TODO: Berechnen, welche SpielKombinationen durch das Paar SpielKombination,ErgebnisKombination keine möglichen SpielKombinationen mehr sind
+/**
+ * Entferne alle möglichen Geheimkombinationen, die nicht durch die geratene Kombination und das Ergebnis dargestellt werden können
+ * @param ratekombi
+ * @param ergebnis
+ */
 	private void eleminiereMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis) {
 		if (ratekombi.getSpielSteineCount() != 4) {
 			throw new IllegalArgumentException("Im Moment können nur 4 Pins gelöst werden");
@@ -80,7 +84,7 @@ public class SetVerwaltung {
 				for (SpielStein geheim3 : SpielStein.values()) {
 					for (SpielStein geheim4 : SpielStein.values()) {
 						SpielKombination potentielleLoesung = new SpielKombination(geheim1,geheim2,geheim3,geheim4);
-						if (!ergebnis.equals(ergebnisBerechner.berechneErgebnis(potentielleLoesung, ratekombi))) {
+						if (!ergebnis.equals(ergebnisMap.get(new Pair<SpielKombination,SpielKombination>(potentielleLoesung, ratekombi)))) {
 							ergebnisMoeglichkeiten.remove(potentielleLoesung);
 						}
 					}
