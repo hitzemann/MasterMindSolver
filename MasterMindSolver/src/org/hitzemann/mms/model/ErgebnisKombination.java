@@ -49,5 +49,11 @@ public class ErgebnisKombination {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "ErgebnisKombination [schwarz=" + schwarz + ", weiss=" + weiss
+				+ "]";
+	}
 	
 }

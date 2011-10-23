@@ -42,4 +42,10 @@ public class SpielKombination {
 	public int getSpielSteineCount() {
 		return spielSteine.length;
 	}
+
+	@Override
+	public String toString() {
+		return "SpielKombination [spielSteine=" + Arrays.toString(spielSteine)
+				+ "]";
+	}
 }
