@@ -26,6 +26,7 @@ public class Solver {
 	private Set<SpielKombination> geheimMoeglichkeiten;
 	private Set<ErgebnisKombination> ergebnisMoeglichkeiten;
 	private Map<SpielKombination, Integer> scoreMap;
+	private Set<SpielKombination> rateSet;
 
 	public Solver() {
 		scoreMap = new HashMap<SpielKombination, Integer>();
@@ -33,6 +34,7 @@ public class Solver {
 		initialisiere_ergebnisMoeglichkeiten();
 		ergebnisBerechner = new DefaultErgebnisBerechner();
 		initialisiere_ergebnisMap();
+		rateSet = new HashSet<SpielKombination>(geheimMoeglichkeiten);
 	}
 
 	/**
@@ -45,16 +47,18 @@ public class Solver {
 			for (SpielStein i2 : SpielStein.values()) {
 				for (SpielStein i3 : SpielStein.values()) {
 					for (SpielStein i4 : SpielStein.values()) {
-						SpielKombination kombi = new SpielKombination(i1, i2, i3, i4);
+						SpielKombination kombi = new SpielKombination(i1, i2,
+								i3, i4);
 						geheimMoeglichkeiten.add(kombi);
 					}
 				}
 			}
 		}
 	}
-	
+
 	/**
-	 * Für's Iterieren ein Set mit allen gültigen Ergebnissen für 4 Steine anlegen
+	 * Für's Iterieren ein Set mit allen gültigen Ergebnissen für 4 Steine
+	 * anlegen
 	 */
 	private void initialisiere_ergebnisMoeglichkeiten() {
 		ergebnisMoeglichkeiten = new HashSet<ErgebnisKombination>();
@@ -71,7 +75,7 @@ public class Solver {
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 1));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 2));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(3, 0));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
+		//ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
 	}
 
 	/**
@@ -88,9 +92,17 @@ public class Solver {
 							for (SpielStein o2 : SpielStein.values()) {
 								for (SpielStein o3 : SpielStein.values()) {
 									for (SpielStein o4 : SpielStein.values()) {
-										SpielKombination kombi1 = new SpielKombination(i1, i2, i3, i4);
-										SpielKombination kombi2 = new SpielKombination(o1, o2, o3, o4);
-										ergebnisMap.put(new Pair<SpielKombination, SpielKombination>(kombi1, kombi2), ergebnisBerechner.berechneErgebnis(kombi1, kombi2));
+										SpielKombination kombi1 = new SpielKombination(
+												i1, i2, i3, i4);
+										SpielKombination kombi2 = new SpielKombination(
+												o1, o2, o3, o4);
+										ergebnisMap
+												.put(new Pair<SpielKombination, SpielKombination>(
+														kombi1, kombi2),
+														ergebnisBerechner
+																.berechneErgebnis(
+																		kombi1,
+																		kombi2));
 									}
 								}
 							}
@@ -108,97 +120,126 @@ public class Solver {
 	 * @param ratekombi
 	 * @param ergebnis
 	 */
-	private void eleminiereMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis, Set<SpielKombination> moeglichkeitenSet) {
+	private void eleminiereMoeglichkeiten(SpielKombination ratekombi,
+			ErgebnisKombination ergebnis,
+			Set<SpielKombination> moeglichkeitenSet) {
 		if (ratekombi.getSpielSteineCount() != 4) {
-			throw new IllegalArgumentException("Im Moment können nur 4 Pins gelöst werden");
+			throw new IllegalArgumentException(
+					"Im Moment können nur 4 Pins gelöst werden");
 		}
-		//for (SpielKombination geheim : moeglichkeitenSet) {
-		for (Iterator<SpielKombination> setIterator = moeglichkeitenSet.iterator(); setIterator.hasNext();) {
+		for (Iterator<SpielKombination> setIterator = moeglichkeitenSet
+				.iterator(); setIterator.hasNext();) {
 			SpielKombination geheim = setIterator.next();
-			if (!ergebnis.equals(ergebnisMap.get(new Pair<SpielKombination, SpielKombination>(geheim, ratekombi)))) {
-				//moeglichkeitenSet.remove(geheim);
+			if (!ergebnis.equals(ergebnisMap
+					.get(new Pair<SpielKombination, SpielKombination>(geheim,
+							ratekombi)))) {
 				setIterator.remove();
 			}
 		}
 	}
 
-/**
- * Zähle wieviele Möglichkeiten ein Spiel- und ErgebnisKombinationstupel von den noch übrigen geheimen Möglichkeiten entfernen würde
- * @param ratekombi
- * @param ergebnis
- * @return
- */
-	private int zaehleEleminierteMoeglichkeiten(SpielKombination ratekombi, ErgebnisKombination ergebnis) {
+	/**
+	 * Zähle wieviele Möglichkeiten ein Spiel- und ErgebnisKombinationstupel von
+	 * den noch übrigen geheimen Möglichkeiten entfernen würde
+	 * 
+	 * @param ratekombi
+	 * @param ergebnis
+	 * @return
+	 */
+	private int zaehleEleminierteMoeglichkeiten(SpielKombination ratekombi,
+			ErgebnisKombination ergebnis, Set<SpielKombination> geheimSet) {
 		int anzahlEleminierterMoeglichkeiten = 0;
-		Set<SpielKombination> tempSet = new HashSet<SpielKombination>(geheimMoeglichkeiten);
+		Set<SpielKombination> tempSet = new HashSet<SpielKombination>(geheimSet);
 		eleminiereMoeglichkeiten(ratekombi, ergebnis, tempSet);
-		anzahlEleminierterMoeglichkeiten=geheimMoeglichkeiten.size()-tempSet.size();
+		anzahlEleminierterMoeglichkeiten = geheimMoeglichkeiten.size()
+				- tempSet.size();
 		return anzahlEleminierterMoeglichkeiten;
 	}
 
 	/**
-	 * Errechne die niedrigste Anzahl an geheimen Kombinationen, die jede geratene Kombination von den noch übrigen geheimen Möglichkeiten entfernen würde
+	 * Errechne die niedrigste Anzahl an geheimen Kombinationen, die jede
+	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
+	 * entfernen würde
 	 */
-	private void errechneScoring() {
+	private void errechneScoring(Set<SpielKombination> geheimSet) {
 		int score;
 		int tempscore;
+		int scoresum;
 		scoreMap.clear();
-		for (SpielStein rate1 : SpielStein.values()) {
-			for (SpielStein rate2 : SpielStein.values()) {
-				for (SpielStein rate3 : SpielStein.values()) {
-					for (SpielStein rate4 : SpielStein.values()) {
-						SpielKombination rate = new SpielKombination(rate1, rate2, rate3, rate4);
-						score=9999;
-						for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
-							tempscore=zaehleEleminierteMoeglichkeiten(rate, ergebnis);
-							if (tempscore < score) {
-								score = tempscore;
-							}
-						}
-						scoreMap.put(rate, score);
-					}
+		for (Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
+				.hasNext();) {
+			SpielKombination rate = rateIterator.next();
+			score = 9999;
+			scoresum=0;
+			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
+				tempscore = zaehleEleminierteMoeglichkeiten(rate, ergebnis,
+						geheimSet);
+				// System.err.println(rate + " " + ergebnis + ": " + tempscore);
+				scoresum += tempscore;
+				if (tempscore < score) {
+					score = tempscore;
 				}
 			}
+			if (scoresum > 0) {
+				scoreMap.put(rate, score);
+			} else {
+				rateSet.remove(rate);
+			}
+		}
+		if (scoreMap.size() < 1) {
+			throw new RuntimeException(
+					"Score Map hat weniger als einen Eintrag. Da stimmt was nicht...");
 		}
 	}
-	
-/**
- * Suche die SpielKombination mit der höchsten WorstCase-Anzahl an entfernten Möglichkeiten
- * @return
- */
-	private SpielKombination errechneBesteKombination() {
+
+	/**
+	 * Suche die SpielKombination mit der höchsten WorstCase-Anzahl an
+	 * entfernten Möglichkeiten
+	 * 
+	 * @return
+	 */
+	private SpielKombination errechneBesteKombination(
+			Set<SpielKombination> geheimSet) {
 		SpielKombination tempkomb = null;
-		int tempscore=0;
-		errechneScoring();
+		int tempscore = 0;
+		errechneScoring(geheimSet);
 		for (Entry<SpielKombination, Integer> tempentry : scoreMap.entrySet()) {
-			if (tempentry.getValue() > tempscore) {
-				tempscore=tempentry.getValue();
-				tempkomb=tempentry.getKey();
+			// System.err.println(tempentry.getKey() + ": " +
+			// tempentry.getValue());
+			if (tempentry.getValue() >= tempscore) {
+				tempscore = tempentry.getValue();
+				tempkomb = tempentry.getKey();
 			}
 		}
 		return tempkomb;
 	}
 
 	/**
-	 * Entferne alle geheimen Kombinationen, die nicht das vom User zurückgegebene Ergebnis zur geratenen Kombination ergeben
+	 * Entferne alle geheimen Kombinationen, die nicht das vom User
+	 * zurückgegebene Ergebnis zur geratenen Kombination ergeben
+	 * 
 	 * @param geraten
 	 * @param ergebnis
 	 */
-	private void entferneMoeglichkeiten(SpielKombination geraten, ErgebnisKombination ergebnis) {
+	private void entferneMoeglichkeiten(SpielKombination geraten,
+			ErgebnisKombination ergebnis) {
 		eleminiereMoeglichkeiten(geraten, ergebnis, geheimMoeglichkeiten);
 	}
-	
+
 	public int getNumLoesungen() {
 		return ergebnisMoeglichkeiten.size();
 	}
-	
+
 	public static void main(String[] args) {
 		IUserInteraktion userInterface = new TextUserInteraktion();
 		Solver spielSolver = new Solver();
 		while (spielSolver.getNumLoesungen() > 1) {
-			SpielKombination ratekombi = spielSolver.errechneBesteKombination();
-			ErgebnisKombination ergebnis = userInterface.frageantwort(ratekombi);
-			if (ergebnis.getSchwarz()==4) {
+			SpielKombination ratekombi = spielSolver
+					.errechneBesteKombination(spielSolver.geheimMoeglichkeiten);
+			spielSolver.rateSet.remove(ratekombi);
+			ErgebnisKombination ergebnis = userInterface
+					.frageantwort(ratekombi);
+			if (ergebnis.getSchwarz() == 4) {
 				userInterface.gewonnen();
 			}
 			spielSolver.entferneMoeglichkeiten(ratekombi, ergebnis);
