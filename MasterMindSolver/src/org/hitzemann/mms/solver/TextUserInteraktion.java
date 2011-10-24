@@ -65,6 +65,5 @@ public class TextUserInteraktion implements IUserInteraktion {
 	@Override
 	public void gewonnen() {
 		System.out.println("Gewonnen!");
-		System.exit(0);
 	}
 }

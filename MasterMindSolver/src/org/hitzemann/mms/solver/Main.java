@@ -16,6 +16,7 @@ public class Main {
 			ErgebnisKombination ergebnis = userInterface.frageantwort(ratekombi);
 			if (ergebnis.getSchwarz() == 4) {
 				userInterface.gewonnen();
+				break;
 			}
 			spielSolver.setLetzterZug(ratekombi, ergebnis);
 		}
