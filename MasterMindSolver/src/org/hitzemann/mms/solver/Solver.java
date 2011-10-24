@@ -211,6 +211,7 @@ public class Solver {
 				tempkomb = tempentry.getKey();
 			}
 		}
+		rateSet.remove(tempkomb);
 		return tempkomb;
 	}
 
@@ -229,20 +230,12 @@ public class Solver {
 	public int getNumLoesungen() {
 		return ergebnisMoeglichkeiten.size();
 	}
-
-	public static void main(String[] args) {
-		IUserInteraktion userInterface = new TextUserInteraktion();
-		Solver spielSolver = new Solver();
-		while (spielSolver.getNumLoesungen() > 1) {
-			SpielKombination ratekombi = spielSolver
-					.errechneBesteKombination(spielSolver.geheimMoeglichkeiten);
-			spielSolver.rateSet.remove(ratekombi);
-			ErgebnisKombination ergebnis = userInterface
-					.frageantwort(ratekombi);
-			if (ergebnis.getSchwarz() == 4) {
-				userInterface.gewonnen();
-			}
-			spielSolver.entferneMoeglichkeiten(ratekombi, ergebnis);
-		}
+	
+	public SpielKombination getNeuerZug() {
+		return errechneBesteKombination(geheimMoeglichkeiten);
+	}
+	
+	public void setLetzterZug(SpielKombination zug, ErgebnisKombination antwort) {
+		entferneMoeglichkeiten(zug, antwort);
 	}
 }
