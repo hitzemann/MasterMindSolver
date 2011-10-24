@@ -239,6 +239,9 @@ public class KnuthSolver implements ISolver {
 	
 	@Override
 	public void setLetzterZug(SpielKombination zug, ErgebnisKombination antwort) {
+		if (((antwort.getSchwarz() + antwort.getWeiss()) > 4) || (antwort.getSchwarz() == 3 && antwort.getWeiss() == 1)) {
+			throw new IllegalArgumentException();
+		}
 		entferneMoeglichkeiten(zug, antwort);
 	}
 }
