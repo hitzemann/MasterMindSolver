@@ -19,7 +19,7 @@ import org.hitzemann.mms.model.SpielStein;
  * @author simon
  * 
  */
-public class Solver {
+public class KnuthSolver implements ISolver {
 
 	private Map<Pair<SpielKombination, SpielKombination>, ErgebnisKombination> ergebnisMap;
 	private IErgebnisBerechnung ergebnisBerechner;
@@ -28,7 +28,7 @@ public class Solver {
 	private Map<SpielKombination, Integer> scoreMap;
 	private Set<SpielKombination> rateSet;
 
-	public Solver() {
+	public KnuthSolver() {
 		scoreMap = new HashMap<SpielKombination, Integer>();
 		initialisiere_geheimMoeglichkeiten();
 		initialisiere_ergebnisMoeglichkeiten();
@@ -227,14 +227,17 @@ public class Solver {
 		eleminiereMoeglichkeiten(geraten, ergebnis, geheimMoeglichkeiten);
 	}
 
+	@Override
 	public int getNumLoesungen() {
 		return ergebnisMoeglichkeiten.size();
 	}
 	
+	@Override
 	public SpielKombination getNeuerZug() {
 		return errechneBesteKombination(geheimMoeglichkeiten);
 	}
 	
+	@Override
 	public void setLetzterZug(SpielKombination zug, ErgebnisKombination antwort) {
 		entferneMoeglichkeiten(zug, antwort);
 	}

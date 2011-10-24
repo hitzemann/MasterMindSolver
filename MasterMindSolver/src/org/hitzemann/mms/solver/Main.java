@@ -10,7 +10,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		IUserInteraktion userInterface = new TextUserInteraktion();
-		Solver spielSolver = new Solver();
+		ISolver spielSolver = new KnuthSolver();
 		while (spielSolver.getNumLoesungen() > 1) {
 			SpielKombination ratekombi = spielSolver.getNeuerZug();
 			ErgebnisKombination ergebnis = userInterface.frageantwort(ratekombi);
