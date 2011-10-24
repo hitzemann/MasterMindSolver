@@ -12,7 +12,7 @@ public class Main {
 		IUserInteraktion userInterface = new TextUserInteraktion();
 		IErgebnisBerechnung berechner = new DefaultErgebnisBerechner();
 		ISolver spielSolver = new KnuthSolver(berechner);
-		while (spielSolver.getNumLoesungen() > 1) {
+		while (true) {
 			SpielKombination ratekombi = spielSolver.getNeuerZug();
 			ErgebnisKombination ergebnis = userInterface.frageantwort(ratekombi);
 			if (ergebnis.getSchwarz() == 4) {
