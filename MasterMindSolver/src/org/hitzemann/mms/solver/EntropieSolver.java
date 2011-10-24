@@ -40,6 +40,7 @@ import org.hitzemann.mms.model.SpielStein;
  * <p>
  * Dieser Algorithmus wählt anhand dieses Wertes aus allen (!) Kombinationen eine mit maximaler Entropie für eine
  * gegebene Menge von Kandidaten für die geheime Kombination aus.
+ * </p>
  * 
  * @author schusterc
  */
@@ -120,13 +121,13 @@ public final class EntropieSolver implements ISolver {
         SpielStein[] farben = SpielStein.values();
         int farbZahl = farben.length;
 
-        int[] kombi = new int[groesse];
-        for (int i = 0; i < groesse; i++) {
-            kombi[i] = 0;
-        }
-
         Set<SpielKombination> result = new HashSet<SpielKombination>();
-        outer: while (true) {
+
+        // Array mit Ordinalwerten der SpielStein-Farben
+        int[] kombi = new int[groesse];
+
+        // Schleife bei Überlauf an letzter Stelle beenden
+        while (kombi[groesse - 1] < farbZahl) {
             SpielStein[] steinKombi = new SpielStein[groesse];
             for (int i = 0; i < groesse; i++) {
                 steinKombi[i] = farben[kombi[i]];
@@ -136,13 +137,9 @@ public final class EntropieSolver implements ISolver {
             // erste Stelle hochzählen
             kombi[0]++;
 
-            // "Überlauf" weitergeben
-            for (int i = 0; i < groesse && kombi[i] == farbZahl; i++) {
+            // Überlauf weitergeben (nur bei letzter Stelle nicht)
+            for (int i = 0; i < groesse - 1 && kombi[i] == farbZahl; i++) {
                 kombi[i] = 0;
-                if (i == groesse - 1) {
-                    // "Überlauf" an letzter Stelle -> fertig
-                    break outer;
-                }
                 kombi[i + 1]++;
             }
         }
