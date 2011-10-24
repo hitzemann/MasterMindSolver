@@ -103,7 +103,7 @@ public final class EntropieSolver implements ISolver {
         for (Iterator<SpielKombination> i = geheimKandidaten.iterator(); i.hasNext();) {
             SpielKombination geheim = i.next();
             ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
-            if (!ergebnis.equals(ergebnis)) {
+            if (!ergebnis.equals(sollErgebnis)) {
                 i.remove();
             }
         }
