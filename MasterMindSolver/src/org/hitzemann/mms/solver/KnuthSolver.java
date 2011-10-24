@@ -28,11 +28,11 @@ public class KnuthSolver implements ISolver {
 	private Map<SpielKombination, Integer> scoreMap;
 	private Set<SpielKombination> rateSet;
 
-	public KnuthSolver() {
+	public KnuthSolver(IErgebnisBerechnung berechner) {
+		this.ergebnisBerechner = berechner;
 		scoreMap = new HashMap<SpielKombination, Integer>();
 		initialisiere_geheimMoeglichkeiten();
 		initialisiere_ergebnisMoeglichkeiten();
-		ergebnisBerechner = new DefaultErgebnisBerechner();
 		initialisiere_ergebnisMap();
 		rateSet = new HashSet<SpielKombination>(geheimMoeglichkeiten);
 	}
