@@ -12,21 +12,21 @@ import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
 
 /**
- * Ein entropiebasierter EntropieSolver f�r MasterMind.
+ * Ein entropiebasierter EntropieSolver für MasterMind.
  * <p>
- * Die Entropie (mittlerer Informationsgehalt) einer zu ratenden Kombination ist ein Ma� f�r die "Ungewissheit" des zu
- * ihr geh�renden Ergebnisses. Je h�her diese Ungewissheit ist, umso h�her ist der Informationsgewinn beim Raten der
+ * Die Entropie (mittlerer Informationsgehalt) einer zu ratenden Kombination ist ein Maß für die "Ungewissheit" des zu
+ * ihr gehörenden Ergebnisses. Je höher diese Ungewissheit ist, umso höher ist der Informationsgewinn beim Raten der
  * Kombination.
  * </p>
  * <p>
- * Im Folgenden wird angenommen, dass alle Kandidaten f�r die geheime Kombination gleich wahrscheinlich sind. Ferner sei
+ * Im Folgenden wird angenommen, dass alle Kandidaten für die geheime Kombination gleich wahrscheinlich sind. Ferner sei
  * </p>
  * <ul>
- * <li>f(x,y) := Ergebnis f�r geratene Kombination x und geheime Kombination y</li>
+ * <li>f(x,y) := Ergebnis für geratene Kombination x und geheime Kombination y</li>
  * </ul>
  * <p>
- * Der Wert p(S,x,e) sei die Wahrscheinlichkeit des Ergebnisses e f�r die geratene Kombination x und eine Menge S von
- * Kandidaten f�r die geheime Kombination. Unter Annahme der oben beschriebenen Gleichverteilung gilt
+ * Der Wert p(S,x,e) sei die Wahrscheinlichkeit des Ergebnisses e für die geratene Kombination x und eine Menge S von
+ * Kandidaten für die geheime Kombination. Unter Annahme der oben beschriebenen Gleichverteilung gilt
  * </p>
  * <ul>
  * <li>p(S,x,e) := |{y aus S mit f(x,y)=e}| / |S|</li>
@@ -38,8 +38,8 @@ import org.hitzemann.mms.model.SpielStein;
  * <li>H(S,x) := Summe(p(S,x,e)*log2(p(S,x,e), e aus allen Ergebnissen)</li>
  * </ul>
  * <p>
- * Dieser Algorithmus w�hlt anhand dieses Wertes aus allen (!) Kombinationen eine mit maximaler Entropie f�r eine
- * gegebene Menge von Kandidaten f�r die geheime Kombination aus.
+ * Dieser Algorithmus wählt anhand dieses Wertes aus allen (!) Kombinationen eine mit maximaler Entropie für eine
+ * gegebene Menge von Kandidaten für die geheime Kombination aus.
  * 
  * @author schusterc
  */
@@ -52,12 +52,12 @@ public final class EntropieSolver implements ISolver {
     private final Set<SpielKombination> alleKombinationen;
 
     /**
-     * Erzeugt einen {@link EntropieSolver} mit dem angegebenen {@link IErgebnisBerechnung} und der Kombinationsgr��e.
+     * Erzeugt einen {@link EntropieSolver} mit dem angegebenen {@link IErgebnisBerechnung} und der Kombinationsgröße.
      * 
      * @param derBerechner
      *            Der Ergebnis-Berechner.
      * @param groesse
-     *            Die Kombinationsgr��e.
+     *            Die Kombinationsgröße.
      */
     public EntropieSolver(final IErgebnisBerechnung derBerechner, final int groesse) {
         berechner = derBerechner;
@@ -88,11 +88,11 @@ public final class EntropieSolver implements ISolver {
     }
 
     /**
-     * Eliminiert alle Kombinationen aus der Kandidatenmenge, die mit der �bergebenen geratenen Kombination nicht das
+     * Eliminiert alle Kombinationen aus der Kandidatenmenge, die mit der übergebenen geratenen Kombination nicht das
      * erwartete Ergebnis liefern.
      * 
      * @param geheimKandidaten
-     *            Die Kandidatenmenge. Aus dieser Menge werden die unm�glichen Kandidaten entfernt.
+     *            Die Kandidatenmenge. Aus dieser Menge werden die unmöglichen Kandidaten entfernt.
      * @param geraten
      *            Die geratene Kombination.
      * @param sollErgebnis
@@ -110,11 +110,11 @@ public final class EntropieSolver implements ISolver {
     }
 
     /**
-     * Erzeugt eine Menge mit allen m�glichen Kombinationen einer bestimten Gr��e.
+     * Erzeugt eine Menge mit allen möglichen Kombinationen einer bestimten Größe.
      * 
      * @param groesse
-     *            Die Kombinationsgr��e
-     * @return Ein {@link Set} mit allen m�glichen Kombinationen.
+     *            Die Kombinationsgröße
+     * @return Ein {@link Set} mit allen möglichen Kombinationen.
      */
     private Set<SpielKombination> erzeugeAlleKombinationen(final int groesse) {
         SpielStein[] farben = SpielStein.values();
@@ -133,14 +133,14 @@ public final class EntropieSolver implements ISolver {
             }
             result.add(new SpielKombination(steinKombi));
 
-            // erste Stelle hochz�hlen
+            // erste Stelle hochzählen
             kombi[0]++;
 
-            // "�berlauf" weitergeben
+            // "Überlauf" weitergeben
             for (int i = 0; i < groesse && kombi[i] == farbZahl; i++) {
                 kombi[i] = 0;
                 if (i == groesse - 1) {
-                    // �berlauf an letzter Stelle -> fertig
+                    // "Überlauf" an letzter Stelle -> fertig
                     break outer;
                 }
                 kombi[i + 1]++;
@@ -151,12 +151,12 @@ public final class EntropieSolver implements ISolver {
     }
 
     /**
-     * Ermittelt eine Kombination mit maximaler Entropie, bei gegebener Kandidatenmenge f�r die geheime Kombination.
+     * Ermittelt eine Kombination mit maximaler Entropie, bei gegebener Kandidatenmenge für die geheime Kombination.
      * 
      * @param geheimKandidaten
-     *            Die Kandidaten f�r die geheime Kombination.
+     *            Die Kandidaten für die geheime Kombination.
      * @param alle
-     *            Die Grundgesamtheit aller Kombinationen. Aus dieser wird die zu ratende Kombination ausgew�hlt.
+     *            Die Grundgesamtheit aller Kombinationen. Aus dieser wird die zu ratende Kombination ausgewählt.
      * @return Die zu ratende Kombination
      */
     public SpielKombination ermittleKombinationMitGroessterEntropie(final Set<SpielKombination> geheimKandidaten,
@@ -176,24 +176,24 @@ public final class EntropieSolver implements ISolver {
     }
 
     /**
-     * Ermittelt die Entropie f�r eine zu ratende Kombination, bei gegebener Kandidatenmenge f�r die geheime
+     * Ermittelt die Entropie für eine zu ratende Kombination, bei gegebener Kandidatenmenge für die geheime
      * Kombination.
      * 
      * @param geraten
      *            Die geratene Kombination.
      * @param geheimKandidaten
-     *            Die Kandidaten f�r die geheime Kombination.
+     *            Die Kandidaten für die geheime Kombination.
      * @return Der Wert der Entropie.
      */
     private double ermittleEntropie(final SpielKombination geraten, final Set<SpielKombination> geheimKandidaten) {
-        // absolute H�ufigkeiten der Ergebnisse ermitteln
+        // absolute Häufigkeiten der Ergebnisse ermitteln
         Map<ErgebnisKombination, Integer> absoluteHaeufigkeit = ermittleAbsoluteErgebnisHaeufigkeiten(geraten,
                 geheimKandidaten);
 
         // Entropie der geratenen Kombination berechnen
         double entropy = 0.0;
         for (Entry<ErgebnisKombination, Integer> e : absoluteHaeufigkeit.entrySet()) {
-            // relative H�ufigkeit des Ergebnisses
+            // relative Häufigkeit des Ergebnisses
             // e.getValue() ist wegen getAbsoluteErgebnisHaeufigkeiten(...) nie 0
             double p = 1.0 * e.getValue() / geheimKandidaten.size();
             entropy -= p * Math.log(p);
@@ -206,15 +206,15 @@ public final class EntropieSolver implements ISolver {
     }
 
     /**
-     * Ermittelt die absoluten H�ufigkeiten der Ergebnisse f�r eine zu ratende Kombination und eine Kandidatenmenge f�r
+     * Ermittelt die absoluten Häufigkeiten der Ergebnisse für eine zu ratende Kombination und eine Kandidatenmenge für
      * die geheime Kombination.
      * 
      * @param zuRaten
      *            Die zu ratende Kombination.
      * @param geheimKandidaten
-     *            Die Kandidaten f�r die geheime Kombination.
-     * @return Eine {@link Map}, die ein Ergebnis auf die H�ufigkeit dieses Ergebnisses abbildet. Die {@link Map}
-     *         enth�lt die Ergebnisse als Schl�ssel, die mindestens einmal auftreten.
+     *            Die Kandidaten für die geheime Kombination.
+     * @return Eine {@link Map}, die ein Ergebnis auf die Häufigkeit dieses Ergebnisses abbildet. Die {@link Map}
+     *         enthält die Ergebnisse als Schlüssel, die mindestens einmal auftreten.
      */
     private Map<ErgebnisKombination, Integer> ermittleAbsoluteErgebnisHaeufigkeiten(final SpielKombination zuRaten,
             final Set<SpielKombination> geheimKandidaten) {
