@@ -1,10 +1,7 @@
 package org.hitzemann.mms.solver;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
@@ -177,24 +174,30 @@ public final class EntropieSolver implements ISolver {
      * Ermittelt die Entropie für eine zu ratende Kombination, bei gegebener Kandidatenmenge für die geheime
      * Kombination.
      * 
-     * @param geraten
-     *            Die geratene Kombination.
+     * @param zuRaten
+     *            Die zu ratende Kombination.
      * @param geheimKandidaten
      *            Die Kandidaten für die geheime Kombination.
      * @return Der Wert der Entropie.
      */
-    private double ermittleEntropie(final SpielKombination geraten, final Set<SpielKombination> geheimKandidaten) {
+    private double ermittleEntropie(final SpielKombination zuRaten, final Set<SpielKombination> geheimKandidaten) {
         // absolute Häufigkeiten der Ergebnisse ermitteln
-        Map<ErgebnisKombination, Integer> absoluteHaeufigkeit = ermittleAbsoluteErgebnisHaeufigkeiten(geraten,
-                geheimKandidaten);
+        int[][] absoluteHaeufigkeit = ermittleAbsoluteErgebnisHaeufigkeiten(zuRaten, geheimKandidaten);
 
         // Entropie der geratenen Kombination berechnen
         double entropy = 0.0;
-        for (Entry<ErgebnisKombination, Integer> e : absoluteHaeufigkeit.entrySet()) {
-            // relative Häufigkeit des Ergebnisses
-            // e.getValue() ist wegen getAbsoluteErgebnisHaeufigkeiten(...) nie 0
-            double p = 1.0 * e.getValue() / geheimKandidaten.size();
-            entropy -= p * Math.log(p);
+        int laenge = zuRaten.getSpielSteineCount();
+        int anzahlGeheimKandidaten = geheimKandidaten.size();
+        for (int schwarz = laenge; schwarz >= 0; schwarz--) {
+            for (int weiss = laenge - schwarz; weiss >= 0; weiss--) {
+                int absolut = absoluteHaeufigkeit[schwarz][weiss];
+                if (absolut != 0) {
+                    // relative Häufigkeit des Ergebnisses berechnen
+                    // e.getValue() ist wegen getAbsoluteErgebnisHaeufigkeiten(...) nie 0
+                    double p = 1.0 * absolut / anzahlGeheimKandidaten;
+                    entropy -= p * Math.log(p);
+                }
+            }
         }
 
         // Umrechnung wegen Logarithmus zur Basis 2
@@ -211,25 +214,20 @@ public final class EntropieSolver implements ISolver {
      *            Die zu ratende Kombination.
      * @param geheimKandidaten
      *            Die Kandidaten für die geheime Kombination.
-     * @return Eine {@link Map}, die ein Ergebnis auf die Häufigkeit dieses Ergebnisses abbildet. Die {@link Map}
-     *         enthält die Ergebnisse als Schlüssel, die mindestens einmal auftreten.
+     * @return Ein zweidimensionales Array, dass für jedes Ergebnis ("schwarz" in der 1. Dimension, "weiß" in der 2.
+     *         Dimension) dessen absolute Häufigkeit enthält.
      */
-    private Map<ErgebnisKombination, Integer> ermittleAbsoluteErgebnisHaeufigkeiten(final SpielKombination zuRaten,
+    private int[][] ermittleAbsoluteErgebnisHaeufigkeiten(final SpielKombination zuRaten,
             final Set<SpielKombination> geheimKandidaten) {
-        Map<ErgebnisKombination, Integer> result = new HashMap<ErgebnisKombination, Integer>();
+        int laenge = zuRaten.getSpielSteineCount();
+        int[][] result = new int[laenge + 1][laenge + 1];
 
         // alle geheimen Kombinationen ausprobieren
         for (SpielKombination geheim : geheimKandidaten) {
             ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, zuRaten);
-            Integer zaehler = result.get(ergebnis);
-            if (zaehler == null) {
-                result.put(ergebnis, 1);
-            } else {
-                result.put(ergebnis, zaehler + 1);
-            }
+            result[ergebnis.getSchwarz()][ergebnis.getWeiss()]++;
         }
 
         return result;
     }
-
 }
