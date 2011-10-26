@@ -13,7 +13,7 @@ import org.hitzemann.mms.model.SpielKombination;
  * @author simon
  * 
  */
-public class DefaultErgebnisBerechner implements IErgebnisBerechnung {
+public final class DefaultErgebnisBerechner implements IErgebnisBerechnung {
 	/* (non-Javadoc)
 	 * @see org.hitzemann.mms.solver.IErgebnisBerechnung#berechneErgebnis(org.hitzemann.mms.model.SpielKombination, org.hitzemann.mms.model.SpielKombination)
 	 */

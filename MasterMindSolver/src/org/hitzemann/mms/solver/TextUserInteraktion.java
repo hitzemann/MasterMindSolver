@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
 
-public class TextUserInteraktion implements IUserInteraktion {
+public final class TextUserInteraktion implements IUserInteraktion {
 
 	@Override
 	public ErgebnisKombination frageantwort(SpielKombination geraten) {

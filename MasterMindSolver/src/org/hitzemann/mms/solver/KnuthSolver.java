@@ -19,7 +19,7 @@ import org.hitzemann.mms.model.SpielStein;
  * @author simon
  * 
  */
-public class KnuthSolver implements ISolver {
+public final class KnuthSolver implements ISolver {
 
 	private Map<Pair<SpielKombination, SpielKombination>, ErgebnisKombination> ergebnisMap;
 	private IErgebnisBerechnung ergebnisBerechner;
