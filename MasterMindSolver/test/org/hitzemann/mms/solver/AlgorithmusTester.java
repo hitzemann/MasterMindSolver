@@ -1,10 +1,13 @@
 package org.hitzemann.mms.solver;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
@@ -62,14 +65,17 @@ public final class AlgorithmusTester {
      * 
      * @throws InterruptedException
      *             Der Haupt-Thread wurde (beim Warten auf Beendigung der Tasks) unterbrochen.
+     * @throws ExecutionException
+     *             In einem der Tasks ist eine Exception aufgetreten.
      */
-    private void start() throws InterruptedException {
+    private void start() throws InterruptedException, ExecutionException {
         final IErgebnisBerechnung berechner = erzeugeBerechner();
         final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
         final AtomicInteger versucheGesamt = new AtomicInteger();
         final Set<SpielKombination> alleKombinationen = erzeugeAlleKombinationen(PINS);
+        final List<Future<?>> futures = new ArrayList<Future<?>>(alleKombinationen.size());
         for (final SpielKombination geheim : alleKombinationen) {
-            executor.submit(new Runnable() {
+            futures.add(executor.submit(new Runnable() {
                 @Override
                 public void run() {
                     // Spiel starten
@@ -98,15 +104,18 @@ public final class AlgorithmusTester {
                     // Rateversuche aufsummieren
                     versucheGesamt.addAndGet(versuche);
                 }
-            });
+            }));
         }
+
+        // Executor stoppen
+        executor.shutdown();
 
         // auf Ende aller Tasks warten
-        executor.shutdown();
-        while (!executor.isTerminated()) {
-            executor.awaitTermination(1, TimeUnit.DAYS);
+        for (Future<?> future : futures) {
+            future.get();
         }
 
+        // Durchschnitt ausgeben
         System.out.println(1.0 * versucheGesamt.get() / alleKombinationen.size() + " Rateversuche Durchschnitt");
     }
 
@@ -155,8 +164,10 @@ public final class AlgorithmusTester {
      *            Die Kommandozeilenargumente - nicht verwendet.
      * @throws InterruptedException
      *             Der Haupt-Thread wurde unterbrochen.
+     * @throws ExecutionException
+     *             In einem der Tasks ist eine Exception aufgetreten.
      */
-    public static void main(final String[] args) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException, ExecutionException {
         final AlgorithmusTester instanz = new AlgorithmusTester();
         instanz.start();
     }
