@@ -39,20 +39,20 @@ public final class LinearerErgebnisBerechner implements IErgebnisBerechnung {
             throw new IllegalArgumentException("Geratene Kombination ist null!");
         }
 
-        int groesse = geheim.getSpielSteineCount();
+        final int groesse = geheim.getSpielSteineCount();
         if (geraten.getSpielSteineCount() != groesse) {
             throw new IllegalArgumentException("Spielkombinationen haben unterschiedliche Größen!");
         }
 
-        int anzahlFarben = SpielStein.values().length;
+        final int anzahlFarben = SpielStein.values().length;
 
         // benötigte Teilwerte ermitteln (pro Farbe zählen)
-        int[] schwarzProFarbe = new int[anzahlFarben];
-        int[] geheimProFarbe = new int[anzahlFarben];
-        int[] geratenProFarbe = new int[anzahlFarben];
+        final int[] schwarzProFarbe = new int[anzahlFarben];
+        final int[] geheimProFarbe = new int[anzahlFarben];
+        final int[] geratenProFarbe = new int[anzahlFarben];
         for (int i = 0; i < groesse; i++) {
-            int geheimFarbe = geheim.getSpielStein(i).ordinal();
-            int geratenFarbe = geraten.getSpielStein(i).ordinal();
+            final int geheimFarbe = geheim.getSpielStein(i).ordinal();
+            final int geratenFarbe = geraten.getSpielStein(i).ordinal();
             geheimProFarbe[geheimFarbe]++;
             geratenProFarbe[geratenFarbe]++;
             if (geheimFarbe == geratenFarbe) {
