@@ -43,10 +43,19 @@ import org.hitzemann.mms.model.SpielStein;
  */
 public final class EntropieSolver implements ISolver {
 
+    /**
+     * Der Ergebnis-Berechner.
+     */
     private final IErgebnisBerechnung berechner;
 
-    private final Set<SpielKombination> geheimKandidaten;
+    /**
+     * Die aktuelle Kandidatenmenge für die geheime Kombination.
+     */
+    private final Set<SpielKombination> geheimKandidatenAktuell;
 
+    /**
+     * Die Menge aller Kombinationen.
+     */
     private final Set<SpielKombination> alleKombinationen;
 
     /**
@@ -60,29 +69,29 @@ public final class EntropieSolver implements ISolver {
     public EntropieSolver(final IErgebnisBerechnung derBerechner, final int groesse) {
         berechner = derBerechner;
         alleKombinationen = erzeugeAlleKombinationen(groesse);
-        geheimKandidaten = new HashSet<SpielKombination>(alleKombinationen);
+        geheimKandidatenAktuell = new HashSet<SpielKombination>(alleKombinationen);
     }
 
     @Override
     public int getNumLoesungen() {
-        return geheimKandidaten.size();
+        return geheimKandidatenAktuell.size();
     }
 
     @Override
     public SpielKombination getNeuerZug() {
-        if (geheimKandidaten.isEmpty()) {
+        if (geheimKandidatenAktuell.isEmpty()) {
             throw new IllegalStateException("keine Kandidaten");
         }
-        if (geheimKandidaten.size() == 1) {
+        if (geheimKandidatenAktuell.size() == 1) {
             // Spezialfall: nur noch ein Kandidat
-            return geheimKandidaten.iterator().next();
+            return geheimKandidatenAktuell.iterator().next();
         }
-        return ermittleKombinationMitGroessterEntropie(geheimKandidaten, alleKombinationen);
+        return ermittleKombinationMitGroessterEntropie(geheimKandidatenAktuell, alleKombinationen);
     }
 
     @Override
     public void setLetzterZug(final SpielKombination zug, final ErgebnisKombination antwort) {
-        eliminiereUnmoeglicheGeheimeKombinationen(geheimKandidaten, zug, antwort);
+        eliminiereUnmoeglicheGeheimeKombinationen(geheimKandidatenAktuell, zug, antwort);
     }
 
     /**
@@ -98,9 +107,9 @@ public final class EntropieSolver implements ISolver {
      */
     private void eliminiereUnmoeglicheGeheimeKombinationen(final Set<SpielKombination> geheimKandidaten,
             final SpielKombination geraten, final ErgebnisKombination sollErgebnis) {
-        for (Iterator<SpielKombination> i = geheimKandidaten.iterator(); i.hasNext();) {
-            SpielKombination geheim = i.next();
-            ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+        for (final Iterator<SpielKombination> i = geheimKandidaten.iterator(); i.hasNext();) {
+            final SpielKombination geheim = i.next();
+            final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
             if (!ergebnis.equals(sollErgebnis)) {
                 i.remove();
             }
@@ -116,19 +125,19 @@ public final class EntropieSolver implements ISolver {
      * @param iterierOffset
      *            Das in diesem Aufruf zu iterierende Offset in das spielSteine-Array. Alle höheren Indizes werden durch
      *            rekursive Aufrufe dieser Methode befüllt.
-     * @param ergebnisSet
+     * @param ergebnisSammler
      *            Das {@link Set} zum Einsammeln der erzeugten {@link SpielKombination}en.
      */
     private void erzeugeAlleKombinationenRekursiv(final SpielStein[] spielSteine, final int iterierOffset,
-            final Set<SpielKombination> ergebnisSet) {
+            final Set<SpielKombination> ergebnisSammler) {
         if (iterierOffset < spielSteine.length) {
             for (SpielStein spielStein : SpielStein.values()) {
                 spielSteine[iterierOffset] = spielStein;
-                erzeugeAlleKombinationenRekursiv(spielSteine, iterierOffset + 1, ergebnisSet);
+                erzeugeAlleKombinationenRekursiv(spielSteine, iterierOffset + 1, ergebnisSammler);
             }
         } else {
             // Array klonen, damit nicht alle erzeugten Kombinationen das gleiche benutzen
-            ergebnisSet.add(new SpielKombination(spielSteine.clone()));
+            ergebnisSammler.add(new SpielKombination(spielSteine.clone()));
         }
     }
 
@@ -140,9 +149,9 @@ public final class EntropieSolver implements ISolver {
      * @return Ein {@link Set} mit allen möglichen Kombinationen.
      */
     private Set<SpielKombination> erzeugeAlleKombinationen(final int groesse) {
-        Set<SpielKombination> ergebnisSet = new HashSet<SpielKombination>();
-        erzeugeAlleKombinationenRekursiv(new SpielStein[groesse], 0, ergebnisSet);
-        return ergebnisSet;
+        final Set<SpielKombination> ergebnisSammler = new HashSet<SpielKombination>();
+        erzeugeAlleKombinationenRekursiv(new SpielStein[groesse], 0, ergebnisSammler);
+        return ergebnisSammler;
     }
 
     /**
@@ -155,12 +164,12 @@ public final class EntropieSolver implements ISolver {
      * @return Die zu ratende Kombination
      */
     public SpielKombination ermittleKombinationMitGroessterEntropie(final Set<SpielKombination> geheimKandidaten,
-            Set<SpielKombination> alle) {
+            final Set<SpielKombination> alle) {
         double maxEntropy = -1.0;
         SpielKombination besteZuRaten = null;
 
         for (SpielKombination zuRaten : alle) {
-            double entropy = ermittleEntropie(zuRaten, geheimKandidaten);
+            final double entropy = ermittleEntropie(zuRaten, geheimKandidaten);
             if (entropy > maxEntropy) {
                 maxEntropy = entropy;
                 besteZuRaten = zuRaten;
@@ -182,19 +191,19 @@ public final class EntropieSolver implements ISolver {
      */
     private double ermittleEntropie(final SpielKombination zuRaten, final Set<SpielKombination> geheimKandidaten) {
         // absolute Häufigkeiten der Ergebnisse ermitteln
-        int[][] absoluteHaeufigkeit = ermittleAbsoluteErgebnisHaeufigkeiten(zuRaten, geheimKandidaten);
+        final int[][] absoluteHaeufigkeit = ermittleAbsoluteErgebnisHaeufigkeiten(zuRaten, geheimKandidaten);
 
         // Entropie der geratenen Kombination berechnen
         double entropy = 0.0;
-        int laenge = zuRaten.getSpielSteineCount();
-        int anzahlGeheimKandidaten = geheimKandidaten.size();
+        final int laenge = zuRaten.getSpielSteineCount();
+        final int anzahlGeheimKandidaten = geheimKandidaten.size();
         for (int schwarz = laenge; schwarz >= 0; schwarz--) {
             for (int weiss = laenge - schwarz; weiss >= 0; weiss--) {
-                int absolut = absoluteHaeufigkeit[schwarz][weiss];
+                final int absolut = absoluteHaeufigkeit[schwarz][weiss];
                 if (absolut != 0) {
                     // relative Häufigkeit des Ergebnisses berechnen
                     // e.getValue() ist wegen getAbsoluteErgebnisHaeufigkeiten(...) nie 0
-                    double p = 1.0 * absolut / anzahlGeheimKandidaten;
+                    final double p = 1.0 * absolut / anzahlGeheimKandidaten;
                     entropy -= p * Math.log(p);
                 }
             }
@@ -219,12 +228,12 @@ public final class EntropieSolver implements ISolver {
      */
     private int[][] ermittleAbsoluteErgebnisHaeufigkeiten(final SpielKombination zuRaten,
             final Set<SpielKombination> geheimKandidaten) {
-        int laenge = zuRaten.getSpielSteineCount();
-        int[][] result = new int[laenge + 1][laenge + 1];
+        final int laenge = zuRaten.getSpielSteineCount();
+        final int[][] result = new int[laenge + 1][laenge + 1];
 
         // alle geheimen Kombinationen ausprobieren
         for (SpielKombination geheim : geheimKandidaten) {
-            ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, zuRaten);
+            final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, zuRaten);
             result[ergebnis.getSchwarz()][ergebnis.getWeiss()]++;
         }
 
