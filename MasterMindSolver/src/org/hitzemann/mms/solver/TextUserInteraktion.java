@@ -6,11 +6,15 @@ import java.io.InputStreamReader;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
-
+/**
+ * Implementierung eines rudimentären Textinterfaces.
+ * @author simon
+ *
+ */
 public final class TextUserInteraktion implements IUserInteraktion {
 
 	@Override
-	public ErgebnisKombination frageantwort(SpielKombination geraten) {
+	public ErgebnisKombination frageantwort(final SpielKombination geraten) {
 		if (geraten == null) {
 			throw new IllegalArgumentException();
 		}

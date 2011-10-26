@@ -9,24 +9,48 @@ package org.hitzemann.mms.model;
  */
 public class ErgebnisKombination {
 
-	public ErgebnisKombination(int schwarz, int weiss) {
-		this.schwarz = schwarz;
-		this.weiss = weiss;
+	/**
+	 * Konstruktor für ein ErgebnisKombination Objekt.
+	 * 
+	 * @param paramSchwarz
+	 *            Anzahl der korrekten Steine
+	 * @param paramWeiss
+	 *            Anzahl der Steine mit korrekten Farben und falschen Positionen
+	 */
+	public ErgebnisKombination(final int paramSchwarz, final int paramWeiss) {
+		this.schwarz = paramSchwarz;
+		this.weiss = paramWeiss;
 	}
-	// schwarz sind korrekte Steine, weiss sind korrekte Farben mit falschen Positionen
+
+	/**
+	 * Anzahl der korrekten Steine.
+	 */
 	private final int schwarz;
+	/**
+	 * Anzahl der Steine mit korrekten Farben und falschen Positionen.
+	 */
 	private final int weiss;
 
-	public int getSchwarz() {
+	/**
+	 * Standard Getter für Attribut schwarz.
+	 * 
+	 * @return Anzahl der korrekten Steine.
+	 */
+	public final int getSchwarz() {
 		return schwarz;
 	}
 
-	public int getWeiss() {
+	/**
+	 * Standard Geter für Attribut weiss.
+	 * 
+	 * @return Anzahl der Steine mit korrekten Farben und falschen Positionen.
+	 */
+	public final int getWeiss() {
 		return weiss;
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + schwarz;
@@ -35,25 +59,30 @@ public class ErgebnisKombination {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public final boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ErgebnisKombination other = (ErgebnisKombination) obj;
-		if (schwarz != other.schwarz)
+		if (schwarz != other.schwarz) {
 			return false;
-		if (weiss != other.weiss)
+		}
+		if (weiss != other.weiss) {
 			return false;
+		}
 		return true;
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "ErgebnisKombination [schwarz=" + schwarz + ", weiss=" + weiss
 				+ "]";
 	}
-	
+
 }

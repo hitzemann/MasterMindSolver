@@ -14,17 +14,24 @@ import org.hitzemann.mms.model.SpielKombination;
  * 
  */
 public final class DefaultErgebnisBerechner implements IErgebnisBerechnung {
-	/* (non-Javadoc)
-	 * @see org.hitzemann.mms.solver.IErgebnisBerechnung#berechneErgebnis(org.hitzemann.mms.model.SpielKombination, org.hitzemann.mms.model.SpielKombination)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.hitzemann.mms.solver.IErgebnisBerechnung#berechneErgebnis(org.hitzemann
+	 * .mms.model.SpielKombination, org.hitzemann.mms.model.SpielKombination)
 	 */
 	@Override
-	public ErgebnisKombination berechneErgebnis(SpielKombination geheim,
-			SpielKombination geraten) {
+	public ErgebnisKombination berechneErgebnis(final SpielKombination geheim,
+			final SpielKombination geraten) {
 		// Fallback, nix richtig
 		int korrekt = 0;
 		int position = 0;
 		// Trivial: beide gleich
-		if (geheim == null || geraten == null || geheim.getSpielSteineCount() != geraten.getSpielSteineCount() ) {
+		if (geheim == null
+				|| geraten == null
+				|| geheim.getSpielSteineCount() != geraten
+						.getSpielSteineCount()) {
 			throw new IllegalArgumentException();
 		}
 		if (geheim.equals(geraten)) {

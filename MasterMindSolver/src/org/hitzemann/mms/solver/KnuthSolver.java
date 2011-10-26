@@ -20,20 +20,58 @@ import org.hitzemann.mms.model.SpielStein;
  * 
  */
 public final class KnuthSolver implements ISolver {
+	/**
+	 * Anzahl der Pins in diesem Spiel.
+	 */
+	static final int PINS = 4;
 
+	/**
+	 * Maximumscore einer Lösung, sollte größer sein als Farben^Pins.
+	 */
+	static final int MAXSCORE = 9999;
+
+	/**
+	 * Map mit allen Ergebnissen für alle Kombinationen zweier
+	 * ErgebnisKombinationen. Diese Map sollte das Aussortieren von nicht mehr
+	 * möglichen Lösungen beschleunigen.
+	 */
 	private Map<Pair<SpielKombination, SpielKombination>, ErgebnisKombination> ergebnisMap;
+	/**
+	 * Objekt zur Ergebnisberechnung.
+	 */
 	private IErgebnisBerechnung ergebnisBerechner;
+	/**
+	 * Set mit noch allen möglichen Lösungen für das aktuelle Spiel.
+	 */
 	private Set<SpielKombination> geheimMoeglichkeiten;
+	/**
+	 * Set mit allen gültigen ErgebnisMöglichkeiten (Modulo dem Ergebnis, dass
+	 * alle Pins richtig sind).
+	 */
 	private Set<ErgebnisKombination> ergebnisMoeglichkeiten;
+	/**
+	 * Map aus SpielKombination und Score für den jeweiligen Zug. Die Score ist
+	 * die Anzahl an Lösungen, die mindestens eliminiert werden.
+	 */
 	private Map<SpielKombination, Integer> scoreMap;
+	/**
+	 * Set mit allen noch gültigen SpielKombinationen, die noch geraten werden
+	 * können. Verhindert, dass Kombinationen mehrfach benutzt werden.
+	 */
 	private Set<SpielKombination> rateSet;
 
-	public KnuthSolver(IErgebnisBerechnung berechner) {
+	/**
+	 * Standardkonstruktor für den Solver.
+	 * 
+	 * @param berechner
+	 *            Objekt, welches IErgebnisBerechnung implementiert
+	 */
+	public KnuthSolver(final IErgebnisBerechnung berechner) {
 		this.ergebnisBerechner = berechner;
 		scoreMap = new HashMap<SpielKombination, Integer>();
-		initialisiere_geheimMoeglichkeiten();
-		initialisiere_ergebnisMoeglichkeiten();
-		initialisiere_ergebnisMap();
+		initialisiereGeheimMoeglichkeiten();
+		initialisiereErgebnisMoeglichkeiten();
+		initialisiereErgebnisMap();
 		rateSet = new HashSet<SpielKombination>(geheimMoeglichkeiten);
 	}
 
@@ -41,7 +79,7 @@ public final class KnuthSolver implements ISolver {
 	 * Alle möglichen Kombinationen für 4 Steine in das Set schreiben. Ungültige
 	 * Lösungen können dann später einfach entfernt werden.
 	 */
-	private void initialisiere_geheimMoeglichkeiten() {
+	private void initialisiereGeheimMoeglichkeiten() {
 		geheimMoeglichkeiten = new HashSet<SpielKombination>();
 		for (SpielStein i1 : SpielStein.values()) {
 			for (SpielStein i2 : SpielStein.values()) {
@@ -58,9 +96,9 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Für's Iterieren ein Set mit allen gültigen Ergebnissen für 4 Steine
-	 * anlegen
+	 * anlegen.
 	 */
-	private void initialisiere_ergebnisMoeglichkeiten() {
+	private void initialisiereErgebnisMoeglichkeiten() {
 		ergebnisMoeglichkeiten = new HashSet<ErgebnisKombination>();
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 0));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 1));
@@ -75,14 +113,14 @@ public final class KnuthSolver implements ISolver {
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 1));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 2));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(3, 0));
-		//ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
+		// ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
 	}
 
 	/**
 	 * Statische Map aufbauen, die einem Paar aus Steinkombinationen ein
-	 * Ergebnis zuordnet
+	 * Ergebnis zuordnet.
 	 */
-	private void initialisiere_ergebnisMap() {
+	private void initialisiereErgebnisMap() {
 		ergebnisMap = new HashMap<Pair<SpielKombination, SpielKombination>, ErgebnisKombination>();
 		for (SpielStein i1 : SpielStein.values()) {
 			for (SpielStein i2 : SpielStein.values()) {
@@ -115,15 +153,19 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Entferne alle möglichen Geheimkombinationen, die nicht durch die geratene
-	 * Kombination und das Ergebnis dargestellt werden können
+	 * Kombination und das Ergebnis dargestellt werden können.
 	 * 
 	 * @param ratekombi
+	 *            Geratene SpielKombination
 	 * @param ergebnis
+	 *            Ergebnis für die geratene Kombination
+	 * @param moeglichkeitenSet
+	 *            Set aus SpielKombinationen über die iteriert wird
 	 */
-	private void eleminiereMoeglichkeiten(SpielKombination ratekombi,
-			ErgebnisKombination ergebnis,
-			Set<SpielKombination> moeglichkeitenSet) {
-		if (ratekombi.getSpielSteineCount() != 4) {
+	private void eleminiereMoeglichkeiten(final SpielKombination ratekombi,
+			final ErgebnisKombination ergebnis,
+			final Set<SpielKombination> moeglichkeitenSet) {
+		if (ratekombi.getSpielSteineCount() != PINS) {
 			throw new IllegalArgumentException(
 					"Im Moment können nur 4 Pins gelöst werden");
 		}
@@ -140,14 +182,20 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Zähle wieviele Möglichkeiten ein Spiel- und ErgebnisKombinationstupel von
-	 * den noch übrigen geheimen Möglichkeiten entfernen würde
+	 * den noch übrigen geheimen Möglichkeiten entfernen würde.
 	 * 
 	 * @param ratekombi
+	 *            SpielKombination die geraten werden soll
 	 * @param ergebnis
-	 * @return
+	 *            ErgebnisKombination welche herauskommen soll
+	 * @param geheimSet
+	 *            SpielKombination Set der noch möglichen Lösungen
+	 * @return Anzahl der SpielKombinationen die keine Lösung mehr sein können
 	 */
-	private int zaehleEleminierteMoeglichkeiten(SpielKombination ratekombi,
-			ErgebnisKombination ergebnis, Set<SpielKombination> geheimSet) {
+	private int zaehleEleminierteMoeglichkeiten(
+			final SpielKombination ratekombi,
+			final ErgebnisKombination ergebnis,
+			final Set<SpielKombination> geheimSet) {
 		int anzahlEleminierterMoeglichkeiten = 0;
 		Set<SpielKombination> tempSet = new HashSet<SpielKombination>(geheimSet);
 		eleminiereMoeglichkeiten(ratekombi, ergebnis, tempSet);
@@ -159,9 +207,12 @@ public final class KnuthSolver implements ISolver {
 	/**
 	 * Errechne die niedrigste Anzahl an geheimen Kombinationen, die jede
 	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
-	 * entfernen würde
+	 * entfernen würde.
+	 * 
+	 * @param geheimSet
+	 *            SpielKombination Set der noch möglichen Lösungen
 	 */
-	private void errechneScoring(Set<SpielKombination> geheimSet) {
+	private void errechneScoring(final Set<SpielKombination> geheimSet) {
 		int score;
 		int tempscore;
 		int scoresum;
@@ -169,8 +220,8 @@ public final class KnuthSolver implements ISolver {
 		for (Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
 				.hasNext();) {
 			SpielKombination rate = rateIterator.next();
-			score = 9999;
-			scoresum=0;
+			score = MAXSCORE;
+			scoresum = 0;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
 				tempscore = zaehleEleminierteMoeglichkeiten(rate, ergebnis,
 						geheimSet);
@@ -194,12 +245,14 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Suche die SpielKombination mit der höchsten WorstCase-Anzahl an
-	 * entfernten Möglichkeiten
+	 * entfernten Möglichkeiten.
 	 * 
-	 * @return
+	 * @param geheimSet
+	 *            SpielKombination Set der noch möglichen Lösungen
+	 * @return SpielKombination welche das beste Ergebnis hervorbringen sollte
 	 */
 	private SpielKombination errechneBesteKombination(
-			Set<SpielKombination> geheimSet) {
+			final Set<SpielKombination> geheimSet) {
 		SpielKombination tempkomb = null;
 		int tempscore = 0;
 		errechneScoring(geheimSet);
@@ -217,13 +270,15 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Entferne alle geheimen Kombinationen, die nicht das vom User
-	 * zurückgegebene Ergebnis zur geratenen Kombination ergeben
+	 * zurückgegebene Ergebnis zur geratenen Kombination ergeben.
 	 * 
 	 * @param geraten
+	 *            Geratene SpielKombination
 	 * @param ergebnis
+	 *            ErgebnisKombination für geratene SpielKombination
 	 */
-	private void entferneMoeglichkeiten(SpielKombination geraten,
-			ErgebnisKombination ergebnis) {
+	private void entferneMoeglichkeiten(final SpielKombination geraten,
+			final ErgebnisKombination ergebnis) {
 		eleminiereMoeglichkeiten(geraten, ergebnis, geheimMoeglichkeiten);
 	}
 
@@ -231,15 +286,18 @@ public final class KnuthSolver implements ISolver {
 	public int getNumLoesungen() {
 		return ergebnisMoeglichkeiten.size();
 	}
-	
+
 	@Override
 	public SpielKombination getNeuerZug() {
 		return errechneBesteKombination(geheimMoeglichkeiten);
 	}
-	
+
 	@Override
-	public void setLetzterZug(SpielKombination zug, ErgebnisKombination antwort) {
-		if (((antwort.getSchwarz() + antwort.getWeiss()) > 4) || (antwort.getSchwarz() == 3 && antwort.getWeiss() == 1)) {
+	public void setLetzterZug(final SpielKombination zug,
+			final ErgebnisKombination antwort) {
+		if (((antwort.getSchwarz() + antwort.getWeiss()) > PINS)
+				|| (antwort.getSchwarz() == (PINS - 1) 
+					&& antwort.getWeiss() == 1)) {
 			throw new IllegalArgumentException();
 		}
 		entferneMoeglichkeiten(zug, antwort);

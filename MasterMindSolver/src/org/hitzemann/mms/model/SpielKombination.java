@@ -7,14 +7,21 @@ import java.util.Arrays;
  *
  */
 public class SpielKombination {
-	public SpielKombination(SpielStein... spielSteine) {
-		this.spielSteine = spielSteine;
+	/**
+	 * Konstruktor für beliebig viele Steine in der SpielKombination.
+	 * @param paramSpielSteine beliebige Anzahl an SpielSteinen
+	 */
+	public SpielKombination(final SpielStein... paramSpielSteine) {
+		this.spielSteine = paramSpielSteine;
 	}
 
+	/**
+	 * Internes Array um die SpielSteine aufzubewahren.
+	 */
 	private SpielStein[] spielSteine;
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Arrays.hashCode(spielSteine);
@@ -22,29 +29,42 @@ public class SpielKombination {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public final boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		SpielKombination other = (SpielKombination) obj;
-		if (!Arrays.equals(spielSteine, other.spielSteine))
+		if (!Arrays.equals(spielSteine, other.spielSteine)) {
 			return false;
+		}
 		return true;
 	}
 	
-	public SpielStein getSpielStein(int position) {
+	/**
+	 * Gibt einen SpielStein an einer bestimmten Position zurück.
+	 * @param position Position des gewünschten SpielSteines
+	 * @return SpielStein an der gewünschen Position
+	 */
+	public final SpielStein getSpielStein(final int position) {
 		return spielSteine[position];
 	}
 	
-	public int getSpielSteineCount() {
+	/**
+	 * Gibt die Anzahl der SpielSteine zurück, die aufbewahrt werden.
+	 * @return Anzalh der SpielSteine in der SpielKombination
+	 */
+	public final int getSpielSteineCount() {
 		return spielSteine.length;
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "SpielKombination [spielSteine=" + Arrays.toString(spielSteine)
 				+ "]";
 	}
