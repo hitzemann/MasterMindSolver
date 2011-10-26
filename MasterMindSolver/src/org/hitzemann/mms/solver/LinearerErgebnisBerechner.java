@@ -26,7 +26,7 @@ import org.hitzemann.mms.model.SpielStein;
  * <li>geratenProFarbe[X] := Anzahl der Spielsteine mit der Farbe X in der geratenen Kombination</li>
  * </ul>
  * 
- * @author chschu
+ * @author schusterc
  */
 public final class LinearerErgebnisBerechner implements IErgebnisBerechnung {
 
