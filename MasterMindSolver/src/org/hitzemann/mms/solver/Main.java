@@ -23,8 +23,10 @@ public class Main {
 
 	/**
 	 * Hauptschleife.
+	 * 
+	 * @param argv Unused
 	 */
-	public static void main() {
+	public static void main(final String[] argv) {
 		final IUserInteraktion userInterface = new TextUserInteraktion();
 		final IErgebnisBerechnung berechner = new DefaultErgebnisBerechner();
 		final ISolver spielSolver = new KnuthSolver(berechner);
