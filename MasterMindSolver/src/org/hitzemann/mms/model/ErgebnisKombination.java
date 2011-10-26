@@ -10,6 +10,15 @@ package org.hitzemann.mms.model;
 public class ErgebnisKombination {
 
 	/**
+	 * Anzahl der korrekten Steine.
+	 */
+	private final int schwarz;
+	/**
+	 * Anzahl der Steine mit korrekten Farben und falschen Positionen.
+	 */
+	private final int weiss;
+	
+	/**
 	 * Konstruktor für ein ErgebnisKombination Objekt.
 	 * 
 	 * @param paramSchwarz
@@ -21,15 +30,6 @@ public class ErgebnisKombination {
 		this.schwarz = paramSchwarz;
 		this.weiss = paramWeiss;
 	}
-
-	/**
-	 * Anzahl der korrekten Steine.
-	 */
-	private final int schwarz;
-	/**
-	 * Anzahl der Steine mit korrekten Farben und falschen Positionen.
-	 */
-	private final int weiss;
 
 	/**
 	 * Standard Getter für Attribut schwarz.
@@ -69,7 +69,7 @@ public class ErgebnisKombination {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		ErgebnisKombination other = (ErgebnisKombination) obj;
+		final ErgebnisKombination other = (ErgebnisKombination) obj;
 		if (schwarz != other.schwarz) {
 			return false;
 		}

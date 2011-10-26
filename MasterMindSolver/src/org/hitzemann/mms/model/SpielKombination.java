@@ -8,18 +8,16 @@ import java.util.Arrays;
  */
 public class SpielKombination {
 	/**
+	 * Internes Array um die SpielSteine aufzubewahren.
+	 */
+	private SpielStein[] spielSteine;
+	/**
 	 * Konstruktor für beliebig viele Steine in der SpielKombination.
 	 * @param paramSpielSteine beliebige Anzahl an SpielSteinen
 	 */
 	public SpielKombination(final SpielStein... paramSpielSteine) {
 		this.spielSteine = paramSpielSteine;
 	}
-
-	/**
-	 * Internes Array um die SpielSteine aufzubewahren.
-	 */
-	private SpielStein[] spielSteine;
-
 	@Override
 	public final int hashCode() {
 		final int prime = 31;
@@ -39,7 +37,7 @@ public class SpielKombination {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		SpielKombination other = (SpielKombination) obj;
+		final SpielKombination other = (SpielKombination) obj;
 		if (!Arrays.equals(spielSteine, other.spielSteine)) {
 			return false;
 		}

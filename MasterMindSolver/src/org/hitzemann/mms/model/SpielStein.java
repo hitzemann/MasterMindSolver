@@ -8,5 +8,8 @@ package org.hitzemann.mms.model;
  *
  */
 public enum SpielStein {
+	/**
+	 * Farben der Spielsteine.
+	 */
 	ROT, GRUEN, BLAU, GELB
 }

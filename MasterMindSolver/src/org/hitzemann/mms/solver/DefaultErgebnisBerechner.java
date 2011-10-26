@@ -14,6 +14,13 @@ import org.hitzemann.mms.model.SpielKombination;
  * 
  */
 public final class DefaultErgebnisBerechner implements IErgebnisBerechnung {
+		
+	/**
+	 * Standardkonstruktor.
+	 */
+	public DefaultErgebnisBerechner() {
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

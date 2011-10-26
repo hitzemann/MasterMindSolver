@@ -14,17 +14,23 @@ public class Main {
 	 * Anzahl der Pins in dem Spiel (Länge der SpielKombination).
 	 */
 	static final int PINS = 4;
+	
+	/**
+	 * Defaultkonstruktor.
+	 */
+	public Main() {
+	}
 
 	/**
 	 * Hauptschleife.
 	 */
 	public static void main() {
-		IUserInteraktion userInterface = new TextUserInteraktion();
-		IErgebnisBerechnung berechner = new DefaultErgebnisBerechner();
-		ISolver spielSolver = new KnuthSolver(berechner);
+		final IUserInteraktion userInterface = new TextUserInteraktion();
+		final IErgebnisBerechnung berechner = new DefaultErgebnisBerechner();
+		final ISolver spielSolver = new KnuthSolver(berechner);
 		while (true) {
-			SpielKombination ratekombi = spielSolver.getNeuerZug();
-			ErgebnisKombination ergebnis = userInterface
+			final SpielKombination ratekombi = spielSolver.getNeuerZug();
+			final ErgebnisKombination ergebnis = userInterface
 					.frageantwort(ratekombi);
 			if (ergebnis.getSchwarz() == PINS) {
 				userInterface.gewonnen();

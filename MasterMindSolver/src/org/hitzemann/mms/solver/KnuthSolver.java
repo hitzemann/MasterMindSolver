@@ -85,7 +85,7 @@ public final class KnuthSolver implements ISolver {
 			for (SpielStein i2 : SpielStein.values()) {
 				for (SpielStein i3 : SpielStein.values()) {
 					for (SpielStein i4 : SpielStein.values()) {
-						SpielKombination kombi = new SpielKombination(i1, i2,
+						final SpielKombination kombi = new SpielKombination(i1, i2,
 								i3, i4);
 						geheimMoeglichkeiten.add(kombi);
 					}
@@ -130,9 +130,9 @@ public final class KnuthSolver implements ISolver {
 							for (SpielStein o2 : SpielStein.values()) {
 								for (SpielStein o3 : SpielStein.values()) {
 									for (SpielStein o4 : SpielStein.values()) {
-										SpielKombination kombi1 = new SpielKombination(
+										final SpielKombination kombi1 = new SpielKombination(
 												i1, i2, i3, i4);
-										SpielKombination kombi2 = new SpielKombination(
+										final SpielKombination kombi2 = new SpielKombination(
 												o1, o2, o3, o4);
 										ergebnisMap
 												.put(new Pair<SpielKombination, SpielKombination>(
@@ -169,9 +169,9 @@ public final class KnuthSolver implements ISolver {
 			throw new IllegalArgumentException(
 					"Im Moment können nur 4 Pins gelöst werden");
 		}
-		for (Iterator<SpielKombination> setIterator = moeglichkeitenSet
+		for (final Iterator<SpielKombination> setIterator = moeglichkeitenSet
 				.iterator(); setIterator.hasNext();) {
-			SpielKombination geheim = setIterator.next();
+			final SpielKombination geheim = setIterator.next();
 			if (!ergebnis.equals(ergebnisMap
 					.get(new Pair<SpielKombination, SpielKombination>(geheim,
 							ratekombi)))) {
@@ -197,7 +197,7 @@ public final class KnuthSolver implements ISolver {
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> geheimSet) {
 		int anzahlEleminierterMoeglichkeiten = 0;
-		Set<SpielKombination> tempSet = new HashSet<SpielKombination>(geheimSet);
+		final Set<SpielKombination> tempSet = new HashSet<SpielKombination>(geheimSet);
 		eleminiereMoeglichkeiten(ratekombi, ergebnis, tempSet);
 		anzahlEleminierterMoeglichkeiten = geheimMoeglichkeiten.size()
 				- tempSet.size();
@@ -217,9 +217,9 @@ public final class KnuthSolver implements ISolver {
 		int tempscore;
 		int scoresum;
 		scoreMap.clear();
-		for (Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
+		for (final Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
 				.hasNext();) {
-			SpielKombination rate = rateIterator.next();
+			final SpielKombination rate = rateIterator.next();
 			score = MAXSCORE;
 			scoresum = 0;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
