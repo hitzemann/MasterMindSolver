@@ -111,6 +111,31 @@ public final class EntropieSolver implements ISolver {
     }
 
     /**
+     * Rekursiver Algorithmus zur Erzeugung aller {@link SpielKombination}en.
+     * 
+     * @param spielSteine
+     *            Das rekursiv zu füllende Array mit {@link SpielStein}en. Die Länge dieses Arrays bestimmt die Länge
+     *            der erzeugten Kombinationen.
+     * @param iterierOffset
+     *            Das in diesem Aufruf zu iterierende Offset in das spielSteine-Array. Alle höheren Indizes werden durch
+     *            rekursive Aufrufe dieser Methode befüllt.
+     * @param ergebnisSet
+     *            Das {@link Set} zum Einsammeln der erzeugten {@link SpielKombination}en.
+     */
+    private void erzeugeAlleKombinationenRekursiv(final SpielStein[] spielSteine, final int iterierOffset,
+            final Set<SpielKombination> ergebnisSet) {
+        if (iterierOffset < spielSteine.length) {
+            for (SpielStein spielStein : SpielStein.values()) {
+                spielSteine[iterierOffset] = spielStein;
+                erzeugeAlleKombinationenRekursiv(spielSteine, iterierOffset + 1, ergebnisSet);
+            }
+        } else {
+            // Array klonen, damit nicht alle erzeugten Kombinationen das gleiche benutzen
+            ergebnisSet.add(new SpielKombination(spielSteine.clone()));
+        }
+    }
+
+    /**
      * Erzeugt eine Menge mit allen möglichen Kombinationen einer bestimten Größe.
      * 
      * @param groesse
@@ -118,33 +143,9 @@ public final class EntropieSolver implements ISolver {
      * @return Ein {@link Set} mit allen möglichen Kombinationen.
      */
     private Set<SpielKombination> erzeugeAlleKombinationen(final int groesse) {
-        SpielStein[] farben = SpielStein.values();
-        int farbZahl = farben.length;
-
-        Set<SpielKombination> result = new HashSet<SpielKombination>();
-
-        // Array mit Ordinalwerten der SpielStein-Farben
-        int[] kombi = new int[groesse];
-
-        // Schleife bei Überlauf an letzter Stelle beenden
-        while (kombi[groesse - 1] < farbZahl) {
-            SpielStein[] steinKombi = new SpielStein[groesse];
-            for (int i = 0; i < groesse; i++) {
-                steinKombi[i] = farben[kombi[i]];
-            }
-            result.add(new SpielKombination(steinKombi));
-
-            // erste Stelle hochzählen
-            kombi[0]++;
-
-            // Überlauf weitergeben (nur bei letzter Stelle nicht)
-            for (int i = 0; i < groesse - 1 && kombi[i] == farbZahl; i++) {
-                kombi[i] = 0;
-                kombi[i + 1]++;
-            }
-        }
-
-        return result;
+        Set<SpielKombination> ergebnisSet = new HashSet<SpielKombination>();
+        erzeugeAlleKombinationenRekursiv(new SpielStein[groesse], 0, ergebnisSet);
+        return ergebnisSet;
     }
 
     /**
