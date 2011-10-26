@@ -168,7 +168,9 @@ public final class AlgorithmusTester {
      *             In einem der Tasks ist eine Exception aufgetreten.
      */
     public static void main(final String[] args) throws InterruptedException, ExecutionException {
+        final long start = System.currentTimeMillis();
         final AlgorithmusTester instanz = new AlgorithmusTester();
         instanz.start();
+        System.out.println((System.currentTimeMillis() - start) / 1000.0 + " Sekunden");
     }
 }
