@@ -25,14 +25,14 @@ import org.junit.runners.Parameterized.Parameters;
 public final class SolverTest {
 
     /**
-     * Die Factory zur Erzeugung neuer {@link ISolver}-Instanzen.
-     */
-    private final ISolverFactory solverFactory;
-
-    /**
      * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
      */
     private static final IErgebnisBerechnung BERECHNER = new LinearerErgebnisBerechner();
+
+    /**
+     * Die Factory zur Erzeugung neuer {@link ISolver}-Instanzen.
+     */
+    private final ISolverFactory solverFactory;
 
     /**
      * Erzeugt einen parametrisierten Testdurchlauf mit der angegebenen Implementierung von {@link ISolver}.
