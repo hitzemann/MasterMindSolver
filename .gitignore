@@ -1,2 +1,3 @@
 *.class
-MasterMindSolver/bin
+bin
+target
