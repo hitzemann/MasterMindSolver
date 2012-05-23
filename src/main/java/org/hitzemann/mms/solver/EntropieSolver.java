@@ -87,6 +87,7 @@ public final class EntropieSolver implements ISolver {
         }
         if (geheimKandidaten.size() == 1) {
             // Spezialfall: nur noch ein Kandidat
+            // Entropie-Modell funktioniert nicht, da kein weiterer Informationsgewinn möglich
             return geheimKandidaten.iterator().next();
         }
         return ermittleKombinationMitGroessterEntropie(geheimKandidaten, alleKombinationen, berechner);
