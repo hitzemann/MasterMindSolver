@@ -1,10 +1,7 @@
 package org.hitzemann.mms.solver;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
@@ -205,16 +202,17 @@ public final class EntropieSolver implements ISolver {
     private static double ermittleEntropie(final SpielKombination geraten,
             final Set<SpielKombination> geheimKandidaten, final IErgebnisBerechnung berechner) {
         // absolute Häufigkeiten der Ergebnisse ermitteln
-        final Map<ErgebnisKombination, Integer> absoluteHaeufigkeit = ermittleAbsoluteErgebnisHaeufigkeiten(geraten,
-                geheimKandidaten, berechner);
+        final int[] absoluteHaeufigkeiten = ermittleAbsoluteErgebnisHaeufigkeiten(geraten, geheimKandidaten, berechner);
 
         // Entropie der geratenen Kombination berechnen
         double entropy = 0.0;
-        for (Entry<ErgebnisKombination, Integer> e : absoluteHaeufigkeit.entrySet()) {
-            // relative Häufigkeit des Ergebnisses
-            // e.getValue() ist wegen getAbsoluteErgebnisHaeufigkeiten(...) nie 0
-            final double p = 1.0 * e.getValue() / geheimKandidaten.size();
-            entropy -= p * Math.log(p);
+        for (int e : absoluteHaeufigkeiten) {
+            // nur tatsächlich auftretende Ergebnisse einbeziehen (ansonsten müste log(0) gezogen werden)
+            if (e > 0) {
+                // relative Häufigkeit des Ergebnisses berechnen und in Entropie einfließen lassen
+                final double p = 1.0 * e / geheimKandidaten.size();
+                entropy -= p * Math.log(p);
+            }
         }
 
         // Umrechnung wegen Logarithmus zur Basis 2
@@ -225,7 +223,9 @@ public final class EntropieSolver implements ISolver {
 
     /**
      * Ermittelt die absoluten Häufigkeiten der Ergebnisse für eine zu ratende Kombination und eine Kandidatenmenge für
-     * die geheime Kombination.
+     * die geheime Kombination. Die Zuordnung eines konkreten Ergebnisses zu seiner absoluten Häufigkeit ist für die
+     * Berechnung der Entropie irrelevant, deshalb werden hier nur die absoluten Häufigkeiten als int-Array
+     * zurückgegeben.
      * 
      * @param zuRaten
      *            Die zu ratende Kombination.
@@ -234,23 +234,19 @@ public final class EntropieSolver implements ISolver {
      * @param berechner
      *            Die zu verwendende Implementierung von {@link IErgebnisBerechnung}.
      * 
-     * @return Eine {@link Map}, die ein Ergebnis auf die Häufigkeit dieses Ergebnisses abbildet. Die {@link Map}
-     *         enthält die Ergebnisse als Schlüssel, die mindestens einmal auftreten.
+     * @return Die absoluten Häufigkeiten aller Ergebnisse, ohne Zuordnung zu konkretem Ergebnis (für Entropie
+     *         irrelevant).
      */
-    private static Map<ErgebnisKombination, Integer> ermittleAbsoluteErgebnisHaeufigkeiten(
-            final SpielKombination zuRaten, final Set<SpielKombination> geheimKandidaten,
-            final IErgebnisBerechnung berechner) {
-        final Map<ErgebnisKombination, Integer> result = new HashMap<ErgebnisKombination, Integer>();
+    private static int[] ermittleAbsoluteErgebnisHaeufigkeiten(final SpielKombination zuRaten,
+            final Set<SpielKombination> geheimKandidaten, final IErgebnisBerechnung berechner) {
+        final int pins = zuRaten.getSpielSteineCount();
+        final int[] result = new int[(pins + 1) * (pins + 1)];
 
         // alle geheimen Kombinationen ausprobieren
         for (SpielKombination geheim : geheimKandidaten) {
             final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, zuRaten);
-            final Integer zaehler = result.get(ergebnis);
-            if (zaehler == null) {
-                result.put(ergebnis, 1);
-            } else {
-                result.put(ergebnis, zaehler + 1);
-            }
+            final int key = ergebnis.getSchwarz() * (pins + 1) + ergebnis.getWeiss();
+            result[key]++;
         }
 
         return result;
