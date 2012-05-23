@@ -2,8 +2,8 @@ package org.hitzemann.mms.solver;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -35,13 +35,21 @@ public final class SolverTest {
     private final ISolverFactory solverFactory;
 
     /**
+     * Die Anzahl der durchzuführenden Testläufe.
+     */
+    private final int repeatCount;
+
+    /**
      * Erzeugt einen parametrisierten Testdurchlauf mit der angegebenen Implementierung von {@link ISolver}.
      * 
      * @param aktuelleSolverFactory
      *            Die Factory zur Erzeugung neuer {@link ISolver}-Instanzen.
+     * @param aktuellerRepeatCount
+     *            Die Anzahl der durchzuführenden Testläufe.
      */
-    public SolverTest(final ISolverFactory aktuelleSolverFactory) {
+    public SolverTest(final ISolverFactory aktuelleSolverFactory, final int aktuellerRepeatCount) {
         solverFactory = aktuelleSolverFactory;
+        repeatCount = aktuellerRepeatCount;
     }
 
     /**
@@ -52,7 +60,12 @@ public final class SolverTest {
      */
     @Parameters
     public static List<Object[]> erzeugeParameter() {
-        return Arrays.asList(new Object[] { new KnuthSolverFactory() }, new Object[] { new EntropieSolverFactory() });
+        final List<Object[]> parameter = new LinkedList<Object[]>();
+        parameter.add(new Object[] { new KnuthSolverFactory(), 5 });
+        parameter.add(new Object[] { new EntropieSolverFactory(4), 100 });
+        parameter.add(new Object[] { new EntropieSolverFactory(5), 4 });
+        parameter.add(new Object[] { new EntropieSolverFactory(6), 1 });
+        return parameter;
     }
 
     /**
@@ -64,9 +77,9 @@ public final class SolverTest {
         // Deterministischer Zufallszahlengenerator
         final Random rng = new Random(1);
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < repeatCount; i++) {
             // neue Solver-Instanz erzeugen
-            final ISolverInfo solverInfo = solverFactory.createISolver();
+            final ISolverInfo solverInfo = solverFactory.createSolverInfo();
             final ISolver solver = solverInfo.getSolver();
             final int pins = solverInfo.getAnzahlPins();
 
@@ -138,7 +151,7 @@ public final class SolverTest {
          * 
          * @return Eine {@link ISolverInfo}-Instanz mit der neuen {@link ISolver}-Instanz.
          */
-        ISolverInfo createISolver();
+        ISolverInfo createSolverInfo();
     }
 
     /**
@@ -149,7 +162,7 @@ public final class SolverTest {
     private static final class KnuthSolverFactory implements ISolverFactory {
 
         @Override
-        public ISolverInfo createISolver() {
+        public ISolverInfo createSolverInfo() {
             final ISolver newSolver = new KnuthSolver(BERECHNER);
             return new ISolverInfo() {
                 @Override
@@ -166,21 +179,29 @@ public final class SolverTest {
     };
 
     /**
-     * Solver-Factory für {@link EntropieSolver}-Instanzen mit variabler Pin-Anzahl (1 bis 6).
+     * Solver-Factory für {@link EntropieSolver}-Instanzen mit variabler Pin-Anzahl.
      * 
      * @author schusterc
      */
     private static final class EntropieSolverFactory implements ISolverFactory {
 
         /**
-         * Deterministischer Zufallszahlengenerator.
+         * Anzahl der Pins.
          */
-        private final Random rng = new Random(1);
+        private final int pins;
+
+        /**
+         * Erzeugt eine Factory für die angegebene Anzahl Pins.
+         * 
+         * @param pinCount
+         *            Die Anzahl der Pins.
+         */
+        public EntropieSolverFactory(final int pinCount) {
+            pins = pinCount;
+        }
 
         @Override
-        public ISolverInfo createISolver() {
-            // zufällige Anzahl Pins
-            final int pins = rng.nextInt(6) + 1;
+        public ISolverInfo createSolverInfo() {
             final ISolver newSolver = new EntropieSolver(BERECHNER, pins);
             return new ISolverInfo() {
                 @Override
