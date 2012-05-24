@@ -58,28 +58,28 @@ public final class ErgebnisBerechnerTest {
     @Test
     public void testPermutationenLiefernKorrekteAnzahl() {
         // Deterministischer Zufallszahlengenerator
-        Random rng = new Random(1);
+        final Random rng = new Random(1);
 
-        int kombinationsGroesse = 100;
+        final int kombinationsGroesse = 100;
 
         // zufällige geheime Kombination erzeugen
-        List<SpielStein> geheimListe = new ArrayList<SpielStein>(kombinationsGroesse);
-        SpielStein[] alleSteine = SpielStein.values();
+        final List<SpielStein> geheimListe = new ArrayList<SpielStein>(kombinationsGroesse);
+        final SpielStein[] alleSteine = SpielStein.values();
         for (int i = 0; i < kombinationsGroesse; i++) {
-            SpielStein zufallsStein = alleSteine[rng.nextInt(alleSteine.length)];
+            final SpielStein zufallsStein = alleSteine[rng.nextInt(alleSteine.length)];
             geheimListe.add(zufallsStein);
         }
-        SpielStein[] geheimArray = geheimListe.toArray(new SpielStein[geheimListe.size()]);
-        SpielKombination geheim = new SpielKombination(geheimArray);
+        final SpielStein[] geheimArray = geheimListe.toArray(new SpielStein[geheimListe.size()]);
+        final SpielKombination geheim = new SpielKombination(geheimArray);
 
         for (int i = 0; i < 1000; i++) {
             // zufällige Permutation der geheimen Kombination raten
-            List<SpielStein> geratenListe = new LinkedList<SpielStein>(geheimListe);
+            final List<SpielStein> geratenListe = new LinkedList<SpielStein>(geheimListe);
             Collections.shuffle(geratenListe, rng);
-            SpielStein[] geratenArray = geratenListe.toArray(new SpielStein[geratenListe.size()]);
-            SpielKombination geraten = new SpielKombination(geratenArray);
+            final SpielStein[] geratenArray = geratenListe.toArray(new SpielStein[geratenListe.size()]);
+            final SpielKombination geraten = new SpielKombination(geratenArray);
 
-            ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+            final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
             // Anzahl weißer und schwarzer Steine im Ergebnis muss Kombinationsgröße sein
             assertEquals(geheimArray.length, ergebnis.getSchwarz() + ergebnis.getWeiss());
@@ -92,26 +92,26 @@ public final class ErgebnisBerechnerTest {
     @Test
     public void testSymmetrie() {
         // Deterministischer Zufallszahlengenerator
-        Random rng = new Random(1);
+        final Random rng = new Random(1);
 
-        SpielStein[] alleSteine = SpielStein.values();
+        final SpielStein[] alleSteine = SpielStein.values();
 
         for (int i = 0; i < 1000; i++) {
-            int kombinationsGroesse = rng.nextInt(100);
+            final int kombinationsGroesse = rng.nextInt(100);
 
             // 2 zufällige Kombinationen erzeugen
-            SpielStein[] kombi1Array = new SpielStein[kombinationsGroesse];
-            SpielStein[] kombi2Array = new SpielStein[kombinationsGroesse];
+            final SpielStein[] kombi1Array = new SpielStein[kombinationsGroesse];
+            final SpielStein[] kombi2Array = new SpielStein[kombinationsGroesse];
             for (int j = 0; j < kombinationsGroesse; j++) {
                 kombi1Array[j] = alleSteine[rng.nextInt(alleSteine.length)];
                 kombi2Array[j] = alleSteine[rng.nextInt(alleSteine.length)];
             }
-            SpielKombination kombi1 = new SpielKombination(kombi1Array);
-            SpielKombination kombi2 = new SpielKombination(kombi2Array);
+            final SpielKombination kombi1 = new SpielKombination(kombi1Array);
+            final SpielKombination kombi2 = new SpielKombination(kombi2Array);
 
             // mit beiden Argumentreihenfolgen aufrufen
-            ErgebnisKombination ergebnis1 = berechner.berechneErgebnis(kombi1, kombi2);
-            ErgebnisKombination ergebnis2 = berechner.berechneErgebnis(kombi2, kombi1);
+            final ErgebnisKombination ergebnis1 = berechner.berechneErgebnis(kombi1, kombi2);
+            final ErgebnisKombination ergebnis2 = berechner.berechneErgebnis(kombi2, kombi1);
 
             // Ergebnisse müssen gleich sein
             assertEquals(ergebnis1.getSchwarz(), ergebnis2.getSchwarz());
@@ -126,32 +126,32 @@ public final class ErgebnisBerechnerTest {
     @Test
     public void testEinfarbigesRaten() {
         // Deterministischer Zufallszahlengenerator
-        Random rng = new Random(1);
+        final Random rng = new Random(1);
 
-        int kombinationsGroesse = 20;
+        final int kombinationsGroesse = 20;
 
         // zufällige geheime Kombination erzeugen
-        SpielStein[] geheimArray = new SpielStein[kombinationsGroesse];
-        SpielStein[] alleSteine = SpielStein.values();
+        final SpielStein[] geheimArray = new SpielStein[kombinationsGroesse];
+        final SpielStein[] alleSteine = SpielStein.values();
         for (int i = 0; i < kombinationsGroesse; i++) {
-            SpielStein zufallsStein = alleSteine[rng.nextInt(alleSteine.length)];
+            final SpielStein zufallsStein = alleSteine[rng.nextInt(alleSteine.length)];
             geheimArray[i] = zufallsStein;
         }
-        SpielKombination geheim = new SpielKombination(geheimArray);
+        final SpielKombination geheim = new SpielKombination(geheimArray);
 
         // Summe der Anzahl schwarzer Ergebnissteine über alle Farben
         int gesamtSchwarz = 0;
 
         // alle Farben nacheinander raten
-        for (SpielStein stein : alleSteine) {
+        for (final SpielStein stein : alleSteine) {
             // einfarbige geratene Kombination erzeugen
-            SpielStein[] geratenArray = new SpielStein[kombinationsGroesse];
+            final SpielStein[] geratenArray = new SpielStein[kombinationsGroesse];
             for (int i = 0; i < kombinationsGroesse; i++) {
                 geratenArray[i] = stein;
             }
-            SpielKombination geraten = new SpielKombination(geratenArray);
+            final SpielKombination geraten = new SpielKombination(geratenArray);
 
-            ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+            final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
             // Anzahl weißer Steine im Ergebnis muss immer 0 sein
             assertEquals(0, ergebnis.getWeiss());
@@ -185,8 +185,8 @@ public final class ErgebnisBerechnerTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testUnterschiedlicheGroessen() {
-        SpielKombination geheim = new SpielKombination();
-        SpielKombination geraten = new SpielKombination(SpielStein.BLAU);
+        final SpielKombination geheim = new SpielKombination();
+        final SpielKombination geraten = new SpielKombination(SpielStein.BLAU);
 
         berechner.berechneErgebnis(geheim, geraten);
     }
@@ -196,10 +196,10 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testGroesseNull() {
-        SpielKombination geheim = new SpielKombination();
-        SpielKombination geraten = new SpielKombination();
+        final SpielKombination geheim = new SpielKombination();
+        final SpielKombination geraten = new SpielKombination();
 
-        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+        final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
         assertEquals(0, ergebnis.getSchwarz());
         assertEquals(0, ergebnis.getWeiss());
@@ -210,12 +210,12 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testVollSchwarz() {
-        SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.GRUEN, SpielStein.ROT,
+        final SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.GRUEN, SpielStein.ROT,
                 SpielStein.BLAU);
-        SpielKombination geraten = new SpielKombination(SpielStein.ROT, SpielStein.GRUEN, SpielStein.ROT,
+        final SpielKombination geraten = new SpielKombination(SpielStein.ROT, SpielStein.GRUEN, SpielStein.ROT,
                 SpielStein.BLAU);
 
-        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+        final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
         assertEquals(4, ergebnis.getSchwarz());
         assertEquals(0, ergebnis.getWeiss());
@@ -226,12 +226,12 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testVollWeiss() {
-        SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.BLAU, SpielStein.ROT,
+        final SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.BLAU, SpielStein.ROT,
                 SpielStein.GELB);
-        SpielKombination geraten = new SpielKombination(SpielStein.GELB, SpielStein.ROT, SpielStein.BLAU,
+        final SpielKombination geraten = new SpielKombination(SpielStein.GELB, SpielStein.ROT, SpielStein.BLAU,
                 SpielStein.ROT);
 
-        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+        final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
         assertEquals(0, ergebnis.getSchwarz());
         assertEquals(4, ergebnis.getWeiss());
@@ -242,12 +242,12 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testLeeresErgebnis() {
-        SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.ROT, SpielStein.GELB,
+        final SpielKombination geheim = new SpielKombination(SpielStein.ROT, SpielStein.ROT, SpielStein.GELB,
                 SpielStein.GELB);
-        SpielKombination geraten = new SpielKombination(SpielStein.GRUEN, SpielStein.BLAU, SpielStein.BLAU,
+        final SpielKombination geraten = new SpielKombination(SpielStein.GRUEN, SpielStein.BLAU, SpielStein.BLAU,
                 SpielStein.GRUEN);
 
-        ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
+        final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 
         assertEquals(0, ergebnis.getSchwarz());
         assertEquals(0, ergebnis.getWeiss());
