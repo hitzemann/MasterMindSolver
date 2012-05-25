@@ -190,8 +190,8 @@ public final class EntropieSolver implements ISolver {
      * Ermittelt die Entropie für eine zu ratende Kombination, bei gegebener Kandidatenmenge für die geheime
      * Kombination.
      * 
-     * @param geraten
-     *            Die geratene Kombination.
+     * @param zuRaten
+     *            Die zu ratende Kombination.
      * @param geheimKandidaten
      *            Die Kandidaten für die geheime Kombination.
      * @param berechner
@@ -199,10 +199,10 @@ public final class EntropieSolver implements ISolver {
      * 
      * @return Der Wert der Entropie.
      */
-    private static double ermittleEntropie(final SpielKombination geraten,
+    private static double ermittleEntropie(final SpielKombination zuRaten,
             final Set<SpielKombination> geheimKandidaten, final IErgebnisBerechnung berechner) {
         // absolute Häufigkeiten der Ergebnisse ermitteln
-        final int[] absoluteHaeufigkeiten = ermittleAbsoluteErgebnisHaeufigkeiten(geraten, geheimKandidaten, berechner);
+        final int[] absoluteHaeufigkeiten = ermittleAbsoluteErgebnisHaeufigkeiten(zuRaten, geheimKandidaten, berechner);
 
         // Entropie der geratenen Kombination berechnen
         double entropy = 0.0;
