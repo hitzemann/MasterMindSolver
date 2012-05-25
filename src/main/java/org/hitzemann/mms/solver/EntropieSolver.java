@@ -44,6 +44,11 @@ import org.hitzemann.mms.model.SpielStein;
 public final class EntropieSolver implements ISolver {
 
     /**
+     * Epsilon für Vergleiche von Fließkommazahlen.
+     */
+    private static final double EPSILON = 1e-9;
+
+    /**
      * Die zu verwendende Implementierung von {@link IErgebnisBerechnung}.
      */
     private final IErgebnisBerechnung berechner;
@@ -159,6 +164,8 @@ public final class EntropieSolver implements ISolver {
 
     /**
      * Ermittelt eine Kombination mit maximaler Entropie, bei gegebener Kandidatenmenge für die geheime Kombination.
+     * Falls es mehrere Kombinationen mit maximaler Entropie gibt, wird falls möglich eine gewählt, die ein Kandidat für
+     * die geheime Kombination ist.
      * 
      * @param geheimKandidaten
      *            Die Kandidaten für die geheime Kombination.
@@ -177,7 +184,8 @@ public final class EntropieSolver implements ISolver {
 
         for (SpielKombination zuRaten : alle) {
             final double entropy = ermittleEntropie(zuRaten, geheimKandidaten, berechner);
-            if (entropy > maxEntropy) {
+            // größere Entropie oder (gleiche Entropie und Kandidat)
+            if (entropy > maxEntropy + EPSILON || entropy > maxEntropy - EPSILON && geheimKandidaten.contains(zuRaten)) {
                 maxEntropy = entropy;
                 besteZuRaten = zuRaten;
             }
