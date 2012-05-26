@@ -28,7 +28,7 @@ public class Main {
 	 */
 	public static void main(final String[] argv) {
 		final IUserInteraktion userInterface = new TextUserInteraktion();
-		final IErgebnisBerechnung berechner = new DefaultErgebnisBerechner();
+		final IErgebnisBerechnung berechner = new LinearerErgebnisBerechner();
 		final ISolver spielSolver = new KnuthSolver(berechner);
 		while (true) {
 			final SpielKombination ratekombi = spielSolver.getNeuerZug();
