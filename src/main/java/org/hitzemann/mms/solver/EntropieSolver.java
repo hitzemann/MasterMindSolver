@@ -1,8 +1,8 @@
 package org.hitzemann.mms.solver;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
@@ -75,7 +75,7 @@ public final class EntropieSolver implements ISolver {
     public EntropieSolver(final IErgebnisBerechnung derBerechner, final int groesse) {
         berechner = derBerechner;
         alleKombinationen = erzeugeAlleKombinationen(groesse);
-        geheimKandidaten = new HashSet<SpielKombination>(alleKombinationen);
+        geheimKandidaten = new TreeSet<SpielKombination>(alleKombinationen);
     }
 
     @Override
@@ -137,7 +137,7 @@ public final class EntropieSolver implements ISolver {
         final SpielStein[] farben = SpielStein.values();
         final int farbZahl = farben.length;
 
-        final Set<SpielKombination> result = new HashSet<SpielKombination>();
+        final Set<SpielKombination> result = new TreeSet<SpielKombination>();
 
         // Array mit Ordinalwerten der SpielStein-Farben
         final int[] kombi = new int[groesse];
