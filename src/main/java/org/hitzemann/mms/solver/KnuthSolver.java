@@ -37,39 +37,42 @@ public final class KnuthSolver implements ISolver {
 	 * sorgen.
 	 */
 	private static SortedSet<SpielKombination> alleMoeglichkeiten;
-	
+
 	/**
 	 * Objekt zur Ergebnisberechnung.
 	 */
 	private IErgebnisBerechnung ergebnisBerechner;
-	
+
 	/**
 	 * Set mit noch allen möglichen Lösungen für das aktuelle Spiel.
 	 */
 	private SortedSet<SpielKombination> geheimMoeglichkeiten;
-	
+
 	/**
 	 * Set mit allen gültigen ErgebnisMöglichkeiten (Modulo dem Ergebnis, dass
 	 * alle Pins richtig sind).
 	 */
 	private SortedSet<ErgebnisKombination> ergebnisMoeglichkeiten;
-	
+
 	/**
 	 * Map aus SpielKombination und Score für den jeweiligen Zug. Die Score ist
 	 * die Anzahl an Lösungen, die mindestens eliminiert werden.
 	 */
 	private Map<SpielKombination, Long> scoreMap;
-	
+
 	/**
 	 * Set mit allen noch gültigen SpielKombinationen, die noch geraten werden
 	 * können. Verhindert, dass Kombinationen mehrfach benutzt werden.
 	 */
 	private SortedSet<SpielKombination> rateSet;
-	
+
 	/**
 	 * Erster zug?
 	 */
 	private boolean isFirstTurn = true;
+	static {
+		initialisiereAlleMoeglichkeiten();
+	}
 
 	/**
 	 * Standardkonstruktor für den Solver.
@@ -80,7 +83,6 @@ public final class KnuthSolver implements ISolver {
 	public KnuthSolver(final IErgebnisBerechnung berechner) {
 		this.ergebnisBerechner = berechner;
 		scoreMap = new TreeMap<SpielKombination, Long>();
-		initialisiereAlleMoeglichkeiten();
 		initialisiereErgebnisMoeglichkeiten();
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
 		rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
@@ -89,17 +91,15 @@ public final class KnuthSolver implements ISolver {
 	/**
 	 * Alle Farbmöglichkeiten der Spielsteine vorberechnen.
 	 */
-	private void initialisiereAlleMoeglichkeiten() {
-		if (alleMoeglichkeiten == null) {
-			alleMoeglichkeiten = new TreeSet<SpielKombination>();
-			for (SpielStein i1 : SpielStein.values()) {
-				for (SpielStein i2 : SpielStein.values()) {
-					for (SpielStein i3 : SpielStein.values()) {
-						for (SpielStein i4 : SpielStein.values()) {
-							final SpielKombination kombi = new SpielKombination(
-									i1, i2, i3, i4);
-							alleMoeglichkeiten.add(kombi);
-						}
+	private static void initialisiereAlleMoeglichkeiten() {
+		alleMoeglichkeiten = new TreeSet<SpielKombination>();
+		for (SpielStein i1 : SpielStein.values()) {
+			for (SpielStein i2 : SpielStein.values()) {
+				for (SpielStein i3 : SpielStein.values()) {
+					for (SpielStein i4 : SpielStein.values()) {
+						final SpielKombination kombi = new SpielKombination(i1,
+								i2, i3, i4);
+						alleMoeglichkeiten.add(kombi);
 					}
 				}
 			}
@@ -268,7 +268,8 @@ public final class KnuthSolver implements ISolver {
 	public SpielKombination getNeuerZug() {
 		if (isFirstTurn) {
 			isFirstTurn = false;
-			return new SpielKombination(SpielStein.ROT, SpielStein.ROT, SpielStein.GRUEN, SpielStein.GRUEN);
+			return new SpielKombination(SpielStein.ROT, SpielStein.ROT,
+					SpielStein.GRUEN, SpielStein.GRUEN);
 		}
 		return errechneBesteKombination(geheimMoeglichkeiten);
 	}
