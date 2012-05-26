@@ -98,8 +98,6 @@ public final class SolverTest {
                 // neue geratene Kombination vom Solver holen
                 final SpielKombination geraten = solver.getNeuerZug();
                 
-                System.out.println("GUESS: " + geraten);
-
                 // Prüfung auf richtig geratene Kombination
                 if (geraten.equals(geheim)) {
                     break;
@@ -114,8 +112,6 @@ public final class SolverTest {
                 // Solver aktualisieren
                 solver.setLetzterZug(geraten, ergebnis);
             }
-
-            System.out.println("done");
         }
     }
 
