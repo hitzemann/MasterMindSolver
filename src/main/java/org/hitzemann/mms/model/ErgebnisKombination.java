@@ -7,7 +7,7 @@ package org.hitzemann.mms.model;
  * @author simon
  * 
  */
-public class ErgebnisKombination {
+public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 
 	/**
 	 * Anzahl der korrekten Steine.
@@ -84,5 +84,13 @@ public class ErgebnisKombination {
 		return "ErgebnisKombination [schwarz=" + schwarz + ", weiss=" + weiss
 				+ "]";
 	}
+
+	@Override
+	public final int compareTo(final ErgebnisKombination o) {
+		return (this.getSchwarz() * 10 + this.getWeiss())
+				- (o.getSchwarz() * 10 + o.getWeiss());
+
+	}
+
 
 }

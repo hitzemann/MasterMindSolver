@@ -11,5 +11,5 @@ public enum SpielStein {
 	/**
 	 * Farben der Spielsteine.
 	 */
-	ROT, GRUEN, BLAU, GELB
+	ROT, GRUEN, BLAU, GELB, FOO, BAR
 }
