@@ -36,7 +36,8 @@ import org.hitzemann.mms.model.SpielStein;
  * </ul>
  * <p>
  * Dieser Algorithmus wählt anhand dieses Wertes aus allen (!) Kombinationen eine mit maximaler Entropie für eine
- * gegebene Menge von Kandidaten für die geheime Kombination aus.
+ * gegebene Menge von Kandidaten für die geheime Kombination aus. Existieren mehrere Kombinationen mit gleicher
+ * Entropie, wird sofern möglich eine gewählt, die einer der Kandidaten für die geheime Kombination ist.
  * </p>
  * 
  * @author schusterc
