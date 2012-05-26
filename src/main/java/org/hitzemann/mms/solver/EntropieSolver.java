@@ -1,6 +1,8 @@
 package org.hitzemann.mms.solver;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -50,6 +52,11 @@ public final class EntropieSolver implements ISolver {
     private static final double EPSILON = 1e-9;
 
     /**
+     * Map mit dem ersten Zug für die jeweilige Anzahl an Pins.
+     */
+    private static final Map<Integer, SpielKombination> ERSTER_ZUG_CACHE = new HashMap<Integer, SpielKombination>();
+
+    /**
      * Die zu verwendende Implementierung von {@link IErgebnisBerechnung}.
      */
     private final IErgebnisBerechnung berechner;
@@ -65,15 +72,26 @@ public final class EntropieSolver implements ISolver {
     private final Set<SpielKombination> alleKombinationen;
 
     /**
+     * Die Kombinationsgröße.
+     */
+    private final int groesse;
+
+    /**
+     * Kennzeichen, das nur vor dem ersten Zug <code>true</code> ist.
+     */
+    private boolean ersterZug = true;
+
+    /**
      * Erzeugt einen {@link EntropieSolver} mit dem angegebenen {@link IErgebnisBerechnung} und der Kombinationsgröße.
      * 
      * @param derBerechner
      *            Der Ergebnis-Berechner.
-     * @param groesse
+     * @param dieGroesse
      *            Die Kombinationsgröße.
      */
-    public EntropieSolver(final IErgebnisBerechnung derBerechner, final int groesse) {
+    public EntropieSolver(final IErgebnisBerechnung derBerechner, final int dieGroesse) {
         berechner = derBerechner;
+        groesse = dieGroesse;
         alleKombinationen = erzeugeAlleKombinationen(groesse);
         geheimKandidaten = new TreeSet<SpielKombination>(alleKombinationen);
     }
@@ -93,7 +111,28 @@ public final class EntropieSolver implements ISolver {
             // Entropie-Modell funktioniert nicht, da kein weiterer Informationsgewinn möglich
             return geheimKandidaten.iterator().next();
         }
-        return ermittleKombinationMitGroessterEntropie(geheimKandidaten, alleKombinationen, berechner);
+
+        SpielKombination result = null;
+
+        // Cache für ersten Zug prüfen
+        if (ersterZug) {
+            result = ERSTER_ZUG_CACHE.get(groesse);
+        }
+
+        // Zug ermitteln, falls nicht schon aus Cache geladen
+        if (result == null) {
+            result = ermittleKombinationMitGroessterEntropie(geheimKandidaten, alleKombinationen, berechner);
+
+            // ersten Zug im Cache speichern
+            if (ersterZug) {
+                ERSTER_ZUG_CACHE.put(groesse, result);
+                ersterZug = false;
+            }
+        } else {
+            ersterZug = false;
+        }
+
+        return result;
     }
 
     @Override
