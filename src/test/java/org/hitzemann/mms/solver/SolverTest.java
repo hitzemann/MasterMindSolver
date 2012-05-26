@@ -62,9 +62,9 @@ public final class SolverTest {
     public static List<Object[]> erzeugeParameter() {
         final List<Object[]> parameter = new LinkedList<Object[]>();
         parameter.add(new Object[] { new KnuthSolverFactory(), 5 });
+        parameter.add(new Object[] { new EntropieSolverFactory(3), 1000 });
         parameter.add(new Object[] { new EntropieSolverFactory(4), 100 });
-        parameter.add(new Object[] { new EntropieSolverFactory(5), 4 });
-        parameter.add(new Object[] { new EntropieSolverFactory(6), 1 });
+        parameter.add(new Object[] { new EntropieSolverFactory(5), 1 });
         return parameter;
     }
 
@@ -97,6 +97,8 @@ public final class SolverTest {
             while (true) {
                 // neue geratene Kombination vom Solver holen
                 final SpielKombination geraten = solver.getNeuerZug();
+                
+                System.out.println("GUESS: " + geraten);
 
                 // Prüfung auf richtig geratene Kombination
                 if (geraten.equals(geheim)) {
@@ -112,6 +114,8 @@ public final class SolverTest {
                 // Solver aktualisieren
                 solver.setLetzterZug(geraten, ergebnis);
             }
+
+            System.out.println("done");
         }
     }
 
