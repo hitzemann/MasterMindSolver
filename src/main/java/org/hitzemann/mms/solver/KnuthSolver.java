@@ -4,14 +4,14 @@
 package org.hitzemann.mms.solver;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
-import org.hitzemann.mms.model.Pair;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
 
@@ -28,14 +28,9 @@ public final class KnuthSolver implements ISolver {
 	/**
 	 * Maximumscore einer Lösung, sollte größer sein als Farben^Pins.
 	 */
-	static final int MAXSCORE = 9999;
+	static final long MAXSCORE = Math.round(Math.pow(
+			SpielStein.values().length, PINS)) + 1;
 
-	/**
-	 * Map mit allen Ergebnissen für alle Kombinationen zweier
-	 * ErgebnisKombinationen. Diese Map sollte das Aussortieren von nicht mehr
-	 * möglichen Lösungen beschleunigen.
-	 */
-	private Map<Pair<SpielKombination, SpielKombination>, ErgebnisKombination> ergebnisMap;
 	/**
 	 * Objekt zur Ergebnisberechnung.
 	 */
@@ -43,22 +38,22 @@ public final class KnuthSolver implements ISolver {
 	/**
 	 * Set mit noch allen möglichen Lösungen für das aktuelle Spiel.
 	 */
-	private Set<SpielKombination> geheimMoeglichkeiten;
+	private SortedSet<SpielKombination> geheimMoeglichkeiten;
 	/**
 	 * Set mit allen gültigen ErgebnisMöglichkeiten (Modulo dem Ergebnis, dass
 	 * alle Pins richtig sind).
 	 */
-	private Set<ErgebnisKombination> ergebnisMoeglichkeiten;
+	private SortedSet<ErgebnisKombination> ergebnisMoeglichkeiten;
 	/**
 	 * Map aus SpielKombination und Score für den jeweiligen Zug. Die Score ist
 	 * die Anzahl an Lösungen, die mindestens eliminiert werden.
 	 */
-	private Map<SpielKombination, Integer> scoreMap;
+	private Map<SpielKombination, Long> scoreMap;
 	/**
 	 * Set mit allen noch gültigen SpielKombinationen, die noch geraten werden
 	 * können. Verhindert, dass Kombinationen mehrfach benutzt werden.
 	 */
-	private Set<SpielKombination> rateSet;
+	private SortedSet<SpielKombination> rateSet;
 
 	/**
 	 * Standardkonstruktor für den Solver.
@@ -68,11 +63,10 @@ public final class KnuthSolver implements ISolver {
 	 */
 	public KnuthSolver(final IErgebnisBerechnung berechner) {
 		this.ergebnisBerechner = berechner;
-		scoreMap = new HashMap<SpielKombination, Integer>();
+		scoreMap = new HashMap<SpielKombination, Long>();
 		initialisiereGeheimMoeglichkeiten();
 		initialisiereErgebnisMoeglichkeiten();
-		initialisiereErgebnisMap();
-		rateSet = new HashSet<SpielKombination>(geheimMoeglichkeiten);
+		rateSet = new TreeSet<SpielKombination>(geheimMoeglichkeiten);
 	}
 
 	/**
@@ -80,13 +74,13 @@ public final class KnuthSolver implements ISolver {
 	 * Lösungen können dann später einfach entfernt werden.
 	 */
 	private void initialisiereGeheimMoeglichkeiten() {
-		geheimMoeglichkeiten = new HashSet<SpielKombination>();
+		geheimMoeglichkeiten = new TreeSet<SpielKombination>();
 		for (SpielStein i1 : SpielStein.values()) {
 			for (SpielStein i2 : SpielStein.values()) {
 				for (SpielStein i3 : SpielStein.values()) {
 					for (SpielStein i4 : SpielStein.values()) {
-						final SpielKombination kombi = new SpielKombination(i1, i2,
-								i3, i4);
+						final SpielKombination kombi = new SpielKombination(i1,
+								i2, i3, i4);
 						geheimMoeglichkeiten.add(kombi);
 					}
 				}
@@ -99,7 +93,7 @@ public final class KnuthSolver implements ISolver {
 	 * anlegen.
 	 */
 	private void initialisiereErgebnisMoeglichkeiten() {
-		ergebnisMoeglichkeiten = new HashSet<ErgebnisKombination>();
+		ergebnisMoeglichkeiten = new TreeSet<ErgebnisKombination>();
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 0));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 1));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 2));
@@ -114,41 +108,6 @@ public final class KnuthSolver implements ISolver {
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 2));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(3, 0));
 		// ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
-	}
-
-	/**
-	 * Statische Map aufbauen, die einem Paar aus Steinkombinationen ein
-	 * Ergebnis zuordnet.
-	 */
-	private void initialisiereErgebnisMap() {
-		ergebnisMap = new HashMap<Pair<SpielKombination, SpielKombination>, ErgebnisKombination>();
-		for (SpielStein i1 : SpielStein.values()) {
-			for (SpielStein i2 : SpielStein.values()) {
-				for (SpielStein i3 : SpielStein.values()) {
-					for (SpielStein i4 : SpielStein.values()) {
-						for (SpielStein o1 : SpielStein.values()) {
-							for (SpielStein o2 : SpielStein.values()) {
-								for (SpielStein o3 : SpielStein.values()) {
-									for (SpielStein o4 : SpielStein.values()) {
-										final SpielKombination kombi1 = new SpielKombination(
-												i1, i2, i3, i4);
-										final SpielKombination kombi2 = new SpielKombination(
-												o1, o2, o3, o4);
-										ergebnisMap
-												.put(new Pair<SpielKombination, SpielKombination>(
-														kombi1, kombi2),
-														ergebnisBerechner
-																.berechneErgebnis(
-																		kombi1,
-																		kombi2));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -172,9 +131,8 @@ public final class KnuthSolver implements ISolver {
 		for (final Iterator<SpielKombination> setIterator = moeglichkeitenSet
 				.iterator(); setIterator.hasNext();) {
 			final SpielKombination geheim = setIterator.next();
-			if (!ergebnis.equals(ergebnisMap
-					.get(new Pair<SpielKombination, SpielKombination>(geheim,
-							ratekombi)))) {
+			if (!ergebnis.equals(ergebnisBerechner.berechneErgebnis(geheim,
+					ratekombi))) {
 				setIterator.remove();
 			}
 		}
@@ -197,10 +155,16 @@ public final class KnuthSolver implements ISolver {
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> geheimSet) {
 		int anzahlEleminierterMoeglichkeiten = 0;
-		final Set<SpielKombination> tempSet = new HashSet<SpielKombination>(geheimSet);
-		eleminiereMoeglichkeiten(ratekombi, ergebnis, tempSet);
-		anzahlEleminierterMoeglichkeiten = geheimMoeglichkeiten.size()
-				- tempSet.size();
+		if (ratekombi.getSpielSteineCount() != PINS) {
+			throw new IllegalArgumentException(
+					"Im Moment können nur 4 Pins gelöst werden");
+		}
+		for (SpielKombination geheim : geheimSet) {
+			if (!ergebnis.equals(ergebnisBerechner.berechneErgebnis(geheim,
+					ratekombi))) {
+				anzahlEleminierterMoeglichkeiten++;
+			}
+		}
 		return anzahlEleminierterMoeglichkeiten;
 	}
 
@@ -213,7 +177,7 @@ public final class KnuthSolver implements ISolver {
 	 *            SpielKombination Set der noch möglichen Lösungen
 	 */
 	private void errechneScoring(final Set<SpielKombination> geheimSet) {
-		int score;
+		long score;
 		int tempscore;
 		int scoresum;
 		scoreMap.clear();
@@ -254,17 +218,25 @@ public final class KnuthSolver implements ISolver {
 	private SpielKombination errechneBesteKombination(
 			final Set<SpielKombination> geheimSet) {
 		SpielKombination tempkomb = null;
-		int tempscore = 0;
+		long tempscore = 0;
+		final SortedSet<SpielKombination> sortset = new TreeSet<SpielKombination>();
 		errechneScoring(geheimSet);
-		for (Entry<SpielKombination, Integer> tempentry : scoreMap.entrySet()) {
+		for (Entry<SpielKombination, Long> tempentry : scoreMap.entrySet()) {
 			// System.err.println(tempentry.getKey() + ": " +
 			// tempentry.getValue());
-			if (tempentry.getValue() >= tempscore) {
+			if (tempentry.getValue() > tempscore) {
+				sortset.clear();
+				sortset.add(tempentry.getKey());
 				tempscore = tempentry.getValue();
-				tempkomb = tempentry.getKey();
+				//tempkomb = tempentry.getKey();
+			} else if (tempentry.getValue() == tempscore) {
+				sortset.add(tempentry.getKey());
 			}
 		}
+
+		tempkomb = sortset.first();
 		rateSet.remove(tempkomb);
+		//System.err.println("Rate: " + tempkomb.toString() + " Score: " + tempscore + " Order: " + tempkomb.getValue());
 		return tempkomb;
 	}
 
@@ -296,8 +268,7 @@ public final class KnuthSolver implements ISolver {
 	public void setLetzterZug(final SpielKombination zug,
 			final ErgebnisKombination antwort) {
 		if (((antwort.getSchwarz() + antwort.getWeiss()) > PINS)
-				|| (antwort.getSchwarz() == (PINS - 1) 
-					&& antwort.getWeiss() == 1)) {
+				|| (antwort.getSchwarz() == (PINS - 1) && antwort.getWeiss() == 1)) {
 			throw new IllegalArgumentException();
 		}
 		entferneMoeglichkeiten(zug, antwort);

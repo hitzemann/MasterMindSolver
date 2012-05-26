@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author simon
  *
  */
-public class SpielKombination {
+public class SpielKombination implements Comparable<SpielKombination> {
 	/**
 	 * Internes Array um die SpielSteine aufzubewahren.
 	 */
@@ -55,7 +55,7 @@ public class SpielKombination {
 	
 	/**
 	 * Gibt die Anzahl der SpielSteine zurück, die aufbewahrt werden.
-	 * @return Anzalh der SpielSteine in der SpielKombination
+	 * @return Anzahl der SpielSteine in der SpielKombination
 	 */
 	public final int getSpielSteineCount() {
 		return spielSteine.length;
@@ -65,5 +65,22 @@ public class SpielKombination {
 	public final String toString() {
 		return "SpielKombination [spielSteine=" + Arrays.toString(spielSteine)
 				+ "]";
+	}
+	@Override
+	public final int compareTo(final SpielKombination arg0) {
+		return this.getValue() - arg0.getValue();
+	}
+	/**
+	 * Gibt den Ordnungswert der Kombination zurück, wird für da Comparable Interface gebraucht.
+	 * @return Ordnungswert der SpielKombination
+	 */
+	public final int getValue() {
+		int value = 0;
+		for (int stein = 0; stein < this.getSpielSteineCount(); stein++) {
+			value += this.spielSteine[stein].ordinal();
+			value *= 10;
+		}
+		value /= 10;
+		return value;
 	}
 }
