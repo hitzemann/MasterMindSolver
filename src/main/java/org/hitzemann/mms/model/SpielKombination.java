@@ -78,7 +78,7 @@ public class SpielKombination implements Comparable<SpielKombination> {
 		int value = 0;
 		final int maxcount = this.getSpielSteineCount();
 		for (int stein = 0; stein < maxcount; stein++) {
-			value += this.spielSteine[stein].ordinal();
+			value += this.spielSteine[stein].ordinal()+1;
 			value *= 10;
 		}
 		value /= 10;
