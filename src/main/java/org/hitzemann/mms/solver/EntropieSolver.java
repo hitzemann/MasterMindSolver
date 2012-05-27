@@ -96,7 +96,7 @@ public final class EntropieSolver implements ISolver {
         geheimKandidaten = new TreeSet<SpielKombination>(alleKombinationen);
     }
 
-    @Override
+    //TODO: Entfernen?
     public int getNumLoesungen() {
         return geheimKandidaten.size();
     }
