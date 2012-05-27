@@ -4,20 +4,24 @@ import java.util.Arrays;
 
 /**
  * @author simon
- *
+ * 
  */
 public class SpielKombination implements Comparable<SpielKombination> {
 	/**
 	 * Internes Array um die SpielSteine aufzubewahren.
 	 */
 	private SpielStein[] spielSteine;
+
 	/**
 	 * Konstruktor für beliebig viele Steine in der SpielKombination.
-	 * @param paramSpielSteine beliebige Anzahl an SpielSteinen
+	 * 
+	 * @param paramSpielSteine
+	 *            beliebige Anzahl an SpielSteinen
 	 */
 	public SpielKombination(final SpielStein... paramSpielSteine) {
 		this.spielSteine = paramSpielSteine;
 	}
+
 	@Override
 	public final int hashCode() {
 		final int prime = 31;
@@ -43,18 +47,21 @@ public class SpielKombination implements Comparable<SpielKombination> {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Gibt einen SpielStein an einer bestimmten Position zurück.
-	 * @param position Position des gewünschten SpielSteines
+	 * 
+	 * @param position
+	 *            Position des gewünschten SpielSteines
 	 * @return SpielStein an der gewünschen Position
 	 */
 	public final SpielStein getSpielStein(final int position) {
 		return spielSteine[position];
 	}
-	
+
 	/**
 	 * Gibt die Anzahl der SpielSteine zurück, die aufbewahrt werden.
+	 * 
 	 * @return Anzahl der SpielSteine in der SpielKombination
 	 */
 	public final int getSpielSteineCount() {
@@ -66,12 +73,31 @@ public class SpielKombination implements Comparable<SpielKombination> {
 		return "SpielKombination [spielSteine=" + Arrays.toString(spielSteine)
 				+ "]";
 	}
+
 	@Override
 	public final int compareTo(final SpielKombination arg0) {
-		return this.getValue() - arg0.getValue();
+
+		if (this.getSpielSteineCount() > arg0.getSpielSteineCount()) {
+			return 1;
+		} else if (this.getSpielSteineCount() < arg0.getSpielSteineCount()) {
+			return -1;
+		} else {
+			final int steine = this.getSpielSteineCount();
+			for (int i = 0; i < steine; i++) {
+				if (this.spielSteine[i].ordinal() > arg0.spielSteine[i].ordinal()) {
+					return 1;
+				} else if (this.spielSteine[i].ordinal() < arg0.spielSteine[i].ordinal()) {
+					return -1;
+				}
+			}
+		}
+		return 0;
 	}
+
 	/**
-	 * Gibt den Ordnungswert der Kombination zurück, wird für da Comparable Interface gebraucht.
+	 * Gibt den Ordnungswert der Kombination zurück, wird für da Comparable
+	 * Interface gebraucht.
+	 * 
 	 * @return Ordnungswert der SpielKombination
 	 */
 	public final int getValue() {
