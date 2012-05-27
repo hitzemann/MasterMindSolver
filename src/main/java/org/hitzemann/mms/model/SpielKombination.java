@@ -93,21 +93,4 @@ public class SpielKombination implements Comparable<SpielKombination> {
 		}
 		return 0;
 	}
-
-	/**
-	 * Gibt den Ordnungswert der Kombination zurück, wird für da Comparable
-	 * Interface gebraucht.
-	 * 
-	 * @return Ordnungswert der SpielKombination
-	 */
-	public final int getValue() {
-		int value = 0;
-		final int maxcount = this.getSpielSteineCount();
-		for (int stein = 0; stein < maxcount; stein++) {
-			value += this.spielSteine[stein].ordinal()+1;
-			value *= 10;
-		}
-		value /= 10;
-		return value;
-	}
 }
