@@ -260,11 +260,6 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	@Override
-	public int getNumLoesungen() {
-		return ergebnisMoeglichkeiten.size();
-	}
-
-	@Override
 	public SpielKombination getNeuerZug() {
 		if (isFirstTurn) {
 			isFirstTurn = false;
