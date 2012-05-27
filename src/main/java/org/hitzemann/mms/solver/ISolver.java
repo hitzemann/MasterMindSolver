@@ -13,6 +13,7 @@ public interface ISolver {
 	/**
 	 * Diese Methode sollte zurückgeben, wieviele Lösungen noch möglich sind.
 	 * @return Anzahl der noch möglichen Lösungen
+	 * @deprecated This method is no longer used and will be removed.
 	 */
 	int getNumLoesungen();
 
