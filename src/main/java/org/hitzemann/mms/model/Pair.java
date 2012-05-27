@@ -11,10 +11,12 @@ package org.hitzemann.mms.model;
  *            Zweites Objekt des Paares
  */
 public class Pair<TA, TB> {
+
 	/**
 	 * Erstes Objekt des Paares.
 	 */
 	private final TA first;
+
 	/**
 	 * Zweites Objekt des Paares.
 	 */
@@ -37,8 +39,19 @@ public class Pair<TA, TB> {
 	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((first == null) ? 0 : first.hashCode());
-		result = prime * result + ((second == null) ? 0 : second.hashCode());
+		int firstHash, secondHash;
+		if (first == null) {
+			firstHash = 0;
+		} else {
+			firstHash = first.hashCode();
+		}
+		if (second == null) {
+			secondHash = 0;
+		} else {
+			secondHash = second.hashCode();
+		}
+		result = prime * result + firstHash;
+		result = prime * result + secondHash;
 		return result;
 	}
 
