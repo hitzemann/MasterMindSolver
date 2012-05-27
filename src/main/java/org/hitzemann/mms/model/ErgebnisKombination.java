@@ -87,9 +87,18 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 
 	@Override
 	public final int compareTo(final ErgebnisKombination o) {
-		return (this.getSchwarz() * 10 + this.getWeiss())
-				- (o.getSchwarz() * 10 + o.getWeiss());
-
+		if (this.getSchwarz() > o.getSchwarz()) {
+			return 1;
+		} else if (this.getSchwarz() < o.getSchwarz()) {
+			return -1;
+		} else {
+			if (this.getWeiss() > o.getWeiss()) {
+				return 1;
+			} else if (this.getWeiss() < o.getWeiss()) {
+				return -1;
+			}
+		}
+		return 0;
 	}
 
 
