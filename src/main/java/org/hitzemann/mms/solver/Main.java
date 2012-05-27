@@ -9,16 +9,16 @@ import org.hitzemann.mms.model.SpielKombination;
  * @author simon
  * 
  */
-public class Main {
+public final class Main {
 	/**
 	 * Anzahl der Pins in dem Spiel (Länge der SpielKombination).
 	 */
 	static final int PINS = 4;
 	
 	/**
-	 * Defaultkonstruktor.
+	 * Privater Konstruktor, wird eh nicht gebraucht...
 	 */
-	public Main() {
+	private Main() {
 	}
 
 	/**
