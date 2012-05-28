@@ -169,7 +169,7 @@ public final class ErgebnisBerechnerTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNullGeheim() {
-        berechner.berechneErgebnis(new SpielKombination(), null);
+        berechner.berechneErgebnis(new SpielKombination(new int[0]), null);
     }
 
     /**
@@ -177,7 +177,7 @@ public final class ErgebnisBerechnerTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNullGeraten() {
-        berechner.berechneErgebnis(null, new SpielKombination());
+        berechner.berechneErgebnis(null, new SpielKombination(new int[0]));
     }
 
     /**
@@ -185,7 +185,7 @@ public final class ErgebnisBerechnerTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testUnterschiedlicheGroessen() {
-        final SpielKombination geheim = new SpielKombination();
+        final SpielKombination geheim = new SpielKombination(new int[0]);
         final SpielKombination geraten = new SpielKombination(SpielStein.BLAU);
 
         berechner.berechneErgebnis(geheim, geraten);
@@ -196,8 +196,8 @@ public final class ErgebnisBerechnerTest {
      */
     @Test
     public void testGroesseNull() {
-        final SpielKombination geheim = new SpielKombination();
-        final SpielKombination geraten = new SpielKombination();
+        final SpielKombination geheim = new SpielKombination(new int[0]);
+        final SpielKombination geraten = new SpielKombination(new int[0]);
 
         final ErgebnisKombination ergebnis = berechner.berechneErgebnis(geheim, geraten);
 

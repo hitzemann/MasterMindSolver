@@ -10,7 +10,7 @@ public class SpielKombination implements Comparable<SpielKombination> {
 	/**
 	 * Internes Array um die SpielSteine aufzubewahren.
 	 */
-	private SpielStein[] spielSteine;
+	private final SpielStein[] spielSteine;
 
 	/**
 	 * Konstruktor für beliebig viele Steine in der SpielKombination.
@@ -20,6 +20,21 @@ public class SpielKombination implements Comparable<SpielKombination> {
 	 */
 	public SpielKombination(final SpielStein... paramSpielSteine) {
 		this.spielSteine = paramSpielSteine;
+	}
+
+	/**
+	 * Konstruktor für beliebig viele Steine die durch einen int statt einer
+	 * Farbe referenziert werden.
+	 * 
+	 * @param paramSpielSteinWerte
+	 *            beliebige Anzahl an SpielSteinen durch ints referenziert
+	 */
+	public SpielKombination(final int... paramSpielSteinWerte) {
+		final SpielStein[] values = SpielStein.values();
+		this.spielSteine = new SpielStein[paramSpielSteinWerte.length];
+		for (int i = 0; i < paramSpielSteinWerte.length; i++) {
+			spielSteine[i] = values[paramSpielSteinWerte[i]-1];
+		}
 	}
 
 	@Override
@@ -84,9 +99,11 @@ public class SpielKombination implements Comparable<SpielKombination> {
 		} else {
 			final int steine = this.getSpielSteineCount();
 			for (int i = 0; i < steine; i++) {
-				if (this.spielSteine[i].ordinal() > arg0.spielSteine[i].ordinal()) {
+				if (this.spielSteine[i].ordinal() > arg0.spielSteine[i]
+						.ordinal()) {
 					return 1;
-				} else if (this.spielSteine[i].ordinal() < arg0.spielSteine[i].ordinal()) {
+				} else if (this.spielSteine[i].ordinal() < arg0.spielSteine[i]
+						.ordinal()) {
 					return -1;
 				}
 			}
