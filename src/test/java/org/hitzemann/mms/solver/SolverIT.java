@@ -23,7 +23,7 @@ import org.junit.runners.Parameterized.Parameters;
  * @author schusterc
  */
 @RunWith(Parameterized.class)
-public final class SolverTest {
+public final class SolverIT {
 
     /**
      * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
@@ -48,7 +48,7 @@ public final class SolverTest {
      * @param aktuellerRepeatCount
      *            Die Anzahl der durchzuführenden Testläufe.
      */
-    public SolverTest(final ISolverFactory aktuelleSolverFactory, final int aktuellerRepeatCount) {
+    public SolverIT(final ISolverFactory aktuelleSolverFactory, final int aktuellerRepeatCount) {
         solverFactory = aktuelleSolverFactory;
         repeatCount = aktuellerRepeatCount;
     }
