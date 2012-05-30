@@ -100,29 +100,25 @@ rulelist returns [IRule[\] value]
 
 combination returns [SpielKombination value]
   :
-  n=colorsequence 
-                  {
-                   $value = new SpielKombination($n.value.toArray(new SpielStein[$n.value.size()]));
-                  }
-  ;
-
-colorsequence returns [List < SpielStein > value]
-  :
   
    {
-    $value = new LinkedList<SpielStein>();
+    List<SpielStein> tempList = new LinkedList<SpielStein>();
    }
   (
     d=DIGIT 
             {
              int digitValue = Character.getNumericValue($d.text.charAt(0));
-             $value.add(colorValues[digitValue - 1]);
+             tempList.add(colorValues[digitValue - 1]);
             }
     | '{' i=integer '}' 
                         {
-                         $value.add(colorValues[$i.value.intValue() - 1]);
+                         tempList.add(colorValues[$i.value.intValue() - 1]);
                         }
   )+
+  
+   {
+    $value = new SpielKombination(tempList.toArray(new SpielStein[tempList.size()]));
+   }
   ;
 
 integer returns [BigInteger value]

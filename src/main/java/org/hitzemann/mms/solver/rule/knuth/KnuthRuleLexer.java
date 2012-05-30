@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-31 00:14:12
+// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-31 00:26:47
 
 // CHECKSTYLE:OFF
 package org.hitzemann.mms.solver.rule.knuth;
@@ -210,7 +210,7 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = DIGIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:144:3: ( '0' .. '9' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:140:3: ( '0' .. '9' )
             // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:
             {
             if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
