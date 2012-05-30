@@ -113,30 +113,34 @@ colorsequence returns [List < SpielStein > value]
     $value = new LinkedList<SpielStein>();
    }
   (
-    i=integer 
-              {
-               // split into decimals
-               for (char digit : $i.value.toString().toCharArray()) {
-               	int digitValue = Integer.parseInt("" + digit);
-               	$value.add(colorValues[digitValue - 1]);
-               }
-              }
-    | ('{' i=integer '}' 
-                         {
-                          $value.add(colorValues[$i.value.intValue() - 1]);
-                         })*
-  )
+    d=DIGIT 
+            {
+             int digitValue = Character.getNumericValue($d.text.charAt(0));
+             $value.add(colorValues[digitValue - 1]);
+            }
+    | '{' i=integer '}' 
+                        {
+                         $value.add(colorValues[$i.value.intValue() - 1]);
+                        }
+  )+
   ;
 
 integer returns [BigInteger value]
   :
-  INTEGER 
-          {
-           $value = new BigInteger($INTEGER.text);
-          }
+  
+   {
+    StringBuilder builder = new StringBuilder();
+   }
+  (d=DIGIT 
+           {
+            builder.append($d.text);
+           })+ 
+               {
+                $value = new BigInteger(builder.toString());
+               }
   ;
 
-INTEGER
+DIGIT
   :
-  '0'..'9'+
+  '0'..'9'
   ;

@@ -108,7 +108,7 @@ public final class KnuthRuleParserTest {
 		when(ruleFactoryMock.createGuessFirstRule(anyInt(), anyInt()))
 				.thenReturn(nextRuleMock);
 
-		assertSame(ruleMock, parse("12({4}{1}{5}{2}x)"));
+		assertSame(ruleMock, parse("12(4{1}52x)"));
 
 		verify(ruleFactoryMock).createGuessFirstRule(0, 2);
 		verify(ruleFactoryMock).createGuessFixedSimpleRule(eq(12),

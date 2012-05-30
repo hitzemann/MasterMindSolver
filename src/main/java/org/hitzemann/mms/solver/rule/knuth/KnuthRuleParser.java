@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-30 22:58:50
+// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-31 00:14:12
 
 // CHECKSTYLE:OFF
 package org.hitzemann.mms.solver.rule.knuth;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class KnuthRuleParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "INTEGER", "'('", "')'", "','", "':'", "';'", "'x'", "'{'", "'}'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "DIGIT", "'('", "')'", "','", "':'", "';'", "'x'", "'{'", "'}'"
     };
 
     public static final int EOF=-1;
@@ -31,7 +31,7 @@ public class KnuthRuleParser extends Parser {
     public static final int T__10=10;
     public static final int T__11=11;
     public static final int T__12=12;
-    public static final int INTEGER=4;
+    public static final int DIGIT=4;
 
     // delegates
     public Parser[] getDelegates() {
@@ -445,104 +445,79 @@ public class KnuthRuleParser extends Parser {
 
 
     // $ANTLR start "colorsequence"
-    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:109:1: colorsequence returns [List < SpielStein > value] : (i= integer | ( '{' i= integer '}' )* ) ;
+    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:109:1: colorsequence returns [List < SpielStein > value] : (d= DIGIT | '{' i= integer '}' )+ ;
     public final List < SpielStein > colorsequence() throws RecognitionException {
         List < SpielStein > value = null;
 
 
+        Token d=null;
         BigInteger i =null;
 
 
         try {
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:110:3: ( (i= integer | ( '{' i= integer '}' )* ) )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:112:4: (i= integer | ( '{' i= integer '}' )* )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:110:3: ( (d= DIGIT | '{' i= integer '}' )+ )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:112:4: (d= DIGIT | '{' i= integer '}' )+
             {
 
                 value = new LinkedList<SpielStein>();
                
 
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:115:3: (i= integer | ( '{' i= integer '}' )* )
-            int alt6=2;
-            int LA6_0 = input.LA(1);
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:115:3: (d= DIGIT | '{' i= integer '}' )+
+            int cnt5=0;
+            loop5:
+            do {
+                int alt5=3;
+                int LA5_0 = input.LA(1);
 
-            if ( (LA6_0==INTEGER) ) {
-                alt6=1;
-            }
-            else if ( (LA6_0==6||LA6_0==8||(LA6_0 >= 10 && LA6_0 <= 11)) ) {
-                alt6=2;
-            }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 6, 0, input);
-
-                throw nvae;
-
-            }
-            switch (alt6) {
-                case 1 :
-                    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:116:5: i= integer
-                    {
-                    pushFollow(FOLLOW_integer_in_colorsequence534);
-                    i=integer();
-
-                    state._fsp--;
+                if ( (LA5_0==DIGIT) ) {
+                    alt5=1;
+                }
+                else if ( (LA5_0==11) ) {
+                    alt5=2;
+                }
 
 
-
-                                   // split into decimals
-                                   for (char digit : i.toString().toCharArray()) {
-                                   	int digitValue = Integer.parseInt("" + digit);
-                                   	value.add(colorValues[digitValue - 1]);
-                                   }
-                                  
-
-                    }
-                    break;
-                case 2 :
-                    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:124:7: ( '{' i= integer '}' )*
-                    {
-                    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:124:7: ( '{' i= integer '}' )*
-                    loop5:
-                    do {
-                        int alt5=2;
-                        int LA5_0 = input.LA(1);
-
-                        if ( (LA5_0==11) ) {
-                            alt5=1;
-                        }
+                switch (alt5) {
+            	case 1 :
+            	    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:116:5: d= DIGIT
+            	    {
+            	    d=(Token)match(input,DIGIT,FOLLOW_DIGIT_in_colorsequence534); 
 
 
-                        switch (alt5) {
-                    	case 1 :
-                    	    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:124:8: '{' i= integer '}'
-                    	    {
-                    	    match(input,11,FOLLOW_11_in_colorsequence560); 
+            	                 int digitValue = Character.getNumericValue((d!=null?d.getText():null).charAt(0));
+            	                 value.add(colorValues[digitValue - 1]);
+            	                
 
-                    	    pushFollow(FOLLOW_integer_in_colorsequence564);
-                    	    i=integer();
+            	    }
+            	    break;
+            	case 2 :
+            	    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:121:7: '{' i= integer '}'
+            	    {
+            	    match(input,11,FOLLOW_11_in_colorsequence557); 
 
-                    	    state._fsp--;
+            	    pushFollow(FOLLOW_integer_in_colorsequence561);
+            	    i=integer();
 
-
-                    	    match(input,12,FOLLOW_12_in_colorsequence566); 
-
-
-                    	                              value.add(colorValues[i.intValue() - 1]);
-                    	                             
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop5;
-                        }
-                    } while (true);
+            	    state._fsp--;
 
 
-                    }
-                    break;
+            	    match(input,12,FOLLOW_12_in_colorsequence563); 
 
-            }
+
+            	                             value.add(colorValues[i.intValue() - 1]);
+            	                            
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt5 >= 1 ) break loop5;
+                        EarlyExitException eee =
+                            new EarlyExitException(5, input);
+                        throw eee;
+                }
+                cnt5++;
+            } while (true);
 
 
             }
@@ -563,22 +538,59 @@ public class KnuthRuleParser extends Parser {
 
 
     // $ANTLR start "integer"
-    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:131:1: integer returns [BigInteger value] : INTEGER ;
+    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:128:1: integer returns [BigInteger value] : (d= DIGIT )+ ;
     public final BigInteger integer() throws RecognitionException {
         BigInteger value = null;
 
 
-        Token INTEGER1=null;
+        Token d=null;
 
         try {
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:132:3: ( INTEGER )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:133:3: INTEGER
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:129:3: ( (d= DIGIT )+ )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:131:4: (d= DIGIT )+
             {
-            INTEGER1=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_integer619); 
+
+                StringBuilder builder = new StringBuilder();
+               
+
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:134:3: (d= DIGIT )+
+            int cnt6=0;
+            loop6:
+            do {
+                int alt6=2;
+                int LA6_0 = input.LA(1);
+
+                if ( (LA6_0==DIGIT) ) {
+                    alt6=1;
+                }
 
 
-                       value = new BigInteger((INTEGER1!=null?INTEGER1.getText():null));
-                      
+                switch (alt6) {
+            	case 1 :
+            	    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:134:4: d= DIGIT
+            	    {
+            	    d=(Token)match(input,DIGIT,FOLLOW_DIGIT_in_integer625); 
+
+
+            	                builder.append((d!=null?d.getText():null));
+            	               
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt6 >= 1 ) break loop6;
+                        EarlyExitException eee =
+                            new EarlyExitException(6, input);
+                        throw eee;
+                }
+                cnt6++;
+            } while (true);
+
+
+
+                            value = new BigInteger(builder.toString());
+                           
 
             }
 
@@ -604,24 +616,24 @@ public class KnuthRuleParser extends Parser {
     static final String DFA2_eofS =
         "\1\uffff\1\2\10\uffff";
     static final String DFA2_minS =
-        "\1\4\1\5\1\uffff\1\4\1\6\1\4\2\uffff\1\14\1\6";
+        "\2\4\1\uffff\3\4\2\uffff\2\4";
     static final String DFA2_maxS =
-        "\1\4\1\11\1\uffff\1\13\1\12\1\4\2\uffff\1\14\1\13";
+        "\1\4\1\11\1\uffff\2\13\1\4\2\uffff\1\14\1\13";
     static final String DFA2_acceptS =
         "\2\uffff\1\1\3\uffff\1\2\1\3\2\uffff";
     static final String DFA2_specialS =
         "\12\uffff}>";
     static final String[] DFA2_transitionS = {
             "\1\1",
-            "\1\3\2\2\1\uffff\1\2",
+            "\1\1\1\3\2\2\1\uffff\1\2",
             "",
+            "\1\4\6\uffff\1\5",
             "\1\4\1\uffff\1\6\1\uffff\1\7\1\uffff\1\6\1\5",
-            "\1\6\1\uffff\1\7\1\uffff\1\6",
             "\1\10",
             "",
             "",
-            "\1\11",
-            "\1\6\1\uffff\1\7\1\uffff\1\6\1\5"
+            "\1\10\7\uffff\1\11",
+            "\1\4\1\uffff\1\6\1\uffff\1\7\1\uffff\1\6\1\5"
     };
 
     static final short[] DFA2_eot = DFA.unpackEncodedString(DFA2_eotS);
@@ -680,10 +692,10 @@ public class KnuthRuleParser extends Parser {
     public static final BitSet FOLLOW_7_in_rulelist413 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_rule_in_rulelist417 = new BitSet(new long[]{0x0000000000000082L});
     public static final BitSet FOLLOW_colorsequence_in_combination478 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_integer_in_colorsequence534 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_11_in_colorsequence560 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_integer_in_colorsequence564 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_colorsequence566 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_INTEGER_in_integer619 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DIGIT_in_colorsequence534 = new BitSet(new long[]{0x0000000000000812L});
+    public static final BitSet FOLLOW_11_in_colorsequence557 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_integer_in_colorsequence561 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_colorsequence563 = new BitSet(new long[]{0x0000000000000812L});
+    public static final BitSet FOLLOW_DIGIT_in_integer625 = new BitSet(new long[]{0x0000000000000012L});
 
 }

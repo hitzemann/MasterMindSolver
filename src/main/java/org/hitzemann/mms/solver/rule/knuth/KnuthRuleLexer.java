@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-30 22:58:50
+// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-31 00:14:12
 
 // CHECKSTYLE:OFF
 package org.hitzemann.mms.solver.rule.knuth;
@@ -20,7 +20,7 @@ public class KnuthRuleLexer extends Lexer {
     public static final int T__10=10;
     public static final int T__11=11;
     public static final int T__12=12;
-    public static final int INTEGER=4;
+    public static final int DIGIT=4;
 
     // delegates
     // delegators
@@ -205,51 +205,22 @@ public class KnuthRuleLexer extends Lexer {
     }
     // $ANTLR end "T__12"
 
-    // $ANTLR start "INTEGER"
-    public final void mINTEGER() throws RecognitionException {
+    // $ANTLR start "DIGIT"
+    public final void mDIGIT() throws RecognitionException {
         try {
-            int _type = INTEGER;
+            int _type = DIGIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:140:3: ( ( '0' .. '9' )+ )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:141:3: ( '0' .. '9' )+
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:144:3: ( '0' .. '9' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:
             {
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:141:3: ( '0' .. '9' )+
-            int cnt1=0;
-            loop1:
-            do {
-                int alt1=2;
-                int LA1_0 = input.LA(1);
-
-                if ( ((LA1_0 >= '0' && LA1_0 <= '9')) ) {
-                    alt1=1;
-                }
-
-
-                switch (alt1) {
-            	case 1 :
-            	    // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:
-            	    {
-            	    if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
-            	        input.consume();
-            	    }
-            	    else {
-            	        MismatchedSetException mse = new MismatchedSetException(null,input);
-            	        recover(mse);
-            	        throw mse;
-            	    }
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt1 >= 1 ) break loop1;
-                        EarlyExitException eee =
-                            new EarlyExitException(1, input);
-                        throw eee;
-                }
-                cnt1++;
-            } while (true);
+            if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
+                input.consume();
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                recover(mse);
+                throw mse;
+            }
 
 
             }
@@ -261,50 +232,50 @@ public class KnuthRuleLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "INTEGER"
+    // $ANTLR end "DIGIT"
 
     public void mTokens() throws RecognitionException {
-        // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:1:8: ( T__5 | T__6 | T__7 | T__8 | T__9 | T__10 | T__11 | T__12 | INTEGER )
-        int alt2=9;
+        // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:1:8: ( T__5 | T__6 | T__7 | T__8 | T__9 | T__10 | T__11 | T__12 | DIGIT )
+        int alt1=9;
         switch ( input.LA(1) ) {
         case '(':
             {
-            alt2=1;
+            alt1=1;
             }
             break;
         case ')':
             {
-            alt2=2;
+            alt1=2;
             }
             break;
         case ',':
             {
-            alt2=3;
+            alt1=3;
             }
             break;
         case ':':
             {
-            alt2=4;
+            alt1=4;
             }
             break;
         case ';':
             {
-            alt2=5;
+            alt1=5;
             }
             break;
         case 'x':
             {
-            alt2=6;
+            alt1=6;
             }
             break;
         case '{':
             {
-            alt2=7;
+            alt1=7;
             }
             break;
         case '}':
             {
-            alt2=8;
+            alt1=8;
             }
             break;
         case '0':
@@ -318,18 +289,18 @@ public class KnuthRuleLexer extends Lexer {
         case '8':
         case '9':
             {
-            alt2=9;
+            alt1=9;
             }
             break;
         default:
             NoViableAltException nvae =
-                new NoViableAltException("", 2, 0, input);
+                new NoViableAltException("", 1, 0, input);
 
             throw nvae;
 
         }
 
-        switch (alt2) {
+        switch (alt1) {
             case 1 :
                 // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:1:10: T__5
                 {
@@ -395,9 +366,9 @@ public class KnuthRuleLexer extends Lexer {
                 }
                 break;
             case 9 :
-                // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:1:53: INTEGER
+                // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:1:53: DIGIT
                 {
-                mINTEGER(); 
+                mDIGIT(); 
 
 
                 }
