@@ -11,6 +11,7 @@ import java.util.Set;
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
+import org.hitzemann.mms.solver.rule.knuth.KnuthRuleSolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -65,6 +66,7 @@ public final class SolverTest {
         parameter.add(new Object[] { new EntropieSolverFactory(3), 1000 });
         parameter.add(new Object[] { new EntropieSolverFactory(4), 100 });
         parameter.add(new Object[] { new EntropieSolverFactory(5), 1 });
+        parameter.add(new Object[] { new KnuthRuleSolverFactory(), 1000 });
         return parameter;
     }
 
@@ -212,6 +214,30 @@ public final class SolverTest {
                 @Override
                 public int getAnzahlPins() {
                     return pins;
+                }
+            };
+        }
+    };
+
+    /**
+     * Solver-Factory für {@link KnuthRuleSolver}-Instanzen mit 4 Pins.
+     * 
+     * @author schusterc
+     */
+    private static final class KnuthRuleSolverFactory implements ISolverFactory {
+
+        @Override
+        public ISolverInfo createSolverInfo() {
+            final ISolver newSolver = new KnuthRuleSolver(BERECHNER);
+            return new ISolverInfo() {
+                @Override
+                public ISolver getSolver() {
+                    return newSolver;
+                }
+
+                @Override
+                public int getAnzahlPins() {
+                    return 4;
                 }
             };
         }
