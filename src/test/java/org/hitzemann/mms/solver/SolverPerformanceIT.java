@@ -12,7 +12,8 @@ import java.util.concurrent.ExecutionException;
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
-import org.hitzemann.mms.solver.rule.knuth.KnuthRuleSolver;
+import org.hitzemann.mms.solver.rule.RuleSolver;
+import org.hitzemann.mms.solver.rule.knuth.KnuthRule;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,7 +87,7 @@ public final class SolverPerformanceIT {
 	 * @return Eine neue Instanz einer {@link ISolver}-Implementierung.
 	 */
 	private ISolver createSolver() {
-		return new KnuthRuleSolver(BERECHNER);
+		return new RuleSolver(BERECHNER, PINS, new KnuthRule());
 	}
 
 	/**

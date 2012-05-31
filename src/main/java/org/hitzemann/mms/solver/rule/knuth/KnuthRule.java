@@ -1,18 +1,20 @@
 package org.hitzemann.mms.solver.rule.knuth;
 
+import java.util.Collection;
+
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.TokenStream;
-import org.hitzemann.mms.solver.IErgebnisBerechnung;
+import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.solver.rule.IRule;
-import org.hitzemann.mms.solver.rule.RuleSolver;
 
 /**
  * <p>
- * Ein auf Knuth's Algorithmus basierender Solver für Kombinationen mit 4 Pins.
+ * Eine auf Knuth's Algorithmus basierende Regel für Kombinationen mit 4 Pins.
  * </p>
  * 
  * <p>
@@ -54,7 +56,7 @@ import org.hitzemann.mms.solver.rule.RuleSolver;
  * 
  * @author schusterc
  */
-public final class KnuthRuleSolver extends RuleSolver {
+public final class KnuthRule implements IRule {
 
 	/**
 	 * Die Haupt-Regel.
@@ -131,14 +133,14 @@ public final class KnuthRuleSolver extends RuleSolver {
 		}
 	}
 
-	/**
-	 * Erzeugt eine Instanz.
-	 * 
-	 * @param theCalculator
-	 *            Die zu verwendende Implementierung von
-	 *            {@link IErgebnisBerechnung}.
-	 */
-	public KnuthRuleSolver(final IErgebnisBerechnung theCalculator) {
-		super(theCalculator, 4, RULE);
+	@Override
+	public SpielKombination getGuess(
+			final Collection<SpielKombination> candidates) {
+		return RULE.getGuess(candidates);
+	}
+
+	@Override
+	public IRule getRuleForResponse(final ErgebnisKombination response) {
+		return RULE.getRuleForResponse(response);
 	}
 }

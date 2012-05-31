@@ -15,7 +15,7 @@ import org.hitzemann.mms.solver.rule.IRule;
 import org.hitzemann.mms.solver.rule.RuleSolver;
 import org.hitzemann.mms.solver.rule.cache.CacheRuleFactory;
 import org.hitzemann.mms.solver.rule.entropy.EntropyRule;
-import org.hitzemann.mms.solver.rule.knuth.KnuthRuleSolver;
+import org.hitzemann.mms.solver.rule.knuth.KnuthRule;
 import org.hitzemann.mms.solver.rule.mostparts.MostPartsRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +63,7 @@ public final class SolverIT {
      * übergeben werden.
      * 
      * @return Liste mit einem {@link Object}-Array pro parametrisiertem Testlauf.
-	 */
+     */
     @Parameters
     public static List<Object[]> erzeugeParameter() {
         final List<Object[]> parameter = new LinkedList<Object[]>();
@@ -237,15 +237,21 @@ public final class SolverIT {
     };
 
     /**
-     * Solver-Factory für {@link KnuthRuleSolver}-Instanzen mit 4 Pins.
+     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link KnuthRule} und
+     * und 4 Pins.
      * 
      * @author schusterc
      */
     private static final class KnuthRuleSolverFactory implements ISolverFactory {
 
+        /**
+         * Die zu verwendende Regel.
+         */
+        private final IRule rule = new KnuthRule();
+
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new KnuthRuleSolver(BERECHNER);
+            final ISolver newSolver = new RuleSolver(BERECHNER, 4, rule);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {
