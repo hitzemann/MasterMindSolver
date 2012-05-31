@@ -11,7 +11,11 @@ import java.util.Set;
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
+import org.hitzemann.mms.solver.rule.IRule;
+import org.hitzemann.mms.solver.rule.RuleSolver;
+import org.hitzemann.mms.solver.rule.cache.CacheRuleFactory;
 import org.hitzemann.mms.solver.rule.knuth.KnuthRuleSolver;
+import org.hitzemann.mms.solver.rule.mostparts.MostPartsRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -58,7 +62,7 @@ public final class SolverIT {
      * übergeben werden.
      * 
      * @return Liste mit einem {@link Object}-Array pro parametrisiertem Testlauf.
-     */
+	 */
     @Parameters
     public static List<Object[]> erzeugeParameter() {
         final List<Object[]> parameter = new LinkedList<Object[]>();
@@ -67,6 +71,8 @@ public final class SolverIT {
         parameter.add(new Object[] { new EntropieSolverFactory(4), 100 });
         parameter.add(new Object[] { new EntropieSolverFactory(5), 1 });
         parameter.add(new Object[] { new KnuthRuleSolverFactory(), 1000 });
+        parameter.add(new Object[] { new CachedMostPartsRuleSolverFactory(3), 10000 });
+        parameter.add(new Object[] { new CachedMostPartsRuleSolverFactory(4), 1000 });
         return parameter;
     }
 
@@ -238,6 +244,55 @@ public final class SolverIT {
                 @Override
                 public int getAnzahlPins() {
                     return 4;
+                }
+            };
+        }
+    };
+
+    /**
+     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link MostPartsRule}
+     * und variabler Pin-Anzahl. Die eigentliche Regel wird mit einer
+     * {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
+     * 
+     * @author schusterc
+     */
+    private static final class CachedMostPartsRuleSolverFactory implements
+            ISolverFactory {
+
+        /**
+         * Anzahl der Pins.
+         */
+        private final int pins;
+
+        /**
+         * Die zu verwendende Regel.
+         */
+        private final IRule rule;
+
+        /**
+         * Erzeugt eine Factory für die angegebene Anzahl Pins.
+         * 
+         * @param pinCount
+         *            Die Anzahl der Pins.
+         */
+        public CachedMostPartsRuleSolverFactory(final int pinCount) {
+            pins = pinCount;
+            rule = new CacheRuleFactory().createCachingRule(new MostPartsRule(
+                    BERECHNER, pins));
+        }
+
+        @Override
+        public ISolverInfo createSolverInfo() {
+            final ISolver newSolver = new RuleSolver(BERECHNER, pins, rule);
+            return new ISolverInfo() {
+                @Override
+                public ISolver getSolver() {
+                    return newSolver;
+                }
+
+                @Override
+                public int getAnzahlPins() {
+                    return pins;
                 }
             };
         }
