@@ -41,9 +41,9 @@ public class RuleSolver implements ISolver {
 	 *            Die zu verwendende Implementierung von
 	 *            {@link IErgebnisBerechnung}.
 	 * @param pins
-	 *            Die Regel.
+	 *            Die Kombinationsgröße.
 	 * @param theRule
-	 *            Die Kandidaten für die geheime Kombination.
+	 *            Die Regel.
 	 */
 	public RuleSolver(final IErgebnisBerechnung theCalculator, final int pins,
 			final IRule theRule) {
