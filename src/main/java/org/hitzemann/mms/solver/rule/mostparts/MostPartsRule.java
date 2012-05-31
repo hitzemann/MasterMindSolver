@@ -2,8 +2,6 @@ package org.hitzemann.mms.solver.rule.mostparts;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,7 +43,7 @@ public final class MostPartsRule implements IRule {
 	/**
 	 * Alle möglichen {@link SpielKombination}en.
 	 */
-	private final Collection<SpielKombination> all;
+	private final SortedSet<SpielKombination> allGuesses;
 
 	/**
 	 * Erzeugt eine Instanz.
@@ -58,7 +56,7 @@ public final class MostPartsRule implements IRule {
 	 */
 	public MostPartsRule(final IErgebnisBerechnung theCalculator, final int pins) {
 		calculator = theCalculator;
-		all = generateAll(pins);
+		allGuesses = generateAll(pins);
 	}
 
 	@Override
@@ -67,7 +65,7 @@ public final class MostPartsRule implements IRule {
 		// ermittle Kombinationen, die die Anzahl möglicher Antworten maximieren
 		int maxResponseCount = 0;
 		final SortedSet<SpielKombination> maxResponseCountGuesses = new TreeSet<SpielKombination>();
-		for (SpielKombination guess : all) {
+		for (SpielKombination guess : allGuesses) {
 			// Anzahl möglicher Antworten für geratene Kombination ermitteln
 			final Set<ErgebnisKombination> results = new HashSet<ErgebnisKombination>();
 			for (SpielKombination candidate : candidates) {
@@ -110,32 +108,32 @@ public final class MostPartsRule implements IRule {
 	 * 
 	 * @param pins
 	 *            Die Kombinationsgröße
-	 * @return Ein {@link Set} mit allen möglichen Kombinationen.
+	 * @return Ein {@link SortedSet} mit allen möglichen Kombinationen.
 	 */
-	private static List<SpielKombination> generateAll(final int pins) {
-		final SpielStein[] farben = SpielStein.values();
-		final int farbZahl = farben.length;
+	private static SortedSet<SpielKombination> generateAll(final int pins) {
+		final SpielStein[] colors = SpielStein.values();
+		final int colorCount = colors.length;
 
-		final List<SpielKombination> result = new LinkedList<SpielKombination>();
+		final SortedSet<SpielKombination> result = new TreeSet<SpielKombination>();
 
 		// Array mit Ordinalwerten der SpielStein-Farben
-		final int[] kombi = new int[pins];
+		final int[] ordinalArray = new int[pins];
 
 		// Schleife bei Überlauf an letzter Stelle beenden
-		while (kombi[pins - 1] < farbZahl) {
-			final SpielStein[] steinKombi = new SpielStein[pins];
+		while (ordinalArray[pins - 1] < colorCount) {
+			final SpielStein[] colorArray = new SpielStein[pins];
 			for (int i = 0; i < pins; i++) {
-				steinKombi[i] = farben[kombi[i]];
+				colorArray[i] = colors[ordinalArray[i]];
 			}
-			result.add(new SpielKombination(steinKombi));
+			result.add(new SpielKombination(colorArray));
 
 			// erste Stelle hochzählen
-			kombi[0]++;
+			ordinalArray[0]++;
 
 			// Überlauf weitergeben (nur bei letzter Stelle nicht)
-			for (int i = 0; i < pins - 1 && kombi[i] == farbZahl; i++) {
-				kombi[i] = 0;
-				kombi[i + 1]++;
+			for (int i = 0; i < pins - 1 && ordinalArray[i] == colorCount; i++) {
+				ordinalArray[i] = 0;
+				ordinalArray[i + 1]++;
 			}
 		}
 
