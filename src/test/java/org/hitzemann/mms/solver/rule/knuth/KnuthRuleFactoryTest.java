@@ -8,7 +8,7 @@ import org.hitzemann.mms.solver.rule.IRule;
 import org.junit.Test;
 
 /**
- * Testf für {@link KnuthRuleFactory}.
+ * Tests für {@link KnuthRuleFactory}.
  * 
  * @author schusterc
  */
