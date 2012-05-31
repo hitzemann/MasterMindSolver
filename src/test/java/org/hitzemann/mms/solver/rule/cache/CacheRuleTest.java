@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
@@ -32,12 +31,6 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public final class CacheRuleTest {
-
-	/**
-	 * Logger für Testausgaben.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(CacheRuleTest.class
-			.getName());
 
 	/**
 	 * Mock für die zu übergebende {@link IRule}.
