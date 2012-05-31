@@ -3,4 +3,4 @@ language: java
 notifications:
   email:
     - simon@hitzemann.org
-    - christian.schuster@s2001.tu-chemnitz.de
+    - christian.schuster@s2000.tu-chemnitz.de
