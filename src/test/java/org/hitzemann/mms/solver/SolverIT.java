@@ -14,6 +14,7 @@ import org.hitzemann.mms.model.SpielStein;
 import org.hitzemann.mms.solver.rule.IRule;
 import org.hitzemann.mms.solver.rule.RuleSolver;
 import org.hitzemann.mms.solver.rule.cache.CacheRuleFactory;
+import org.hitzemann.mms.solver.rule.entropy.EntropyRule;
 import org.hitzemann.mms.solver.rule.knuth.KnuthRuleSolver;
 import org.hitzemann.mms.solver.rule.mostparts.MostPartsRule;
 import org.junit.Test;
@@ -67,9 +68,9 @@ public final class SolverIT {
     public static List<Object[]> erzeugeParameter() {
         final List<Object[]> parameter = new LinkedList<Object[]>();
         parameter.add(new Object[] { new KnuthSolverFactory(), 5 });
-        parameter.add(new Object[] { new EntropieSolverFactory(3), 1000 });
-        parameter.add(new Object[] { new EntropieSolverFactory(4), 100 });
-        parameter.add(new Object[] { new EntropieSolverFactory(5), 1 });
+        parameter.add(new Object[] { new CachedEntropyRuleSolverFactory(3), 1000 });
+        parameter.add(new Object[] { new CachedEntropyRuleSolverFactory(4), 100 });
+        parameter.add(new Object[] { new CachedEntropyRuleSolverFactory(5), 1 });
         parameter.add(new Object[] { new KnuthRuleSolverFactory(), 1000 });
         parameter.add(new Object[] { new CachedMostPartsRuleSolverFactory(3), 10000 });
         parameter.add(new Object[] { new CachedMostPartsRuleSolverFactory(4), 1000 });
@@ -187,11 +188,13 @@ public final class SolverIT {
     };
 
     /**
-     * Solver-Factory für {@link EntropieSolver}-Instanzen mit variabler Pin-Anzahl.
+     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link EntropyRule}
+     * und variabler Pin-Anzahl. Die eigentliche Regel wird mit einer
+     * {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
      * 
      * @author schusterc
      */
-    private static final class EntropieSolverFactory implements ISolverFactory {
+    private static final class CachedEntropyRuleSolverFactory implements ISolverFactory {
 
         /**
          * Anzahl der Pins.
@@ -199,18 +202,26 @@ public final class SolverIT {
         private final int pins;
 
         /**
+         * Die zu verwendende Regel.
+         */
+        private final IRule rule;
+
+        /**
          * Erzeugt eine Factory für die angegebene Anzahl Pins.
          * 
          * @param pinCount
          *            Die Anzahl der Pins.
          */
-        public EntropieSolverFactory(final int pinCount) {
+        public CachedEntropyRuleSolverFactory(final int pinCount) {
             pins = pinCount;
+            rule = new CacheRuleFactory().createCachingRule(new EntropyRule(
+                    BERECHNER, pins));
+
         }
 
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new EntropieSolver(BERECHNER, pins);
+            final ISolver newSolver = new RuleSolver(BERECHNER, pins, rule);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {
