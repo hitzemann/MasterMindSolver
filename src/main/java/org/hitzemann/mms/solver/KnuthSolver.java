@@ -214,8 +214,7 @@ public final class KnuthSolver implements ISolver {
 			if (scoresum > 0) {
 				scoreMap.put(rate, score);
 			} else {
-				// TODO rateIterator.remove() aufrufen - siehe Doku von Iterator.remove()
-				rateSet.remove(rate);
+				rateIterator.remove();
 			}
 		}
 		if (scoreMap.size() < 1) {
