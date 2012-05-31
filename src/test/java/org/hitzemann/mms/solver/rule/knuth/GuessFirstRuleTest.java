@@ -28,8 +28,8 @@ public final class GuessFirstRuleTest {
 	/**
 	 * Logger für Testausgaben.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(GuessFirstRule.class
-			.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(GuessFirstRuleTest.class.getName());
 
 	/**
 	 * Mock für die zu übergebende {@link IKnuthRuleFactory}.
