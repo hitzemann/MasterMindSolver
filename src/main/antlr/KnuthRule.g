@@ -5,7 +5,6 @@ options {
 }
 
 @parser::header {
-// CHECKSTYLE:OFF
 package org.hitzemann.mms.solver.rule.knuth;
 
 import org.hitzemann.mms.model.SpielKombination;
@@ -17,7 +16,6 @@ import java.util.LinkedList;
 }
 
 @lexer::header {
-// CHECKSTYLE:OFF
 package org.hitzemann.mms.solver.rule.knuth;
 }
 
