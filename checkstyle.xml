@@ -5,9 +5,8 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Copy of Sun Checks (Eclipse)
-    Description: 
-Slightly modified version of Sun Checks that better matches the default code formatter setting of Eclipse.
+    Checkstyle-Configuration: Local MasterMindSolver checkstyle config
+    Description: none
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -87,8 +86,8 @@ Slightly modified version of Sun Checks that better matches the default code for
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="UpperEll"/>
-    <module name="AvoidStaticImport"/>
     <module name="ImportOrder">
+      <property name="option" value="above"/>
       <property name="separated" value="true"/>
     </module>
     <module name="OuterTypeNumber"/>
@@ -109,6 +108,9 @@ Slightly modified version of Sun Checks that better matches the default code for
     <module name="ArrayTrailingComma"/>
     <module name="UnnecessaryParentheses"/>
     <module name="OneStatementPerLine"/>
+    <module name="AvoidStaticImport">
+      <property name="excludes" value="org.junit.Assert.*,org.mockito.Matchers.*,org.mockito.Mockito.*"/>
+    </module>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>
