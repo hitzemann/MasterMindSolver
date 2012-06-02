@@ -5,8 +5,9 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Local MasterMindSolver checkstyle config
-    Description: none
+    Checkstyle-Configuration: basic
+    Description: 
+Basic Checkstyle Checks
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -31,10 +32,6 @@
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
-    <module name="LineLength">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
     <module name="EmptyForIteratorPad"/>
@@ -62,12 +59,6 @@
     <module name="HiddenField"/>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
-    <module name="MagicNumber">
-      <property name="severity" value="ignore"/>
-      <property name="ignoreHashCodeMethod" value="true"/>
-      <property name="ignoreAnnotation" value="true"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
     <module name="MissingSwitchDefault"/>
     <module name="RedundantThrows">
       <property name="suppressLoadErrors" value="true"/>
@@ -81,10 +72,6 @@
     <module name="VisibilityModifier"/>
     <module name="ArrayTypeStyle"/>
     <module name="FinalParameters"/>
-    <module name="TodoComment">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
     <module name="UpperEll"/>
     <module name="ImportOrder">
       <property name="option" value="above"/>
@@ -103,7 +90,6 @@
     <module name="IllegalType">
       <property name="tokens" value="METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF"/>
     </module>
-    <module name="MissingCtor"/>
     <module name="ModifiedControlVariable"/>
     <module name="ArrayTrailingComma"/>
     <module name="UnnecessaryParentheses"/>
@@ -111,25 +97,19 @@
     <module name="AvoidStaticImport">
       <property name="excludes" value="org.junit.Assert.*,org.mockito.Matchers.*,org.mockito.Mockito.*"/>
     </module>
-  </module>
-  <module name="JavadocPackage">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
-  <module name="NewlineAtEndOfFile">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    <module name="MissingDeprecated"/>
+    <module name="MissingOverride"/>
+    <module name="ClassTypeParameterName"/>
+    <module name="MethodTypeParameterName"/>
+    <module name="ExplicitInitialization"/>
+    <module name="MultipleVariableDeclarations"/>
+    <module name="NoClone"/>
+    <module name="NoFinalizer"/>
+    <module name="PackageDeclaration"/>
+    <module name="ParameterAssignment"/>
+    <module name="MutableException"/>
+    <module name="OuterTypeFilename"/>
   </module>
   <module name="Translation"/>
   <module name="FileLength"/>
-  <module name="FileTabCharacter">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
-  <module name="RegexpSingleline">
-    <property name="severity" value="ignore"/>
-    <property name="format" value="\s+$"/>
-    <property name="message" value="Line has trailing spaces."/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
 </module>
