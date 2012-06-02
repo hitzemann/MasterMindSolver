@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <fileset-config file-format-version="1.2.0" simple-config="false" sync-formatter="false">
-  <local-check-config name="Local MasterMindSolver checkstyle config" location="checkstyle.xml" type="project" description="">
+  <local-check-config name="basic" location="checkstyle-basic.xml" type="project" description="Basic Checkstyle Checks">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
-  <fileset name="non-generated sources" enabled="true" check-config-name="Local MasterMindSolver checkstyle config" local="true">
+  <local-check-config name="add" location="checkstyle-add.xml" type="project" description="Additional Checkstyle checks">
+    <additional-data name="protect-config-file" value="false"/>
+  </local-check-config>
+  <fileset name="all except generated" enabled="true" check-config-name="basic" local="true">
     <file-match-pattern match-pattern="^src/" include-pattern="true"/>
     <file-match-pattern match-pattern="^src/generated/" include-pattern="false"/>
+  </fileset>
+  <fileset name="all except generated and test" enabled="true" check-config-name="add" local="true">
+    <file-match-pattern match-pattern="^src/" include-pattern="true"/>
+    <file-match-pattern match-pattern="^src/generated/" include-pattern="false"/>
+    <file-match-pattern match-pattern="^src/test/" include-pattern="false"/>
   </fileset>
 </fileset-config>
