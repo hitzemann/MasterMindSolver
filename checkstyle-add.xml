@@ -5,8 +5,9 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Additional Checkstyle Checks
-    Description: none
+    Checkstyle-Configuration: add
+    Description: 
+Additional Checkstyle checks
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
