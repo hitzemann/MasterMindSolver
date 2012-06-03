@@ -3,6 +3,8 @@
  */
 package org.hitzemann.mms.solver;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,6 +41,12 @@ public final class KnuthSolver implements ISolver {
 	private static SortedSet<SpielKombination> alleMoeglichkeiten;
 
 	/**
+	 * Cache für die gewählte Ratekombination in Abhängigkeit von der Menge der
+	 * verfügbaren Kandidaten für die Geheimkombination. 
+	 */
+	private static final Map<Set<SpielKombination>, SpielKombination> CACHE = new HashMap<Set<SpielKombination>, SpielKombination>();
+
+	/**
 	 * Objekt zur Ergebnisberechnung.
 	 */
 	private IErgebnisBerechnung ergebnisBerechner;
@@ -66,12 +74,11 @@ public final class KnuthSolver implements ISolver {
 	 */
 	private SortedSet<SpielKombination> rateSet;
 
-	/**
-	 * Erster zug?
-	 */
-	private boolean isFirstTurn = true;
 	static {
 		initialisiereAlleMoeglichkeiten();
+		
+		// Cache mit festem ersten Zug vorbelegen
+		CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
 	}
 
 	/**
@@ -261,12 +268,15 @@ public final class KnuthSolver implements ISolver {
 
 	@Override
 	public SpielKombination getNeuerZug() {
-		if (isFirstTurn) {
-			isFirstTurn = false;
-			return new SpielKombination(SpielStein.ROT, SpielStein.ROT,
-					SpielStein.GRUEN, SpielStein.GRUEN);
+		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel ungeeignet
+		// Kopie der Kandidatenmenge als Schlüssel verwenden!
+		final Set<SpielKombination> key = new HashSet<SpielKombination>(geheimMoeglichkeiten); 
+		SpielKombination result = CACHE.get(key);
+		if (result == null) {
+			result = errechneBesteKombination(geheimMoeglichkeiten);
+			CACHE.put(key, result);
 		}
-		return errechneBesteKombination(geheimMoeglichkeiten);
+		return result;
 	}
 
 	@Override
