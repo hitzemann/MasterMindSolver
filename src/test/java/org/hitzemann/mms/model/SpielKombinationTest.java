@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-import org.hitzemann.mms.model.SpielKombination;
-import org.hitzemann.mms.model.SpielStein;
 import org.junit.Test;
 
 /**
