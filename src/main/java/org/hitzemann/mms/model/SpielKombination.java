@@ -33,7 +33,7 @@ public class SpielKombination implements Comparable<SpielKombination> {
 		final SpielStein[] values = SpielStein.values();
 		this.spielSteine = new SpielStein[paramSpielSteinWerte.length];
 		for (int i = 0; i < paramSpielSteinWerte.length; i++) {
-			spielSteine[i] = values[paramSpielSteinWerte[i]-1];
+			spielSteine[i] = values[paramSpielSteinWerte[i] - 1];
 		}
 	}
 
