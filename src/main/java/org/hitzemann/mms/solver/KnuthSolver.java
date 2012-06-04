@@ -204,11 +204,11 @@ public final class KnuthSolver implements ISolver {
 	 *            SpielKombination Set der noch möglichen Lösungen
 	 * @return Anzahl der SpielKombinationen die noch eine Lösung sein können
 	 */
-	private int zaehleUebrigeMoeglichkeiten(
+	private long zaehleUebrigeMoeglichkeiten(
 			final SpielKombination ratekombi,
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> geheimSet) {
-		int anzahlUebrigerMoeglichkeiten = MAXSCORE;
+		long anzahlUebrigerMoeglichkeiten = MAXSCORE;
 		if (ratekombi.getSpielSteineCount() != PINS) {
 			throw new IllegalArgumentException(
 					"Im Moment können nur 4 Pins gelöst werden");
