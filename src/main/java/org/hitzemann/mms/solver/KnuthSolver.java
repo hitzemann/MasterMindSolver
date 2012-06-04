@@ -204,11 +204,11 @@ public final class KnuthSolver implements ISolver {
 	 *            SpielKombination Set der noch möglichen Lösungen
 	 * @return Anzahl der SpielKombinationen die noch eine Lösung sein können
 	 */
-	private long zaehleUebrigeMoeglichkeiten(
+	private int zaehleUebrigeMoeglichkeiten(
 			final SpielKombination ratekombi,
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> geheimSet) {
-		long anzahlUebrigerMoeglichkeiten = MAXSCORE;
+		int anzahlUebrigerMoeglichkeiten = 0;
 		if (ratekombi.getSpielSteineCount() != PINS) {
 			throw new IllegalArgumentException(
 					"Im Moment können nur 4 Pins gelöst werden");
@@ -216,7 +216,7 @@ public final class KnuthSolver implements ISolver {
 		for (SpielKombination geheim : geheimSet) {
 			if (ergebnis.equals(ergebnisBerechner.berechneErgebnis(geheim,
 					ratekombi))) {
-				anzahlUebrigerMoeglichkeiten--;
+				anzahlUebrigerMoeglichkeiten++;
 			}
 		}
 		return anzahlUebrigerMoeglichkeiten;
@@ -234,22 +234,19 @@ public final class KnuthSolver implements ISolver {
 	private void errechneScoring(final Set<SpielKombination> geheimSet) {
 		long score;
 		int tempscore;
-		int scoresum;
 		scoreMap.clear();
 		for (final Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
 				.hasNext();) {
 			final SpielKombination rate = rateIterator.next();
 			score = MAXSCORE;
-			scoresum = 0;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
 				tempscore = zaehleEleminierteMoeglichkeiten(rate, ergebnis,
 						geheimSet);
-				scoresum += tempscore;
 				if (tempscore < score) {
 					score = tempscore;
 				}
 			}
-			if (scoresum > 0) {
+			if (score < MAXSCORE) {
 				scoreMap.put(rate, score);
 			} else {
 				rateIterator.remove();
