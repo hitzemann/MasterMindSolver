@@ -228,24 +228,39 @@ public final class KnuthSolver implements ISolver {
 	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
 	 * entfernen würde.
 	 * 
+	 * TODO: höchste Anzahl an geheimen Kombinationen errechnen, die jede
+	 * geratene Kombination übriglassen würde.
+	 * 
 	 * @param geheimSet
 	 *            SpielKombination Set der noch möglichen Lösungen
 	 */
 	private void errechneScoring(final Set<SpielKombination> geheimSet) {
 		long score;
-		int tempscore;
+		long tempscore;
 		scoreMap.clear();
 		for (final Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
 				.hasNext();) {
 			final SpielKombination rate = rateIterator.next();
+			/*
+			 * Für übriggelassene Kombinationen müssen wir bei 0 anfangen.
+			 */
+			// score = 0;
 			score = MAXSCORE;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
 				tempscore = zaehleEleminierteMoeglichkeiten(rate, ergebnis,
 						geheimSet);
+				/*
+				 * Für übriggelassene Kombinationen muss tempscore größer als score sein.
+				 */
+				// if (tempscore > score) {
 				if (tempscore < score) {
 					score = tempscore;
 				}
 			}
+			/*
+			 * Für übriggelassene Kombinationen muss score > 0 sein.
+			 */
+			//if (score > 0) {
 			if (score < MAXSCORE) {
 				scoreMap.put(rate, score);
 			} else {
@@ -262,6 +277,8 @@ public final class KnuthSolver implements ISolver {
 	 * Suche die SpielKombination mit der höchsten WorstCase-Anzahl an
 	 * entfernten Möglichkeiten.
 	 * 
+	 * TODO: Suche die SpielKombination mit der niedrigsten WorstCase-Anzahl an übriggelassenen Möglichkeiten.
+	 * 
 	 * @param geheimSet
 	 *            SpielKombination Set der noch möglichen Lösungen
 	 * @return SpielKombination welche das beste Ergebnis hervorbringen sollte
@@ -269,9 +286,17 @@ public final class KnuthSolver implements ISolver {
 	private SpielKombination errechneBesteKombination(
 			final Set<SpielKombination> geheimSet) {
 		SpielKombination tempkomb = null;
+		/*
+		 * Für übriggelassene Möglichkeiten müssen wir bei MAXSCORE anfangen
+		 */
+		// long tempscore = MAXSCORE;
 		long tempscore = 0;
 		errechneScoring(geheimSet);
 		for (Entry<SpielKombination, Long> tempentry : scoreMap.entrySet()) {
+			/*
+			 * Für übriggelassene Möglichkeiten muss tempentry < tempscore sein
+			 */
+			// if(tempentry.getValue() < tempscore) {
 			if (tempentry.getValue() > tempscore) {
 				tempscore = tempentry.getValue();
 				tempkomb = tempentry.getKey();
