@@ -193,6 +193,37 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	/**
+	 * Zähle wieviele Möglichkeiten ein Spiel- und ErgebnisKombinationstupel von
+	 * den noch übrigen geheimen Möglichkeiten übrig lassen würde.
+	 * 
+	 * @param ratekombi
+	 *            SpielKombination die geraten werden soll
+	 * @param ergebnis
+	 *            ErgebnisKombination welche herauskommen soll
+	 * @param geheimSet
+	 *            SpielKombination Set der noch möglichen Lösungen
+	 * @return Anzahl der SpielKombinationen die noch eine Lösung sein können
+	 */
+	private int zaehleUebrigeMoeglichkeiten(
+			final SpielKombination ratekombi,
+			final ErgebnisKombination ergebnis,
+			final Set<SpielKombination> geheimSet) {
+		int anzahlUebrigerMoeglichkeiten = MAXSCORE;
+		if (ratekombi.getSpielSteineCount() != PINS) {
+			throw new IllegalArgumentException(
+					"Im Moment können nur 4 Pins gelöst werden");
+		}
+		for (SpielKombination geheim : geheimSet) {
+			if (ergebnis.equals(ergebnisBerechner.berechneErgebnis(geheim,
+					ratekombi))) {
+				anzahlUebrigerMoeglichkeiten--;
+			}
+		}
+		return anzahlUebrigerMoeglichkeiten;
+	}
+
+
+	/**
 	 * Errechne die niedrigste Anzahl an geheimen Kombinationen, die jede
 	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
 	 * entfernen würde.
