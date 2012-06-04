@@ -47,7 +47,7 @@
                 <version>2.12</version>
                 <configuration>
                     <!-- methods, classes, both -->
-                    <parallel>classes</parallel>
+                    <parallel>both</parallel>
                     <threadCount>10</threadCount>
                     <perCoreThreadCount>true</perCoreThreadCount>
                     <!-- Should be fine for JUnit, not fine for web tests -->
