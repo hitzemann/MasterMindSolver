@@ -252,20 +252,6 @@ public final class KnuthSolver implements ISolver {
 		return tempkomb;
 	}
 
-	/**
-	 * Entferne alle geheimen Kombinationen, die nicht das vom User
-	 * zurückgegebene Ergebnis zur geratenen Kombination ergeben.
-	 * 
-	 * @param geraten
-	 *            Geratene SpielKombination
-	 * @param ergebnis
-	 *            ErgebnisKombination für geratene SpielKombination
-	 */
-	private void entferneMoeglichkeiten(final SpielKombination geraten,
-			final ErgebnisKombination ergebnis) {
-		eleminiereMoeglichkeiten(geraten, ergebnis, geheimMoeglichkeiten);
-	}
-
 	@Override
 	public SpielKombination getNeuerZug() {
 		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel ungeeignet
@@ -286,6 +272,6 @@ public final class KnuthSolver implements ISolver {
 				|| (antwort.getSchwarz() == (PINS - 1) && antwort.getWeiss() == 1)) {
 			throw new IllegalArgumentException();
 		}
-		entferneMoeglichkeiten(zug, antwort);
+		eleminiereMoeglichkeiten(zug, antwort, geheimMoeglichkeiten);
 	}
 }
