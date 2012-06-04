@@ -132,6 +132,13 @@ public final class KnuthSolver implements ISolver {
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 1));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 2));
 		ergebnisMoeglichkeiten.add(new ErgebnisKombination(3, 0));
+		/*
+		 * Ab:
+		 * ROT, VIOLETT, ROT, ROT
+		 * haben alle Kombinationen eine Score von 0 wenn (4, 0) mit betrachtet wird
+		 * warum?
+		 */
+		//ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
 	}
 
 	/**
@@ -271,6 +278,7 @@ public final class KnuthSolver implements ISolver {
 			throw new RuntimeException(
 					"Score Map hat weniger als einen Eintrag. Da stimmt was nicht...");
 		}
+		System.err.print(scoreMap.toString());
 	}
 
 	/**
