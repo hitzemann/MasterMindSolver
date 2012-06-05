@@ -22,7 +22,7 @@ import org.hitzemann.mms.model.SpielStein;
  * 
  */
 public final class KnuthSolver implements ISolver {
-
+	
 	/**
 	 * Anzahl der Pins in diesem Spiel.
 	 */
@@ -72,7 +72,7 @@ public final class KnuthSolver implements ISolver {
 	 * Set mit allen noch gültigen SpielKombinationen, die noch geraten werden
 	 * können. Verhindert, dass Kombinationen mehrfach benutzt werden.
 	 */
-	private SortedSet<SpielKombination> rateSet;
+//	private SortedSet<SpielKombination> rateSet;
 
 	static {
 		initialisiereAlleMoeglichkeiten();
@@ -92,7 +92,7 @@ public final class KnuthSolver implements ISolver {
 		scoreMap = new TreeMap<SpielKombination, Long>();
 		initialisiereErgebnisMoeglichkeiten();
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
-		rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
+//		rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public final class KnuthSolver implements ISolver {
 		ergebnisMoeglichkeiten = new TreeSet<ErgebnisKombination>();
 		for (int schwarz = 0; schwarz <= PINS; schwarz++) {
 			for (int weiss = 0; weiss <= PINS; weiss++) {
-				if ((schwarz+weiss) <= PINS && (schwarz != PINS-1 && weiss != 1)) {
+				if ((schwarz+weiss) <= PINS && !(schwarz == PINS-1 && weiss == 1)) {
 					ergebnisMoeglichkeiten.add(new ErgebnisKombination(schwarz, weiss));
 				}
 			}
@@ -187,12 +187,9 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	/**
-	 * Errechne die niedrigste Anzahl an geheimen Kombinationen, die jede
+	 * Errechne die höchste Anzahl an geheimen Kombinationen, die jede
 	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
-	 * entfernen würde.
-	 * 
-	 * TODO: höchste Anzahl an geheimen Kombinationen errechnen, die jede
-	 * geratene Kombination übriglassen würde.
+	 * übriglassen würde.
 	 * 
 	 * @param geheimSet
 	 *            SpielKombination Set der noch möglichen Lösungen
@@ -201,9 +198,7 @@ public final class KnuthSolver implements ISolver {
 		long score;
 		long tempscore;
 		scoreMap.clear();
-		for (final Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
-				.hasNext();) {
-			final SpielKombination rate = rateIterator.next();
+		for (SpielKombination rate : alleMoeglichkeiten) {
 			score = -1;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
 				tempscore = zaehleUebrigeMoeglichkeiten(rate, ergebnis, geheimSet);
@@ -211,10 +206,8 @@ public final class KnuthSolver implements ISolver {
 					score = tempscore;
 				}
 			}
-			if (score < geheimSet.size()) {
+			if (score < geheimSet.size() && score > 0) {
 				scoreMap.put(rate, score);
-			} else {
-				rateIterator.remove();
 			}
 		}
 		if (scoreMap.size() < 1) {
@@ -224,10 +217,8 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	/**
-	 * Suche die SpielKombination mit der höchsten WorstCase-Anzahl an
-	 * entfernten Möglichkeiten.
-	 * 
-	 * TODO: Suche die SpielKombination mit der niedrigsten WorstCase-Anzahl an übriggelassenen Möglichkeiten.
+	 * Suche die SpielKombination mit der geringsten WorstCase-Anzahl an
+	 * übriggebliebenen Möglichkeiten.
 	 * 
 	 * @param geheimSet
 	 *            SpielKombination Set der noch möglichen Lösungen
