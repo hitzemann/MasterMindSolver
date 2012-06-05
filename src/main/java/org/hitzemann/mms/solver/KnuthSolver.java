@@ -278,7 +278,6 @@ public final class KnuthSolver implements ISolver {
 			throw new RuntimeException(
 					"Score Map hat weniger als einen Eintrag. Da stimmt was nicht...");
 		}
-		System.err.print(scoreMap.toString());
 	}
 
 	/**
@@ -309,6 +308,9 @@ public final class KnuthSolver implements ISolver {
 				tempscore = tempentry.getValue();
 				tempkomb = tempentry.getKey();
 			}
+		}
+		if (tempkomb == null) {
+			throw new RuntimeException("Ungültige Kombination für nächsten Zug.");
 		}
 		return tempkomb;
 	}
