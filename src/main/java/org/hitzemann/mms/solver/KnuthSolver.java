@@ -119,26 +119,13 @@ public final class KnuthSolver implements ISolver {
 	 */
 	private void initialisiereErgebnisMoeglichkeiten() {
 		ergebnisMoeglichkeiten = new TreeSet<ErgebnisKombination>();
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 0));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 1));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 2));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 3));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(0, 4));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(1, 0));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(1, 1));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(1, 2));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(1, 3));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 0));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 1));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(2, 2));
-		ergebnisMoeglichkeiten.add(new ErgebnisKombination(3, 0));
-		/*
-		 * Ab:
-		 * ROT, VIOLETT, ROT, ROT
-		 * haben alle Kombinationen eine Score von 0 wenn (4, 0) mit betrachtet wird
-		 * warum?
-		 */
-		//ergebnisMoeglichkeiten.add(new ErgebnisKombination(4, 0));
+		for (int schwarz = 0; schwarz <= PINS; schwarz++) {
+			for (int weiss = 0; weiss <= PINS; weiss++) {
+				if ((schwarz+weiss) <= PINS && (schwarz != PINS-1 && weiss != 1)) {
+					ergebnisMoeglichkeiten.add(new ErgebnisKombination(schwarz, weiss));
+				}
+			}
+		}
 	}
 
 	/**
@@ -171,36 +158,6 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Zähle wieviele Möglichkeiten ein Spiel- und ErgebnisKombinationstupel von
-	 * den noch übrigen geheimen Möglichkeiten entfernen würde.
-	 * 
-	 * @param ratekombi
-	 *            SpielKombination die geraten werden soll
-	 * @param ergebnis
-	 *            ErgebnisKombination welche herauskommen soll
-	 * @param geheimSet
-	 *            SpielKombination Set der noch möglichen Lösungen
-	 * @return Anzahl der SpielKombinationen die keine Lösung mehr sein können
-	 */
-	private int zaehleEleminierteMoeglichkeiten(
-			final SpielKombination ratekombi,
-			final ErgebnisKombination ergebnis,
-			final Set<SpielKombination> geheimSet) {
-		int anzahlEleminierterMoeglichkeiten = 0;
-		if (ratekombi.getSpielSteineCount() != PINS) {
-			throw new IllegalArgumentException(
-					"Im Moment können nur 4 Pins gelöst werden");
-		}
-		for (SpielKombination geheim : geheimSet) {
-			if (!ergebnis.equals(ergebnisBerechner.berechneErgebnis(geheim,
-					ratekombi))) {
-				anzahlEleminierterMoeglichkeiten++;
-			}
-		}
-		return anzahlEleminierterMoeglichkeiten;
-	}
-
-	/**
-	 * Zähle wieviele Möglichkeiten ein Spiel- und ErgebnisKombinationstupel von
 	 * den noch übrigen geheimen Möglichkeiten übrig lassen würde.
 	 * 
 	 * @param ratekombi
@@ -229,7 +186,6 @@ public final class KnuthSolver implements ISolver {
 		return anzahlUebrigerMoeglichkeiten;
 	}
 
-
 	/**
 	 * Errechne die niedrigste Anzahl an geheimen Kombinationen, die jede
 	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
@@ -248,27 +204,14 @@ public final class KnuthSolver implements ISolver {
 		for (final Iterator<SpielKombination> rateIterator = rateSet.iterator(); rateIterator
 				.hasNext();) {
 			final SpielKombination rate = rateIterator.next();
-			/*
-			 * Für übriggelassene Kombinationen müssen wir bei 0 anfangen.
-			 */
-			// score = 0;
-			score = MAXSCORE;
+			score = -1;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
-				tempscore = zaehleEleminierteMoeglichkeiten(rate, ergebnis,
-						geheimSet);
-				/*
-				 * Für übriggelassene Kombinationen muss tempscore größer als score sein.
-				 */
-				// if (tempscore > score) {
-				if (tempscore < score) {
+				tempscore = zaehleUebrigeMoeglichkeiten(rate, ergebnis, geheimSet);
+				if (tempscore > score) {
 					score = tempscore;
 				}
 			}
-			/*
-			 * Für übriggelassene Kombinationen muss score > 0 sein.
-			 */
-			//if (score > 0) {
-			if (score < MAXSCORE) {
+			if (score < geheimSet.size()) {
 				scoreMap.put(rate, score);
 			} else {
 				rateIterator.remove();
@@ -293,18 +236,19 @@ public final class KnuthSolver implements ISolver {
 	private SpielKombination errechneBesteKombination(
 			final Set<SpielKombination> geheimSet) {
 		SpielKombination tempkomb = null;
-		/*
-		 * Für übriggelassene Möglichkeiten müssen wir bei MAXSCORE anfangen
-		 */
-		// long tempscore = MAXSCORE;
-		long tempscore = 0;
+		if (geheimSet.size() == 1) {
+			return geheimSet.iterator().next();
+		}
+		long tempscore = MAXSCORE;
 		errechneScoring(geheimSet);
 		for (Entry<SpielKombination, Long> tempentry : scoreMap.entrySet()) {
-			/*
-			 * Für übriggelassene Möglichkeiten muss tempentry < tempscore sein
-			 */
-			// if(tempentry.getValue() < tempscore) {
-			if (tempentry.getValue() > tempscore) {
+			if (tempentry.getValue() < tempscore) {
+				/*
+				 * Diese zusätzliche Bedingung generiert einen besseren Durchschnitt,
+				 * schafft es aber nicht mehr alle Kombinationen in unter 6 Schritten
+				 * zu raten :(
+				 */
+				// || tempentry.getValue() == tempscore && geheimSet.contains(tempentry.getKey())) {
 				tempscore = tempentry.getValue();
 				tempkomb = tempentry.getKey();
 			}
