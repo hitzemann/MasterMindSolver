@@ -18,14 +18,16 @@ import org.hitzemann.mms.solver.rule.IRule;
  * </p>
  * 
  * <p>
- * Damit sich der Cache für den Aufrufer neutral verhält, muss die gekapselte
- * Regel deterministisch sein, .
- * </p>
- * 
- * <p>
  * Die Folge-Regeln werden ebenfalls von einer {@link CacheRule} umschlossen,
  * wobei der Cache innerhalb der gesamten Regel-Hierarchie gemeinsam verwendet
  * wird.
+ * </p>
+ * 
+ * <p>
+ * Damit sich der Cache für den Aufrufer neutral verhält, darf die von der
+ * gekapselten Regel (und der gesamten Hierarchie ihrer Folge-Regeln) bei
+ * {@link IRule#getGuess(Collection)} zurückgegebene {@link SpielKombination}
+ * nur vom Parameter der Methode (also der Kandidatenmenge) abhängig sein.
  * </p>
  * 
  * @author schusterc
