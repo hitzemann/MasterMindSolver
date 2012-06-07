@@ -22,11 +22,16 @@ import org.hitzemann.mms.model.SpielStein;
  * 
  */
 public final class KnuthSolver implements ISolver {
-	
+
 	/**
 	 * Anzahl der Pins in diesem Spiel.
 	 */
 	private static final int PINS = 4;
+
+	/**
+	 * Aktueller firstguess für den Cache.
+	 */
+	private static SpielKombination currentfirst = null;
 
 	/**
 	 * Maximumscore einer Lösung, sollte größer sein als Farben^Pins.
@@ -42,7 +47,7 @@ public final class KnuthSolver implements ISolver {
 
 	/**
 	 * Cache für die gewählte Ratekombination in Abhängigkeit von der Menge der
-	 * verfügbaren Kandidaten für die Geheimkombination. 
+	 * verfügbaren Kandidaten für die Geheimkombination.
 	 */
 	private static final Map<Set<SpielKombination>, SpielKombination> CACHE = new HashMap<Set<SpielKombination>, SpielKombination>();
 
@@ -72,11 +77,11 @@ public final class KnuthSolver implements ISolver {
 	 * Set mit allen noch gültigen SpielKombinationen, die noch geraten werden
 	 * können. Verhindert, dass Kombinationen mehrfach benutzt werden.
 	 */
-//	private SortedSet<SpielKombination> rateSet;
+	// private SortedSet<SpielKombination> rateSet;
 
 	static {
 		initialisiereAlleMoeglichkeiten();
-		
+
 		// Cache mit festem ersten Zug vorbelegen
 		CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
 	}
@@ -92,23 +97,26 @@ public final class KnuthSolver implements ISolver {
 		scoreMap = new TreeMap<SpielKombination, Long>();
 		initialisiereErgebnisMoeglichkeiten();
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
-//		rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
+		// rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
 	}
-	
+
 	/**
 	 * Nichtstandardkonstruktor für den Solver.
 	 * 
 	 * @param berechner
-	 * 				Objekt, welches IErgebnisBerechnung implementiert
+	 *            Objekt, welches IErgebnisBerechnung implementiert
 	 * 
 	 * @param firstguess
-	 * 				Objekt, welches die erste zu ratende Kombination ist
+	 *            Objekt, welches die erste zu ratende Kombination ist
 	 */
-	public KnuthSolver(final IErgebnisBerechnung berechner, final SpielKombination firstguess) {
-		// TODO Standardkonstruktor aufrufen
+	public KnuthSolver(final IErgebnisBerechnung berechner,
+			final SpielKombination firstguess) {
 		this(berechner);
-		CACHE.clear();
-		CACHE.put(alleMoeglichkeiten, firstguess);
+		if (!firstguess.equals(currentfirst)) {
+			currentfirst = firstguess;
+			CACHE.clear();
+			CACHE.put(alleMoeglichkeiten, firstguess);
+		}
 	}
 
 	/**
@@ -137,8 +145,10 @@ public final class KnuthSolver implements ISolver {
 		ergebnisMoeglichkeiten = new TreeSet<ErgebnisKombination>();
 		for (int schwarz = 0; schwarz <= PINS; schwarz++) {
 			for (int weiss = 0; weiss <= PINS; weiss++) {
-				if ((schwarz+weiss) <= PINS && !(schwarz == PINS-1 && weiss == 1)) {
-					ergebnisMoeglichkeiten.add(new ErgebnisKombination(schwarz, weiss));
+				if ((schwarz + weiss) <= PINS
+						&& !(schwarz == PINS - 1 && weiss == 1)) {
+					ergebnisMoeglichkeiten.add(new ErgebnisKombination(schwarz,
+							weiss));
 				}
 			}
 		}
@@ -184,8 +194,7 @@ public final class KnuthSolver implements ISolver {
 	 *            SpielKombination Set der noch möglichen Lösungen
 	 * @return Anzahl der SpielKombinationen die noch eine Lösung sein können
 	 */
-	private int zaehleUebrigeMoeglichkeiten(
-			final SpielKombination ratekombi,
+	private int zaehleUebrigeMoeglichkeiten(final SpielKombination ratekombi,
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> geheimSet) {
 		int anzahlUebrigerMoeglichkeiten = 0;
@@ -203,9 +212,9 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	/**
-	 * Errechne die höchste Anzahl an geheimen Kombinationen, die jede
-	 * geratene Kombination von den noch übrigen geheimen Möglichkeiten
-	 * übriglassen würde.
+	 * Errechne die höchste Anzahl an geheimen Kombinationen, die jede geratene
+	 * Kombination von den noch übrigen geheimen Möglichkeiten übriglassen
+	 * würde.
 	 * 
 	 * @param geheimSet
 	 *            SpielKombination Set der noch möglichen Lösungen
@@ -217,7 +226,8 @@ public final class KnuthSolver implements ISolver {
 		for (SpielKombination rate : alleMoeglichkeiten) {
 			score = -1;
 			for (ErgebnisKombination ergebnis : ergebnisMoeglichkeiten) {
-				tempscore = zaehleUebrigeMoeglichkeiten(rate, ergebnis, geheimSet);
+				tempscore = zaehleUebrigeMoeglichkeiten(rate, ergebnis,
+						geheimSet);
 				if (tempscore > score) {
 					score = tempscore;
 				}
@@ -251,26 +261,30 @@ public final class KnuthSolver implements ISolver {
 		for (Entry<SpielKombination, Long> tempentry : scoreMap.entrySet()) {
 			if (tempentry.getValue() < tempscore) {
 				/*
-				 * Diese zusätzliche Bedingung generiert einen besseren Durchschnitt,
-				 * schafft es aber nicht mehr alle Kombinationen in unter 6 Schritten
-				 * zu raten :(
+				 * Diese zusätzliche Bedingung generiert einen besseren
+				 * Durchschnitt, schafft es aber nicht mehr alle Kombinationen
+				 * in unter 6 Schritten zu raten :(
 				 */
-				// || tempentry.getValue() == tempscore && geheimSet.contains(tempentry.getKey())) {
+				// || tempentry.getValue() == tempscore &&
+				// geheimSet.contains(tempentry.getKey())) {
 				tempscore = tempentry.getValue();
 				tempkomb = tempentry.getKey();
 			}
 		}
 		if (tempkomb == null) {
-			throw new RuntimeException("Ungültige Kombination für nächsten Zug.");
+			throw new RuntimeException(
+					"Ungültige Kombination für nächsten Zug.");
 		}
 		return tempkomb;
 	}
 
 	@Override
 	public SpielKombination getNeuerZug() {
-		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel ungeeignet
+		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel
+		// ungeeignet
 		// Kopie der Kandidatenmenge als Schlüssel verwenden!
-		final Set<SpielKombination> key = new HashSet<SpielKombination>(geheimMoeglichkeiten); 
+		final Set<SpielKombination> key = new HashSet<SpielKombination>(
+				geheimMoeglichkeiten);
 		SpielKombination result = CACHE.get(key);
 		if (result == null) {
 			result = errechneBesteKombination(geheimMoeglichkeiten);
