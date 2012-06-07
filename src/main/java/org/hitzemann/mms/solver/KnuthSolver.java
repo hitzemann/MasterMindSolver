@@ -94,6 +94,22 @@ public final class KnuthSolver implements ISolver {
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
 //		rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
 	}
+	
+	/**
+	 * Nichtstandardkonstruktor für den Solver.
+	 * 
+	 * @param berechner
+	 * 				Objekt, welches IErgebnisBerechnung implementiert
+	 * 
+	 * @param firstguess
+	 * 				Objekt, welches die erste zu ratende Kombination ist
+	 */
+	public KnuthSolver(final IErgebnisBerechnung berechner, final SpielKombination firstguess) {
+		// TODO Standardkonstruktor aufrufen
+		this(berechner);
+		CACHE.clear();
+		CACHE.put(alleMoeglichkeiten, firstguess);
+	}
 
 	/**
 	 * Alle Farbmöglichkeiten der Spielsteine vorberechnen.
