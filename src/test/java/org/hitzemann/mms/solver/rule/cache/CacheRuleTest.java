@@ -72,7 +72,6 @@ public final class CacheRuleTest {
 		verify(cacheMock).get(eq(key));
 		verify(ruleMock).getGuess(same(candidates));
 		verify(cacheMock).put(eq(key), same(guess));
-		verify(ruleMock).getGuess(same(candidates));
 		verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock);
 	}
 
