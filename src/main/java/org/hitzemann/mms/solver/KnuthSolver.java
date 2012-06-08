@@ -83,7 +83,11 @@ public final class KnuthSolver implements ISolver {
 		initialisiereAlleMoeglichkeiten();
 
 		// Cache mit festem ersten Zug vorbelegen
-		CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
+		//CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
+                // Diese Möglichkeit wurde durch SolverTheoryIT als beste Vorbelegung
+                // ermittelt. Sie schafft alle Kombinationen in unter 6 Zügen zu lösen
+                // und brauch im Schnitt 4.742 anstatt 4.760 Versuche.
+		CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
 	}
 
 	/**
