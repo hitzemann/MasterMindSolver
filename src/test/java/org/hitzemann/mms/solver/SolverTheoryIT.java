@@ -1,5 +1,7 @@
 package org.hitzemann.mms.solver;
 
+import static org.junit.Assume.assumeTrue;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,7 +35,7 @@ public final class SolverTheoryIT {
 
 	private static int DURCHGANG = 0;
 
-	private static SpielKombination currentfirst = null;
+        private static SpielKombination currentfirst;
 
 	/**
 	 * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
@@ -76,6 +78,12 @@ public final class SolverTheoryIT {
 
 	@Theory
 	public void versucheTest(SpielKombination first, SpielKombination geheim) {
+
+                assumeTrue(true);
+                if (!first.equals(currentfirst)) {
+                    currentfirst = first;
+                    System.out.println(first.toString());
+                }
 
 		final ISolver solver = createSolver(first);
 
