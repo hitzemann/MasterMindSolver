@@ -87,8 +87,7 @@ public final class SolverPerformanceIT {
 	 * @return Eine neue Instanz einer {@link ISolver}-Implementierung.
 	 */
 	private ISolver createSolver() {
-		//return new RuleSolver(BERECHNER, PINS, new KnuthRule());
-                return new KnuthSolver(BERECHNER);
+		return new RuleSolver(BERECHNER, PINS, new KnuthRule());
 	}
 
 	/**
