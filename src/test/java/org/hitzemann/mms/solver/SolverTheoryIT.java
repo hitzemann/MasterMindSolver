@@ -33,6 +33,8 @@ public final class SolverTheoryIT {
 
 	private static int DURCHGANG = 0;
 
+	private static SpielKombination currentfirst = null;
+
 	/**
 	 * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
 	 */
@@ -76,6 +78,14 @@ public final class SolverTheoryIT {
 	public void versucheTest(SpielKombination first, SpielKombination geheim) {
 
 		final ISolver solver = createSolver(first);
+
+		if (!first.equals(currentfirst)) {
+			if (currentfirst != null) {
+				printStats(currentfirst);
+			}
+			currentfirst = first;
+			//System.out.println("Current first guess: " + currentfirst.toString());
+		}
 
 		// Spiel starten
 		int versuche = 0;
@@ -163,7 +173,8 @@ public final class SolverTheoryIT {
 			// Histogramm ausgeben
 			System.out.println("#guesses;frequency");
 			System.out.println("First guess: " + first.toString());
-			for (Map.Entry<Integer, Integer> e : HISTOGRAMM.get(first).entrySet()) {
+			for (Map.Entry<Integer, Integer> e : HISTOGRAMM.get(first)
+					.entrySet()) {
 				System.out.println(e.getKey() + ";" + e.getValue());
 				sum += e.getKey() * e.getValue();
 				count += e.getValue();
@@ -171,5 +182,22 @@ public final class SolverTheoryIT {
 			System.out.println("---");
 			System.out.println("average = " + 1.0 * sum / count);
 		}
+	}
+	
+	public static void printStats(final SpielKombination first) {
+		int sum = 0;
+		int count = 0;
+
+		// Histogramm ausgeben
+		System.out.println("#guesses;frequency");
+		System.out.println("First guess: " + first.toString());
+		for (Map.Entry<Integer, Integer> e : HISTOGRAMM.get(first)
+				.entrySet()) {
+			System.out.println(e.getKey() + ";" + e.getValue());
+			sum += e.getKey() * e.getValue();
+			count += e.getValue();
+		}
+		System.out.println("---");
+		System.out.println("average = " + 1.0 * sum / count);
 	}
 }
