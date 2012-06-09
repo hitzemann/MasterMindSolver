@@ -172,7 +172,7 @@ public final class SolverIT {
 
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new KnuthSolver(BERECHNER);
+            final ISolver newSolver = new KnuthSolver(BERECHNER, 4);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {
