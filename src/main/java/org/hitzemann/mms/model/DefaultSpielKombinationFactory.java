@@ -13,8 +13,9 @@ public final class DefaultSpielKombinationFactory implements
 
 	@Override
 	public List<SpielKombination> erzeugeAlle(final int pins) {
-		// TODO muss noch implementiert werden
-		//throw new UnsupportedOperationException("TODO");
+		if (0 > pins) {
+			throw new IllegalArgumentException("Übergebene Länge ist negativ");
+		}
 		final List<SpielKombination> alleErzeugten = new ArrayList<SpielKombination>();
 		erzeugeAlleKombinationenRekursiv(new SpielStein[pins], 0, alleErzeugten);
 		return alleErzeugten;
