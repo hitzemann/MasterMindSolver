@@ -24,32 +24,26 @@ import org.hitzemann.mms.model.SpielStein;
 public final class KnuthSolver implements ISolver {
 
 	/**
-	 * Anzahl der Pins in diesem Spiel.
+	 * Cache für die gewählte Ratekombination in Abhängigkeit von der Menge der
+	 * verfügbaren Kandidaten für die Geheimkombination.
 	 */
-	private static final int PINS = 4;
+	private static final Map<Set<SpielKombination>, SpielKombination> CACHE = new HashMap<Set<SpielKombination>, SpielKombination>();
 
 	/**
-	 * Aktueller firstguess für den Cache.
+	 * Anzahl der Pins in diesem Spiel.
 	 */
-	private static SpielKombination currentfirst = null;
+	private final int pins;
 
 	/**
 	 * Maximumscore einer Lösung, sollte größer sein als Farben^Pins.
 	 */
-	private static final long MAXSCORE = Math.round(Math.pow(
-			SpielStein.values().length, PINS)) + 1;
+	private final long maxscore;
 
 	/**
 	 * Statisches Set mit allen Möglichkeiten, sollte für mehr Geschwindigkeit
 	 * sorgen.
 	 */
-	private static SortedSet<SpielKombination> alleMoeglichkeiten;
-
-	/**
-	 * Cache für die gewählte Ratekombination in Abhängigkeit von der Menge der
-	 * verfügbaren Kandidaten für die Geheimkombination.
-	 */
-	private static final Map<Set<SpielKombination>, SpielKombination> CACHE = new HashMap<Set<SpielKombination>, SpielKombination>();
+	private SortedSet<SpielKombination> alleMoeglichkeiten;
 
 	/**
 	 * Objekt zur Ergebnisberechnung.
@@ -79,25 +73,29 @@ public final class KnuthSolver implements ISolver {
 	 */
 	// private SortedSet<SpielKombination> rateSet;
 
-	static {
-		initialisiereAlleMoeglichkeiten();
-
-		// Cache mit festem ersten Zug vorbelegen
-		//CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
-                // Diese Möglichkeit wurde durch SolverTheoryIT als beste Vorbelegung
-                // ermittelt. Sie schafft alle Kombinationen in unter 6 Zügen zu lösen
-                // und brauch im Schnitt 4.742 anstatt 4.760 Versuche.
-		CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
-	}
-
 	/**
 	 * Standardkonstruktor für den Solver.
 	 * 
 	 * @param berechner
 	 *            Objekt, welches IErgebnisBerechnung implementiert
+	 * @param paramPins
+	 *            Anzahl der Pins
 	 */
-	public KnuthSolver(final IErgebnisBerechnung berechner) {
+	public KnuthSolver(final IErgebnisBerechnung berechner, final int paramPins) {
 		this.ergebnisBerechner = berechner;
+		pins = paramPins;
+		maxscore = Math.round(Math.pow(SpielStein.values().length, pins)) + 1;
+		
+		initialisiereAlleMoeglichkeiten();
+		// Cache mit festem ersten Zug vorbelegen
+		// CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
+		// Diese Möglichkeit wurde durch SolverTheoryIT als beste Vorbelegung
+		// ermittelt. Sie schafft alle Kombinationen in unter 6 Zügen zu lösen
+		// und braucht im Schnitt 4.742 anstatt 4.760 Versuche.
+		if (pins == 4) {
+			CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
+		}
+		
 		scoreMap = new TreeMap<SpielKombination, Long>();
 		initialisiereErgebnisMoeglichkeiten();
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
@@ -105,39 +103,43 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	/**
-	 * Nichtstandardkonstruktor für den Solver.
-	 * 
-	 * @param berechner
-	 *            Objekt, welches IErgebnisBerechnung implementiert
-	 * 
-	 * @param firstguess
-	 *            Objekt, welches die erste zu ratende Kombination ist
+	 * Alle Farbmöglichkeiten der Spielsteine vorberechnen.
 	 */
-	public KnuthSolver(final IErgebnisBerechnung berechner,
-			final SpielKombination firstguess) {
-		this(berechner);
-		if (!firstguess.equals(currentfirst)) {
-			currentfirst = firstguess;
-			CACHE.clear();
-			CACHE.put(alleMoeglichkeiten, firstguess);
-		}
+	private void initialisiereAlleMoeglichkeiten() {
+
+		alleMoeglichkeiten = new TreeSet<SpielKombination>();
+		erzeugeAlleKombinationenRekursiv(new SpielStein[pins], 0,
+				alleMoeglichkeiten);
 	}
 
 	/**
-	 * Alle Farbmöglichkeiten der Spielsteine vorberechnen.
+	 * Rekursiver Algorithmus zur Erzeugung aller {@link SpielKombination}en.
+	 * 
+	 * @param spielSteine
+	 *            Das rekursiv zu füllende Array mit {@link SpielStein}en. Die
+	 *            Länge dieses Arrays bestimmt die Länge der erzeugten
+	 *            Kombinationen.
+	 * @param iterierOffset
+	 *            Das in diesem Aufruf zu iterierende Offset in das
+	 *            spielSteine-Array. Alle höheren Indizes werden durch rekursive
+	 *            Aufrufe dieser Methode befüllt.
+	 * @param ergebnisSet
+	 *            Das {@link Set} zum Einsammeln der erzeugten
+	 *            {@link SpielKombination}en.
 	 */
-	private static void initialisiereAlleMoeglichkeiten() {
-		alleMoeglichkeiten = new TreeSet<SpielKombination>();
-		for (SpielStein i1 : SpielStein.values()) {
-			for (SpielStein i2 : SpielStein.values()) {
-				for (SpielStein i3 : SpielStein.values()) {
-					for (SpielStein i4 : SpielStein.values()) {
-						final SpielKombination kombi = new SpielKombination(i1,
-								i2, i3, i4);
-						alleMoeglichkeiten.add(kombi);
-					}
-				}
+	private void erzeugeAlleKombinationenRekursiv(
+			final SpielStein[] spielSteine, final int iterierOffset,
+			final Set<SpielKombination> ergebnisSet) {
+		if (iterierOffset < spielSteine.length) {
+			for (SpielStein spielStein : SpielStein.values()) {
+				spielSteine[iterierOffset] = spielStein;
+				erzeugeAlleKombinationenRekursiv(spielSteine,
+						iterierOffset + 1, ergebnisSet);
 			}
+		} else {
+			// Array klonen, damit nicht alle erzeugten Kombinationen das
+			// gleiche benutzen
+			ergebnisSet.add(new SpielKombination(spielSteine.clone()));
 		}
 	}
 
@@ -147,10 +149,10 @@ public final class KnuthSolver implements ISolver {
 	 */
 	private void initialisiereErgebnisMoeglichkeiten() {
 		ergebnisMoeglichkeiten = new TreeSet<ErgebnisKombination>();
-		for (int schwarz = 0; schwarz <= PINS; schwarz++) {
-			for (int weiss = 0; weiss <= PINS; weiss++) {
-				if ((schwarz + weiss) <= PINS
-						&& !(schwarz == PINS - 1 && weiss == 1)) {
+		for (int schwarz = 0; schwarz <= pins; schwarz++) {
+			for (int weiss = 0; weiss <= pins; weiss++) {
+				if ((schwarz + weiss) <= pins
+						&& !(schwarz == pins - 1 && weiss == 1)) {
 					ergebnisMoeglichkeiten.add(new ErgebnisKombination(schwarz,
 							weiss));
 				}
@@ -172,9 +174,9 @@ public final class KnuthSolver implements ISolver {
 	private void eleminiereMoeglichkeiten(final SpielKombination ratekombi,
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> moeglichkeitenSet) {
-		if (ratekombi.getSpielSteineCount() != PINS) {
+		if (ratekombi.getSpielSteineCount() != pins) {
 			throw new IllegalArgumentException(
-					"Im Moment können nur 4 Pins gelöst werden");
+					"Ich wurde für eine andere Pinzahl initialisiert!");
 		}
 		for (final Iterator<SpielKombination> setIterator = moeglichkeitenSet
 				.iterator(); setIterator.hasNext();) {
@@ -202,9 +204,9 @@ public final class KnuthSolver implements ISolver {
 			final ErgebnisKombination ergebnis,
 			final Set<SpielKombination> geheimSet) {
 		int anzahlUebrigerMoeglichkeiten = 0;
-		if (ratekombi.getSpielSteineCount() != PINS) {
+		if (ratekombi.getSpielSteineCount() != pins) {
 			throw new IllegalArgumentException(
-					"Im Moment können nur 4 Pins gelöst werden");
+					"Ich wurde für eine andere Pinzahl initialisiert!");
 		}
 		for (SpielKombination geheim : geheimSet) {
 			if (ergebnis.equals(ergebnisBerechner.berechneErgebnis(geheim,
@@ -260,7 +262,7 @@ public final class KnuthSolver implements ISolver {
 		if (geheimSet.size() == 1) {
 			return geheimSet.iterator().next();
 		}
-		long tempscore = MAXSCORE;
+		long tempscore = maxscore;
 		errechneScoring(geheimSet);
 		for (Entry<SpielKombination, Long> tempentry : scoreMap.entrySet()) {
 			if (tempentry.getValue() < tempscore) {
@@ -300,8 +302,8 @@ public final class KnuthSolver implements ISolver {
 	@Override
 	public void setLetzterZug(final SpielKombination zug,
 			final ErgebnisKombination antwort) {
-		if (((antwort.getSchwarz() + antwort.getWeiss()) > PINS)
-				|| (antwort.getSchwarz() == (PINS - 1) && antwort.getWeiss() == 1)) {
+		if (((antwort.getSchwarz() + antwort.getWeiss()) > pins)
+				|| (antwort.getSchwarz() == (pins - 1) && antwort.getWeiss() == 1)) {
 			throw new IllegalArgumentException();
 		}
 		eleminiereMoeglichkeiten(zug, antwort, geheimMoeglichkeiten);

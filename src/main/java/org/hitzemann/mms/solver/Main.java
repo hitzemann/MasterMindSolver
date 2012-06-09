@@ -29,7 +29,7 @@ public final class Main {
 	public static void main(final String[] argv) {
 		final IUserInteraktion userInterface = new TextUserInteraktion();
 		final IErgebnisBerechnung berechner = new LinearerErgebnisBerechner();
-		final ISolver spielSolver = new KnuthSolver(berechner);
+		final ISolver spielSolver = new KnuthSolver(berechner, PINS);
 		while (true) {
 			final SpielKombination ratekombi = spielSolver.getNeuerZug();
 			final ErgebnisKombination ergebnis = userInterface
