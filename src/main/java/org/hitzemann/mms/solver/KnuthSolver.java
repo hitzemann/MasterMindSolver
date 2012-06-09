@@ -84,6 +84,9 @@ public final class KnuthSolver implements ISolver {
 	public KnuthSolver(final IErgebnisBerechnung berechner, final int paramPins) {
 		this.ergebnisBerechner = berechner;
 		pins = paramPins;
+                if (paramPins < 1) {
+                    throw new IllegalArgumentException("Anzahl der Pins muss > 0 sein");
+                }
 		maxscore = Math.round(Math.pow(SpielStein.values().length, pins)) + 1;
 		
 		initialisiereAlleMoeglichkeiten();
