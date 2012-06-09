@@ -2,11 +2,10 @@ package org.hitzemann.mms.solver.rule;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.ISpielKombinationFactory;
 import org.hitzemann.mms.model.SpielKombination;
-import org.hitzemann.mms.model.SpielStein;
 import org.hitzemann.mms.solver.IErgebnisBerechnung;
 import org.hitzemann.mms.solver.ISolver;
 
@@ -40,16 +39,20 @@ public class RuleSolver implements ISolver {
 	 * @param theCalculator
 	 *            Die zu verwendende Implementierung von
 	 *            {@link IErgebnisBerechnung}.
+	 * @param factory
+	 *            Die zu verwendende Implementierung von
+	 *            {@link ISpielKombinationFactory}.
 	 * @param pins
 	 *            Die Kombinationsgröße.
 	 * @param theRule
 	 *            Die Regel.
 	 */
-	public RuleSolver(final IErgebnisBerechnung theCalculator, final int pins,
+	public RuleSolver(final IErgebnisBerechnung theCalculator,
+			final ISpielKombinationFactory factory, final int pins,
 			final IRule theRule) {
 		calculator = theCalculator;
 		rule = theRule;
-		candidates = generateAll(pins);
+		candidates = factory.erzeugeAlle(pins);
 	}
 
 	@Override
@@ -67,43 +70,6 @@ public class RuleSolver implements ISolver {
 
 		// weiter zur Folge-Regel
 		rule = rule.getRuleForResponse(antwort);
-	}
-
-	/**
-	 * Erzeugt alle {@link SpielKombination}en.
-	 * 
-	 * @param pins
-	 *            Die Länge der {@link SpielKombination}en.
-	 * @return Alle {@link SpielKombination}en der angegebenen Länge.
-	 */
-	private static Collection<SpielKombination> generateAll(final int pins) {
-		final int valueCount = SpielStein.values().length;
-
-		final Collection<SpielKombination> result = new TreeSet<SpielKombination>();
-
-		// Array mit Ordinalzahlen (1-basiert) der aktuellen Kombination
-		final int[] ord = new int[pins];
-
-		// mit (1,1,...,1) initialisieren
-		for (int i = 0; i < pins; i++) {
-			ord[i] = 1;
-		}
-
-		// Schleife abbrechen wenn die letzte Stelle überläuft
-		while (ord[pins - 1] <= valueCount) {
-			result.add(new SpielKombination(ord));
-
-			// erste Stelle erhöhen
-			ord[0]++;
-
-			// Überlauf weitergeben (außer letzte Stelle)
-			for (int i = 0; i < pins - 1 && ord[i] > valueCount; i++) {
-				ord[i] = 1;
-				ord[i + 1]++;
-			}
-		}
-
-		return result;
 	}
 
 	/**

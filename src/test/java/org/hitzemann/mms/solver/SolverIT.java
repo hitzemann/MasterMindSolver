@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.hitzemann.mms.model.DefaultSpielKombinationFactory;
 import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.ISpielKombinationFactory;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
 import org.hitzemann.mms.solver.rule.IRule;
@@ -34,6 +36,11 @@ public final class SolverIT {
      * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
      */
     private static final IErgebnisBerechnung BERECHNER = new LinearerErgebnisBerechner();
+    
+    /**
+     * Die gemeinsam benutzte {@link ISpielKombinationFactory}-Instanz.
+     */
+    private static final ISpielKombinationFactory FACTORY = new DefaultSpielKombinationFactory();
 
     /**
      * Die Factory zur Erzeugung neuer {@link ISolver}-Instanzen.
@@ -215,13 +222,13 @@ public final class SolverIT {
         public CachedEntropyRuleSolverFactory(final int pinCount) {
             pins = pinCount;
             rule = new CacheRuleFactory().createCachingRule(new EntropyRule(
-                    BERECHNER, pins));
+                    BERECHNER, FACTORY, pins));
 
         }
 
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new RuleSolver(BERECHNER, pins, rule);
+            final ISolver newSolver = new RuleSolver(BERECHNER, FACTORY, pins, rule);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {
@@ -251,7 +258,7 @@ public final class SolverIT {
 
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new RuleSolver(BERECHNER, 4, rule);
+            final ISolver newSolver = new RuleSolver(BERECHNER, FACTORY, 4, rule);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {
@@ -295,12 +302,12 @@ public final class SolverIT {
         public CachedMostPartsRuleSolverFactory(final int pinCount) {
             pins = pinCount;
             rule = new CacheRuleFactory().createCachingRule(new MostPartsRule(
-                    BERECHNER, pins));
+                    BERECHNER, FACTORY, pins));
         }
 
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new RuleSolver(BERECHNER, pins, rule);
+            final ISolver newSolver = new RuleSolver(BERECHNER, FACTORY, pins, rule);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {

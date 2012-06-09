@@ -2,13 +2,13 @@ package org.hitzemann.mms.solver.rule.mostparts;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.ISpielKombinationFactory;
 import org.hitzemann.mms.model.SpielKombination;
-import org.hitzemann.mms.model.SpielStein;
 import org.hitzemann.mms.solver.IErgebnisBerechnung;
 import org.hitzemann.mms.solver.rule.IRule;
 
@@ -43,7 +43,7 @@ public final class MostPartsRule implements IRule {
 	/**
 	 * Alle möglichen {@link SpielKombination}en.
 	 */
-	private final SortedSet<SpielKombination> allGuesses;
+	private final List<SpielKombination> allGuesses;
 
 	/**
 	 * Erzeugt eine Instanz.
@@ -51,12 +51,16 @@ public final class MostPartsRule implements IRule {
 	 * @param theCalculator
 	 *            Die zu verwendende Implementierung von
 	 *            {@link IErgebnisBerechnung}.
+	 * @param factory
+	 *            Die zu verwendende Implementierung von
+	 *            {@link ISpielKombinationFactory}.
 	 * @param pins
 	 *            Die Kombinationsgröße.
 	 */
-	public MostPartsRule(final IErgebnisBerechnung theCalculator, final int pins) {
+	public MostPartsRule(final IErgebnisBerechnung theCalculator,
+			final ISpielKombinationFactory factory, final int pins) {
 		calculator = theCalculator;
-		allGuesses = generateAll(pins);
+		allGuesses = factory.erzeugeAlle(pins);
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public final class MostPartsRule implements IRule {
 			final Collection<SpielKombination> candidates) {
 		// ermittle Kombinationen, die die Anzahl möglicher Antworten maximieren
 		int maxResponseCount = 0;
-		final SortedSet<SpielKombination> maxResponseCountGuesses = new TreeSet<SpielKombination>();
+		final List<SpielKombination> maxResponseCountGuesses = new LinkedList<SpielKombination>();
 		for (SpielKombination guess : allGuesses) {
 			// Anzahl möglicher Antworten für geratene Kombination ermitteln
 			final Set<ErgebnisKombination> results = new HashSet<ErgebnisKombination>();
@@ -82,16 +86,16 @@ public final class MostPartsRule implements IRule {
 		}
 
 		// ermittle alle Kandidaten unter optimalen Kombinationen
-		final SortedSet<SpielKombination> maxResponseCountCandidates = new TreeSet<SpielKombination>(
+		final List<SpielKombination> maxResponseCountCandidates = new LinkedList<SpielKombination>(
 				maxResponseCountGuesses);
 		maxResponseCountCandidates.retainAll(candidates);
 
 		// Kandidaten bevorzugen, und lexikographisch kleinsten zurückgeben
 		final SpielKombination result;
 		if (!maxResponseCountCandidates.isEmpty()) {
-			result = maxResponseCountCandidates.first();
+			result = maxResponseCountCandidates.get(0);
 		} else {
-			result = maxResponseCountGuesses.first();
+			result = maxResponseCountGuesses.get(0);
 		}
 
 		return result;
@@ -100,43 +104,5 @@ public final class MostPartsRule implements IRule {
 	@Override
 	public IRule getRuleForResponse(final ErgebnisKombination response) {
 		return this;
-	}
-
-	/**
-	 * Erzeugt eine Liste mit allen möglichen Kombinationen einer bestimten
-	 * Größe.
-	 * 
-	 * @param pins
-	 *            Die Kombinationsgröße
-	 * @return Ein {@link SortedSet} mit allen möglichen Kombinationen.
-	 */
-	private static SortedSet<SpielKombination> generateAll(final int pins) {
-		final SpielStein[] colors = SpielStein.values();
-		final int colorCount = colors.length;
-
-		final SortedSet<SpielKombination> result = new TreeSet<SpielKombination>();
-
-		// Array mit Ordinalwerten der SpielStein-Farben
-		final int[] ordinalArray = new int[pins];
-
-		// Schleife bei Überlauf an letzter Stelle beenden
-		while (ordinalArray[pins - 1] < colorCount) {
-			final SpielStein[] colorArray = new SpielStein[pins];
-			for (int i = 0; i < pins; i++) {
-				colorArray[i] = colors[ordinalArray[i]];
-			}
-			result.add(new SpielKombination(colorArray));
-
-			// erste Stelle hochzählen
-			ordinalArray[0]++;
-
-			// Überlauf weitergeben (nur bei letzter Stelle nicht)
-			for (int i = 0; i < pins - 1 && ordinalArray[i] == colorCount; i++) {
-				ordinalArray[i] = 0;
-				ordinalArray[i + 1]++;
-			}
-		}
-
-		return result;
 	}
 }

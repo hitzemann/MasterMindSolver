@@ -9,7 +9,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
+import org.hitzemann.mms.model.DefaultSpielKombinationFactory;
 import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.ISpielKombinationFactory;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
 import org.hitzemann.mms.solver.rule.RuleSolver;
@@ -41,6 +43,11 @@ public final class SolverPerformanceIT {
 	 * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
 	 */
 	private static final IErgebnisBerechnung BERECHNER = new LinearerErgebnisBerechner();
+
+    /**
+     * Die gemeinsam benutzte {@link ISpielKombinationFactory}-Instanz.
+     */
+    private static final ISpielKombinationFactory FACTORY = new DefaultSpielKombinationFactory();
 
 	/**
 	 * Das Histogramm mit den Häufigkeiten der Anzahl der benötigten
@@ -87,7 +94,7 @@ public final class SolverPerformanceIT {
 	 * @return Eine neue Instanz einer {@link ISolver}-Implementierung.
 	 */
 	private ISolver createSolver() {
-		return new RuleSolver(BERECHNER, PINS, new KnuthRule());
+		return new RuleSolver(BERECHNER, FACTORY, PINS, new KnuthRule());
 	}
 
 	/**

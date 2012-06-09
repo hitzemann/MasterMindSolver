@@ -1,12 +1,11 @@
 package org.hitzemann.mms.solver.rule.entropy;
 
 import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.ISpielKombinationFactory;
 import org.hitzemann.mms.model.SpielKombination;
-import org.hitzemann.mms.model.SpielStein;
 import org.hitzemann.mms.solver.IErgebnisBerechnung;
 import org.hitzemann.mms.solver.rule.IRule;
 
@@ -69,9 +68,9 @@ public final class EntropyRule implements IRule {
 	private final IErgebnisBerechnung calculator;
 
 	/**
-	 * Ein {@link SortedSet} mit allen ratbaren {@link SpielKombination}en.
+	 * Eine Liste mit allen ratbaren {@link SpielKombination}en.
 	 */
-	private final SortedSet<SpielKombination> allGuesses;
+	private final List<SpielKombination> allGuesses;
 
 	/**
 	 * Erzeugt eine Instanz.
@@ -79,50 +78,16 @@ public final class EntropyRule implements IRule {
 	 * @param theCalculator
 	 *            Die zu verwendende Implementierung von
 	 *            {@link IErgebnisBerechnung}.
+	 * @param factory
+	 *            Die zu verwendende Implementierung von
+	 *            {@link ISpielKombinationFactory}.
 	 * @param pins
 	 *            Die Kombinationsgröße.
 	 */
-	public EntropyRule(final IErgebnisBerechnung theCalculator, final int pins) {
+	public EntropyRule(final IErgebnisBerechnung theCalculator,
+			final ISpielKombinationFactory factory, final int pins) {
 		calculator = theCalculator;
-		allGuesses = generateAll(pins);
-	}
-
-	/**
-	 * Erzeugt eine Liste mit allen möglichen Kombinationen einer bestimten
-	 * Größe.
-	 * 
-	 * @param pins
-	 *            Die Kombinationsgröße
-	 * @return Ein {@link SortedSet} mit allen möglichen Kombinationen.
-	 */
-	private static SortedSet<SpielKombination> generateAll(final int pins) {
-		final SpielStein[] colors = SpielStein.values();
-		final int colorCount = colors.length;
-
-		final SortedSet<SpielKombination> result = new TreeSet<SpielKombination>();
-
-		// Array mit Ordinalwerten der SpielStein-Farben
-		final int[] ordinalArray = new int[pins];
-
-		// Schleife bei Überlauf an letzter Stelle beenden
-		while (ordinalArray[pins - 1] < colorCount) {
-			final SpielStein[] colorArray = new SpielStein[pins];
-			for (int i = 0; i < pins; i++) {
-				colorArray[i] = colors[ordinalArray[i]];
-			}
-			result.add(new SpielKombination(colorArray));
-
-			// erste Stelle hochzählen
-			ordinalArray[0]++;
-
-			// Überlauf weitergeben (nur bei letzter Stelle nicht)
-			for (int i = 0; i < pins - 1 && ordinalArray[i] == colorCount; i++) {
-				ordinalArray[i] = 0;
-				ordinalArray[i + 1]++;
-			}
-		}
-
-		return result;
+		allGuesses = factory.erzeugeAlle(pins);
 	}
 
 	/**
