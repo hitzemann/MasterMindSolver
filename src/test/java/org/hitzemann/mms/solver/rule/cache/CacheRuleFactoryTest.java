@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  * Tests für {@link CacheRuleFactory}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class CacheRuleFactoryTest {
 

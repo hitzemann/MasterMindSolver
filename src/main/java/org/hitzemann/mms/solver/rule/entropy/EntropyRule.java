@@ -52,7 +52,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * Instanz.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class EntropyRule implements IRule {
 

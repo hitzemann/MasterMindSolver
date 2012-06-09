@@ -9,7 +9,7 @@ import org.hitzemann.mms.solver.rule.IRule;
 /**
  * Factory-Schnittstelle zur Erzeugung der benötigten Regel-Typen.
  * 
- * @author schusterc
+ * @author chschu
  */
 public interface ICacheRuleFactory {
 

@@ -29,7 +29,7 @@ import org.junit.runners.Parameterized.Parameters;
  * parallelisiert. Nachdem alle Kombinationen getestet wurden, wird die
  * Verteilung der Anzahl Rateversuche ausgegeben.
  * 
- * @author schusterc
+ * @author chschu
  */
 @RunWith(Parameterized.class)
 public final class SolverPerformanceIT {

@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  * Tests für {@link SpielKombination}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class SpielKombinationTest {
 

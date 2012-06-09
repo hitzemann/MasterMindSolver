@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Tests für {@link KnuthRuleFactory}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class KnuthRuleFactoryTest {
 

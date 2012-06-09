@@ -17,7 +17,7 @@ import org.hitzemann.mms.model.SpielKombination;
  * Kandidat eine bestimmte Antwort ergeben hat.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public interface IRule {
 

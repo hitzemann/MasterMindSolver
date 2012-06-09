@@ -25,7 +25,7 @@ import org.mockito.ArgumentCaptor;
 /**
  * Tests für {@link KnuthRuleParser}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class KnuthRuleParserTest {
 

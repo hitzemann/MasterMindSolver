@@ -20,7 +20,7 @@ import org.junit.runners.Parameterized.Parameters;
 /**
  * Tests für {@link DefaultErgebnisBerechner} und {@link LinearerErgebnisBerechner}.
  * 
- * @author schusterc
+ * @author chschu
  */
 @RunWith(Parameterized.class)
 public final class ErgebnisBerechnerTest {

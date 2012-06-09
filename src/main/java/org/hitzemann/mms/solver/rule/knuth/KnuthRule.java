@@ -55,7 +55,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * ggf. auch noch die andere.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class KnuthRule implements IRule {
 

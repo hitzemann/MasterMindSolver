@@ -20,6 +20,7 @@ import org.hitzemann.mms.solver.rule.entropy.EntropyRule;
 import org.hitzemann.mms.solver.rule.knuth.KnuthRule;
 import org.hitzemann.mms.solver.rule.mostparts.MostPartsRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -27,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 /**
  * Tests für {@link KnuthSolver} und {@link EntropieSolver}.
  * 
- * @author schusterc
+ * @author chschu
  */
 @RunWith(Parameterized.class)
 public final class SolverIT {
@@ -134,7 +135,7 @@ public final class SolverIT {
     /**
      * Informations-Kapsel für einen von einer {@link ISolverFactory} erzeugten {@link ISolver}.
      * 
-     * @author schusterc
+     * @author chschu
      */
     private interface ISolverInfo {
 
@@ -158,7 +159,7 @@ public final class SolverIT {
     /**
      * Schnittstelle für eine Factory, die {@link ISolver}-Instanzen erzeugt.
      * 
-     * @author schusterc
+     * @author chschu
      */
     private interface ISolverFactory {
 
@@ -173,7 +174,7 @@ public final class SolverIT {
     /**
      * Solver-Factory für {@link KnuthSolver}-Instanzen mit 4 Pins.
      * 
-     * @author schusterc
+     * @author chschu
      */
     private static final class KnuthSolverFactory implements ISolverFactory {
 
@@ -199,7 +200,7 @@ public final class SolverIT {
      * und variabler Pin-Anzahl. Die eigentliche Regel wird mit einer
      * {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
      * 
-     * @author schusterc
+     * @author chschu
      */
     private static final class CachedEntropyRuleSolverFactory implements ISolverFactory {
 
@@ -247,7 +248,7 @@ public final class SolverIT {
      * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link KnuthRule} und
      * und 4 Pins.
      * 
-     * @author schusterc
+     * @author chschu
      */
     private static final class KnuthRuleSolverFactory implements ISolverFactory {
 
@@ -278,7 +279,7 @@ public final class SolverIT {
      * und variabler Pin-Anzahl. Die eigentliche Regel wird mit einer
      * {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
      * 
-     * @author schusterc
+     * @author chschu
      */
     private static final class CachedMostPartsRuleSolverFactory implements
             ISolverFactory {

@@ -24,7 +24,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * Kandidaten existieren.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class GuessFirstRule implements IRule {
 

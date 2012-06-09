@@ -30,7 +30,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * ratende Kombination geliefert.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class MostPartsRule implements IRule {
 

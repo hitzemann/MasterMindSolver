@@ -14,7 +14,7 @@ import org.hitzemann.mms.solver.ISolver;
  * Ein Solver, der eine {@link IRule} zum Lösen verwendet.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public class RuleSolver implements ISolver {
 

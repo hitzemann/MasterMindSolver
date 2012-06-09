@@ -6,7 +6,7 @@ import org.hitzemann.mms.solver.rule.IRule;
 /**
  * Die Standard-Implementierung der {@link IKnuthRuleFactory}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class KnuthRuleFactory implements IKnuthRuleFactory {
 

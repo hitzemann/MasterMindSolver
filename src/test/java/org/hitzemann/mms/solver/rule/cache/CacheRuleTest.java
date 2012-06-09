@@ -27,7 +27,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 /**
  * Tests für {@link CacheRule}.
  * 
- * @author schusterc
+ * @author chschu
  */
 @RunWith(MockitoJUnitRunner.class)
 public final class CacheRuleTest {

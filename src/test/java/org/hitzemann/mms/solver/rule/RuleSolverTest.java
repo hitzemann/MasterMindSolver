@@ -26,7 +26,7 @@ import org.junit.Test;
 /**
  * Tests für {@link RuleSolver}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class RuleSolverTest {
 

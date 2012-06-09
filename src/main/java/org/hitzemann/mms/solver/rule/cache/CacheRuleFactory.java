@@ -9,7 +9,7 @@ import org.hitzemann.mms.solver.rule.IRule;
 /**
  * Implementierung von {@link ICacheRuleFactory}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class CacheRuleFactory implements ICacheRuleFactory {
 

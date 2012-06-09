@@ -19,7 +19,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * Fall auf maximal 2 Kandidaten reduziert werden kann.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class GuessFixedSimpleRule implements IRule {
 

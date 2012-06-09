@@ -30,7 +30,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * nur vom Parameter der Methode (also der Kandidatenmenge) abhängig sein.
  * </p>
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class CacheRule implements IRule {
 

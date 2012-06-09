@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * Tests für {@link GuessFirstRule}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class GuessFirstRuleTest {
 

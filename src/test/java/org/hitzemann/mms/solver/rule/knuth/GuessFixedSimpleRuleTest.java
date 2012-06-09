@@ -19,7 +19,7 @@ import org.junit.Test;
 /**
  * Tests für {@link GuessFixedSimpleRule}.
  * 
- * @author schusterc
+ * @author chschu
  */
 public final class GuessFixedSimpleRuleTest {
 
