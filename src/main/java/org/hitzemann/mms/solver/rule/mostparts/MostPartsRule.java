@@ -1,6 +1,5 @@
 package org.hitzemann.mms.solver.rule.mostparts;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +64,7 @@ public final class MostPartsRule implements IRule {
 
 	@Override
 	public SpielKombination getGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		// ermittle Kombinationen, die die Anzahl möglicher Antworten maximieren
 		int maxResponseCount = 0;
 		final List<SpielKombination> maxResponseCountGuesses = new LinkedList<SpielKombination>();

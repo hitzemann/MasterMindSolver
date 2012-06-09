@@ -1,7 +1,7 @@
 package org.hitzemann.mms.solver.rule;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.ISpielKombinationFactory;
@@ -31,7 +31,7 @@ public class RuleSolver implements ISolver {
 	/**
 	 * Die Kandidaten für die geheime Kombination.
 	 */
-	private final Collection<SpielKombination> candidates;
+	private final List<SpielKombination> candidates;
 
 	/**
 	 * Erzeugt eine Instanz.

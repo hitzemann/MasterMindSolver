@@ -1,6 +1,7 @@
 package org.hitzemann.mms.solver.rule.knuth;
 
-import java.util.Collection;
+
+import java.util.List;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
@@ -135,7 +136,7 @@ public final class KnuthRule implements IRule {
 
 	@Override
 	public SpielKombination getGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		return RULE.getGuess(candidates);
 	}
 

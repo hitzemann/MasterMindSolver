@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anySetOf;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
@@ -63,7 +63,7 @@ public final class RuleSolverTest {
 		final ISolver underTest = new RuleSolver(calculatorMock, factoryMock,
 				3, ruleMock);
 
-		when(ruleMock.getGuess(anySetOf(SpielKombination.class))).thenReturn(
+		when(ruleMock.getGuess(anyListOf(SpielKombination.class))).thenReturn(
 				guess);
 
 		assertSame(guess, underTest.getNeuerZug());

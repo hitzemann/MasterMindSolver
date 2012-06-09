@@ -1,8 +1,8 @@
 package org.hitzemann.mms.solver.rule.cache;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * <p>
  * Damit sich der Cache für den Aufrufer neutral verhält, darf die von der
  * gekapselten Regel (und der gesamten Hierarchie ihrer Folge-Regeln) bei
- * {@link IRule#getGuess(Collection)} zurückgegebene {@link SpielKombination}
+ * {@link IRule#getGuess(List<SpielKombination>)} zurückgegebene {@link SpielKombination}
  * nur vom Parameter der Methode (also der Kandidatenmenge) abhängig sein.
  * </p>
  * 
@@ -86,7 +86,7 @@ public final class CacheRule implements IRule {
 
 	@Override
 	public SpielKombination getGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		// Kopie der Kandidatenmenge als Schlüssel verwenden
 		final Set<SpielKombination> key = new HashSet<SpielKombination>(
 				candidates);

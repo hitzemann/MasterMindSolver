@@ -1,6 +1,5 @@
 package org.hitzemann.mms.solver.rule.entropy;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
@@ -101,7 +100,7 @@ public final class EntropyRule implements IRule {
 	 * @return Die zu ratende Kombination
 	 */
 	private SpielKombination determineMaximumEntropyGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		double maxEntropy = -1.0;
 		SpielKombination result = null;
 
@@ -130,7 +129,7 @@ public final class EntropyRule implements IRule {
 	 * @return Die Entropie.
 	 */
 	private double getEntropy(final SpielKombination guess,
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		// absolute Häufigkeiten der Ergebnisse ermitteln
 		final int[] frequencies = determineResponseFrequencies(guess,
 				candidates);
@@ -170,7 +169,7 @@ public final class EntropyRule implements IRule {
 	 *         konkretem Ergebnis (da für Entropie irrelevant).
 	 */
 	private int[] determineResponseFrequencies(final SpielKombination zuRaten,
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		final int pins = zuRaten.getSpielSteineCount();
 		final int[] result = new int[(pins + 1) * (pins + 1)];
 
@@ -188,7 +187,7 @@ public final class EntropyRule implements IRule {
 
 	@Override
 	public SpielKombination getGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		return determineMaximumEntropyGuess(candidates);
 	}
 

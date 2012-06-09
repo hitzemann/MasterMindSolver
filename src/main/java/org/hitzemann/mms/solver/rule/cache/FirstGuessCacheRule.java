@@ -1,6 +1,7 @@
 package org.hitzemann.mms.solver.rule.cache;
 
-import java.util.Collection;
+
+import java.util.List;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
@@ -13,7 +14,7 @@ import org.hitzemann.mms.solver.rule.IRule;
  * 
  * <p>
  * Damit sich der Cache für den Aufrufer neutral verhält, muss die von der
- * gekapselten Regel bei {@link IRule#getGuess(Collection)} zurückgegebene
+ * gekapselten Regel bei {@link IRule#getGuess(List<SpielKombination>)} zurückgegebene
  * {@link SpielKombination} konstant sein.
  * </p>
  * 
@@ -58,7 +59,7 @@ public final class FirstGuessCacheRule implements IRule {
 
 	@Override
 	public SpielKombination getGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		if (guess == null) {
 			guess = delegate.getGuess(candidates);
 		}

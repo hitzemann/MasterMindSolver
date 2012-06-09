@@ -2,7 +2,7 @@ package org.hitzemann.mms.solver.rule.cache;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyCollectionOf;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -35,7 +35,7 @@ public final class FirstGuessCacheRuleTest {
 	private IRule ruleMock;
 
 	/**
-	 * Test für {@link IRule#getGuess(java.util.Collection)} bei einem
+	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
 	 * "Cache Miss".
 	 */
 	@Test
@@ -44,7 +44,7 @@ public final class FirstGuessCacheRuleTest {
 		final List<SpielKombination> candidates = Collections.emptyList();
 		final SpielKombination guess = new SpielKombination(1);
 
-		when(ruleMock.getGuess(anyCollectionOf(SpielKombination.class)))
+		when(ruleMock.getGuess(anyListOf(SpielKombination.class)))
 				.thenReturn(guess);
 
 		assertSame(guess, underTest.getGuess(candidates));
@@ -54,7 +54,7 @@ public final class FirstGuessCacheRuleTest {
 	}
 
 	/**
-	 * Test für {@link IRule#getGuess(java.util.Collection)} bei einem
+	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
 	 * "Cache Hit".
 	 */
 	@Test
@@ -71,7 +71,7 @@ public final class FirstGuessCacheRuleTest {
 	}
 
 	/**
-	 * Test für {@link IRule#getGuess(java.util.Collection)} bei einem
+	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
 	 * "Cache Hit" im zweiten Anlauf.
 	 */
 	@Test
@@ -80,7 +80,7 @@ public final class FirstGuessCacheRuleTest {
 		final List<SpielKombination> candidates = Collections.emptyList();
 		final SpielKombination guess = new SpielKombination(1);
 
-		when(ruleMock.getGuess(anyCollectionOf(SpielKombination.class)))
+		when(ruleMock.getGuess(anyListOf(SpielKombination.class)))
 				.thenReturn(guess);
 
 		// zweimal aufrufen (ruleMock wird nur einmal aufgerufen)

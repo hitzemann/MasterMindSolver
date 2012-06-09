@@ -112,7 +112,7 @@ public final class GuessFixedComplexRuleTest {
 
 	/**
 	 * Testet den regulären Aufruf von
-	 * {@link IRule#getGuess(java.util.Collection)}.
+	 * {@link IRule#getGuess(List<SpielKombination>)}.
 	 */
 	@Test
 	public void testGetGuess() {
@@ -131,7 +131,7 @@ public final class GuessFixedComplexRuleTest {
 	}
 
 	/**
-	 * Testet den Aufruf von {@link IRule#getGuess(java.util.Collection)} mit
+	 * Testet den Aufruf von {@link IRule#getGuess(List<SpielKombination>)} mit
 	 * einer falschen Anzahl an Kandidaten.
 	 */
 	@Test

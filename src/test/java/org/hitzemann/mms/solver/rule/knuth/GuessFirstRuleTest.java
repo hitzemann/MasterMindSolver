@@ -8,8 +8,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,7 +75,7 @@ public final class GuessFirstRuleTest {
 				ruleFactoryMock);
 
 		@SuppressWarnings("unchecked")
-		final Collection<SpielKombination> candidatesMock = mock(Collection.class);
+		final List<SpielKombination> candidatesMock = mock(List.class);
 
 		when(candidatesMock.size()).thenReturn(10);
 
@@ -99,7 +99,7 @@ public final class GuessFirstRuleTest {
 				ruleFactoryMock);
 
 		@SuppressWarnings("unchecked")
-		final Collection<SpielKombination> candidatesMock = mock(Collection.class);
+		final List<SpielKombination> candidatesMock = mock(List.class);
 
 		when(candidatesMock.size()).thenReturn(4);
 
@@ -123,7 +123,7 @@ public final class GuessFirstRuleTest {
 				ruleFactoryMock);
 
 		@SuppressWarnings("unchecked")
-		final Collection<SpielKombination> candidatesMock = mock(Collection.class);
+		final List<SpielKombination> candidatesMock = mock(List.class);
 
 		when(candidatesMock.size()).thenReturn(0);
 
@@ -148,7 +148,7 @@ public final class GuessFirstRuleTest {
 				ruleFactoryMock);
 
 		@SuppressWarnings("unchecked")
-		final Collection<SpielKombination> candidatesMock = mock(Collection.class);
+		final List<SpielKombination> candidatesMock = mock(List.class);
 		@SuppressWarnings("unchecked")
 		final Iterator<SpielKombination> iteratorMock = mock(Iterator.class);
 		final SpielKombination first = new SpielKombination(new int[0]);

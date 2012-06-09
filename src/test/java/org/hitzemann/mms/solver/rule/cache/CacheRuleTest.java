@@ -2,7 +2,7 @@ package org.hitzemann.mms.solver.rule.cache;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyCollectionOf;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
@@ -51,7 +51,7 @@ public final class CacheRuleTest {
 	private ICacheRuleFactory ruleFactoryMock;
 
 	/**
-	 * Test für {@link IRule#getGuess(java.util.Collection)} bei einem
+	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
 	 * "Cache Miss".
 	 */
 	@Test
@@ -62,7 +62,7 @@ public final class CacheRuleTest {
 		final SpielKombination guess = new SpielKombination(1);
 
 		when(cacheMock.get(any())).thenReturn(null);
-		when(ruleMock.getGuess(anyCollectionOf(SpielKombination.class)))
+		when(ruleMock.getGuess(anyListOf(SpielKombination.class)))
 				.thenReturn(guess);
 
 		assertSame(guess, underTest.getGuess(candidates));
@@ -76,7 +76,7 @@ public final class CacheRuleTest {
 	}
 
 	/**
-	 * Test für {@link IRule#getGuess(java.util.Collection)} bei einem
+	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
 	 * "Cache Hit".
 	 */
 	@Test

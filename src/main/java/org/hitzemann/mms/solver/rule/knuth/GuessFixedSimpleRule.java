@@ -1,6 +1,7 @@
 package org.hitzemann.mms.solver.rule.knuth;
 
-import java.util.Collection;
+
+import java.util.List;
 
 import org.hitzemann.mms.model.ErgebnisKombination;
 import org.hitzemann.mms.model.SpielKombination;
@@ -62,7 +63,7 @@ public final class GuessFixedSimpleRule implements IRule {
 
 	@Override
 	public SpielKombination getGuess(
-			final Collection<SpielKombination> candidates) {
+			final List<SpielKombination> candidates) {
 		final int candidateCount = candidates.size();
 
 		if (candidateCount != expectedCandidateCount) {
