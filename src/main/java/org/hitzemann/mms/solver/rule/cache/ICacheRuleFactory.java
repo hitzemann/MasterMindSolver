@@ -13,24 +13,23 @@ import org.hitzemann.mms.solver.rule.IRule;
  */
 public interface ICacheRuleFactory {
 
-	/**
-	 * Erzeugt eine Instanz von {@link CacheRule} mit initial leerem Cache.
-	 * 
-	 * @param delegate
-	 *            Die gekapselte Regel.
-	 * @return Die neu erzeugte Regel-Instanz.
-	 */
-	IRule createCachingRule(IRule delegate);
+    /**
+     * Erzeugt eine Instanz von {@link CacheRule} mit initial leerem Cache.
+     * 
+     * @param delegate
+     *            Die gekapselte Regel.
+     * @return Die neu erzeugte Regel-Instanz.
+     */
+    IRule createCachingRule(IRule delegate);
 
-	/**
-	 * Erzeugt eine Instanz von {@link CacheRule} mit gegebenem Cache.
-	 * 
-	 * @param delegate
-	 *            Die gekapselte Regel.
-	 * @param guessCache
-	 *            Der zu verwendende Cache.
-	 * @return Die neu erzeugte Regel-Instanz.
-	 */
-	IRule createCachingRule(IRule delegate,
-			Map<Set<SpielKombination>, SpielKombination> guessCache);
+    /**
+     * Erzeugt eine Instanz von {@link CacheRule} mit gegebenem Cache.
+     * 
+     * @param delegate
+     *            Die gekapselte Regel.
+     * @param guessCache
+     *            Der zu verwendende Cache.
+     * @return Die neu erzeugte Regel-Instanz.
+     */
+    IRule createCachingRule(IRule delegate, Map<Set<SpielKombination>, SpielKombination> guessCache);
 }

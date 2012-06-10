@@ -32,93 +32,81 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public final class CacheRuleTest {
 
-	/**
-	 * Mock für die zu übergebende {@link IRule}.
-	 */
-	@Mock
-	private IRule ruleMock;
+    /**
+     * Mock für die zu übergebende {@link IRule}.
+     */
+    @Mock
+    private IRule ruleMock;
 
-	/**
-	 * Mock für den zu übergebenden Cache.
-	 */
-	@Mock
-	private Map<Set<SpielKombination>, SpielKombination> cacheMock;
+    /**
+     * Mock für den zu übergebenden Cache.
+     */
+    @Mock
+    private Map<Set<SpielKombination>, SpielKombination> cacheMock;
 
-	/**
-	 * Mock für die zu übergebende {@link ICacheRuleFactory}.
-	 */
-	@Mock
-	private ICacheRuleFactory ruleFactoryMock;
+    /**
+     * Mock für die zu übergebende {@link ICacheRuleFactory}.
+     */
+    @Mock
+    private ICacheRuleFactory ruleFactoryMock;
 
-	/**
-	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
-	 * "Cache Miss".
-	 */
-	@Test
-	public void testGetGuessCacheMiss() {
-		final CacheRule underTest = new CacheRule(ruleMock, cacheMock,
-				ruleFactoryMock);
-		final List<SpielKombination> candidates = Collections.emptyList();
-		final SpielKombination guess = new SpielKombination(1);
+    /**
+     * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem "Cache Miss".
+     */
+    @Test
+    public void testGetGuessCacheMiss() {
+        final CacheRule underTest = new CacheRule(ruleMock, cacheMock, ruleFactoryMock);
+        final List<SpielKombination> candidates = Collections.emptyList();
+        final SpielKombination guess = new SpielKombination(1);
 
-		when(cacheMock.get(any())).thenReturn(null);
-		when(ruleMock.getGuess(anyListOf(SpielKombination.class)))
-				.thenReturn(guess);
+        when(cacheMock.get(any())).thenReturn(null);
+        when(ruleMock.getGuess(anyListOf(SpielKombination.class))).thenReturn(guess);
 
-		assertSame(guess, underTest.getGuess(candidates));
+        assertSame(guess, underTest.getGuess(candidates));
 
-		final Set<SpielKombination> key = new HashSet<SpielKombination>(
-				candidates);
-		verify(cacheMock).get(eq(key));
-		verify(ruleMock).getGuess(same(candidates));
-		verify(cacheMock).put(eq(key), same(guess));
-		verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock);
-	}
+        final Set<SpielKombination> key = new HashSet<SpielKombination>(candidates);
+        verify(cacheMock).get(eq(key));
+        verify(ruleMock).getGuess(same(candidates));
+        verify(cacheMock).put(eq(key), same(guess));
+        verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock);
+    }
 
-	/**
-	 * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem
-	 * "Cache Hit".
-	 */
-	@Test
-	public void testGetGuessCacheHit() {
-		final CacheRule underTest = new CacheRule(ruleMock, cacheMock,
-				ruleFactoryMock);
-		final List<SpielKombination> candidates = Collections.emptyList();
-		final SpielKombination guess = new SpielKombination(1);
+    /**
+     * Test für {@link IRule#getGuess(List<SpielKombination>)} bei einem "Cache Hit".
+     */
+    @Test
+    public void testGetGuessCacheHit() {
+        final CacheRule underTest = new CacheRule(ruleMock, cacheMock, ruleFactoryMock);
+        final List<SpielKombination> candidates = Collections.emptyList();
+        final SpielKombination guess = new SpielKombination(1);
 
-		when(cacheMock.get(any())).thenReturn(guess);
+        when(cacheMock.get(any())).thenReturn(guess);
 
-		assertSame(guess, underTest.getGuess(candidates));
+        assertSame(guess, underTest.getGuess(candidates));
 
-		final Set<SpielKombination> key = new HashSet<SpielKombination>(
-				candidates);
-		verify(cacheMock).get(eq(key));
-		verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock);
-	}
+        final Set<SpielKombination> key = new HashSet<SpielKombination>(candidates);
+        verify(cacheMock).get(eq(key));
+        verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock);
+    }
 
-	/**
-	 * Test für {@link IRule#getRuleForResponse(ErgebnisKombination)}.
-	 */
-	@Test
-	public void testGetRuleForResponse() {
-		final CacheRule underTest = new CacheRule(ruleMock, cacheMock,
-				ruleFactoryMock);
-		final IRule nextRuleMock = mock(IRule.class);
-		final IRule wrappedNextRuleMock = mock(IRule.class);
-		final ErgebnisKombination response = new ErgebnisKombination(0, 0);
+    /**
+     * Test für {@link IRule#getRuleForResponse(ErgebnisKombination)}.
+     */
+    @Test
+    public void testGetRuleForResponse() {
+        final CacheRule underTest = new CacheRule(ruleMock, cacheMock, ruleFactoryMock);
+        final IRule nextRuleMock = mock(IRule.class);
+        final IRule wrappedNextRuleMock = mock(IRule.class);
+        final ErgebnisKombination response = new ErgebnisKombination(0, 0);
 
-		when(ruleMock.getRuleForResponse(any(ErgebnisKombination.class)))
-				.thenReturn(nextRuleMock);
-		final Map<Set<SpielKombination>, SpielKombination> anyCache = any();
-		when(ruleFactoryMock.createCachingRule(any(IRule.class), anyCache))
-				.thenReturn(wrappedNextRuleMock);
+        when(ruleMock.getRuleForResponse(any(ErgebnisKombination.class))).thenReturn(nextRuleMock);
+        final Map<Set<SpielKombination>, SpielKombination> anyCache = any();
+        when(ruleFactoryMock.createCachingRule(any(IRule.class), anyCache)).thenReturn(wrappedNextRuleMock);
 
-		assertSame(wrappedNextRuleMock, underTest.getRuleForResponse(response));
+        assertSame(wrappedNextRuleMock, underTest.getRuleForResponse(response));
 
-		verify(ruleMock).getRuleForResponse(same(response));
-		verify(ruleFactoryMock).createCachingRule(same(nextRuleMock),
-				same(cacheMock));
-		verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock,
-				nextRuleMock, wrappedNextRuleMock);
-	}
+        verify(ruleMock).getRuleForResponse(same(response));
+        verify(ruleFactoryMock).createCachingRule(same(nextRuleMock), same(cacheMock));
+        verifyNoMoreInteractions(cacheMock, ruleMock, ruleFactoryMock, nextRuleMock, wrappedNextRuleMock);
+    }
 }

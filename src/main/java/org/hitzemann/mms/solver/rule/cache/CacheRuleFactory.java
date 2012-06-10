@@ -13,14 +13,13 @@ import org.hitzemann.mms.solver.rule.IRule;
  */
 public final class CacheRuleFactory implements ICacheRuleFactory {
 
-	@Override
-	public IRule createCachingRule(final IRule delegate) {
-		return new CacheRule(delegate, this);
-	}
+    @Override
+    public IRule createCachingRule(final IRule delegate) {
+        return new CacheRule(delegate, this);
+    }
 
-	@Override
-	public IRule createCachingRule(final IRule delegate,
-			final Map<Set<SpielKombination>, SpielKombination> cache) {
-		return new CacheRule(delegate, cache, this);
-	}
+    @Override
+    public IRule createCachingRule(final IRule delegate, final Map<Set<SpielKombination>, SpielKombination> cache) {
+        return new CacheRule(delegate, cache, this);
+    }
 }

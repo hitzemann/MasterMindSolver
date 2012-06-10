@@ -36,7 +36,7 @@ public final class SolverIT {
      * Die gemeinsam benutzte {@link IErgebnisBerechnung}-Instanz.
      */
     private static final IErgebnisBerechnung BERECHNER = new LinearerErgebnisBerechner();
-    
+
     /**
      * Die gemeinsam benutzte {@link ISpielKombinationFactory}-Instanz.
      */
@@ -114,7 +114,7 @@ public final class SolverIT {
             while (true) {
                 // neue geratene Kombination vom Solver holen
                 final SpielKombination geraten = solver.getNeuerZug();
-                
+
                 // Prüfung auf richtig geratene Kombination
                 if (geraten.equals(geheim)) {
                     break;
@@ -182,16 +182,16 @@ public final class SolverIT {
          * Anzahl der Pins.
          */
         private final int pins;
-        
+
         /**
          * 
          * Standardkonstruktor.
          * 
          * @param paramPins
-         * Anzahl der Pins, die der Solver behandeln soll.
+         *            Anzahl der Pins, die der Solver behandeln soll.
          */
         public KnuthSolverFactory(final int paramPins) {
-        	pins = paramPins;
+            pins = paramPins;
         }
 
         @Override
@@ -212,9 +212,8 @@ public final class SolverIT {
     };
 
     /**
-     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link EntropyRule}
-     * und variabler Pin-Anzahl. Die eigentliche Regel wird mit einer
-     * {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
+     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link EntropyRule} und variabler Pin-Anzahl. Die eigentliche
+     * Regel wird mit einer {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
      * 
      * @author chschu
      */
@@ -238,8 +237,7 @@ public final class SolverIT {
          */
         public CachedEntropyRuleSolverFactory(final int pinCount) {
             pins = pinCount;
-            rule = new CacheRuleFactory().createCachingRule(new EntropyRule(
-                    BERECHNER, FACTORY, pins));
+            rule = new CacheRuleFactory().createCachingRule(new EntropyRule(BERECHNER, FACTORY, pins));
 
         }
 
@@ -261,8 +259,7 @@ public final class SolverIT {
     };
 
     /**
-     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link KnuthRule} und
-     * und 4 Pins.
+     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link KnuthRule} und und 4 Pins.
      * 
      * @author chschu
      */
@@ -291,14 +288,12 @@ public final class SolverIT {
     };
 
     /**
-     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link MostPartsRule}
-     * und variabler Pin-Anzahl. Die eigentliche Regel wird mit einer
-     * {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
+     * Solver-Factory für {@link RuleSolver}-Instanzen mit {@link MostPartsRule} und variabler Pin-Anzahl. Die
+     * eigentliche Regel wird mit einer {@link org.hitzemann.mms.solver.rule.cache.CacheRule} umhüllt.
      * 
      * @author chschu
      */
-    private static final class CachedMostPartsRuleSolverFactory implements
-            ISolverFactory {
+    private static final class CachedMostPartsRuleSolverFactory implements ISolverFactory {
 
         /**
          * Anzahl der Pins.
@@ -318,8 +313,7 @@ public final class SolverIT {
          */
         public CachedMostPartsRuleSolverFactory(final int pinCount) {
             pins = pinCount;
-            rule = new CacheRuleFactory().createCachingRule(new MostPartsRule(
-                    BERECHNER, FACTORY, pins));
+            rule = new CacheRuleFactory().createCachingRule(new MostPartsRule(BERECHNER, FACTORY, pins));
         }
 
         @Override

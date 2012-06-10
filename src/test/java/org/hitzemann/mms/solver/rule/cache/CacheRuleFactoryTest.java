@@ -15,30 +15,27 @@ import org.junit.Test;
  */
 public final class CacheRuleFactoryTest {
 
-	/**
-	 * Die zu testende Instanz.
-	 */
-	private final ICacheRuleFactory underTest = new CacheRuleFactory();
+    /**
+     * Die zu testende Instanz.
+     */
+    private final ICacheRuleFactory underTest = new CacheRuleFactory();
 
-	/**
-	 * Test für die Methode zur Erzeugung einer {@link CacheRule} mit initial
-	 * leerem Cache.
-	 */
-	@Test
-	public void testCreateCacheRuleNewCache() {
-		final IRule rule = underTest.createCachingRule(mock(IRule.class));
-		assertEquals(CacheRule.class, rule.getClass());
-	}
+    /**
+     * Test für die Methode zur Erzeugung einer {@link CacheRule} mit initial leerem Cache.
+     */
+    @Test
+    public void testCreateCacheRuleNewCache() {
+        final IRule rule = underTest.createCachingRule(mock(IRule.class));
+        assertEquals(CacheRule.class, rule.getClass());
+    }
 
-	/**
-	 * Test für die Methode zur Erzeugung einer {@link CacheRule} mit
-	 * übergebenem Cache.
-	 */
-	@Test
-	public void tetCreateCachedRuleReuseCache() {
-		@SuppressWarnings("unchecked")
-		final IRule rule = underTest.createCachingRule(mock(IRule.class),
-				mock(Map.class));
-		assertEquals(CacheRule.class, rule.getClass());
-	}
+    /**
+     * Test für die Methode zur Erzeugung einer {@link CacheRule} mit übergebenem Cache.
+     */
+    @Test
+    public void tetCreateCachedRuleReuseCache() {
+        @SuppressWarnings("unchecked")
+        final IRule rule = underTest.createCachingRule(mock(IRule.class), mock(Map.class));
+        assertEquals(CacheRule.class, rule.getClass());
+    }
 }

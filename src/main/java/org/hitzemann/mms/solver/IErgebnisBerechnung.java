@@ -10,15 +10,16 @@ import org.hitzemann.mms.model.SpielKombination;
  * 
  */
 public interface IErgebnisBerechnung {
-/**
- * Diese Methose sollte so implementiert werden, dass zu zwei
- * eingegebenen SpielKombinationen eine ErgebnisKombination
- * zurückgegeben wird.
- * @param geheim ReferenzSpielKombination
- * @param geraten Rateversuch
- * @return ErgebnisKombination für den Rateversuch
- */
-	ErgebnisKombination berechneErgebnis(SpielKombination geheim,
-			SpielKombination geraten);
+    /**
+     * Diese Methose sollte so implementiert werden, dass zu zwei eingegebenen SpielKombinationen eine
+     * ErgebnisKombination zurückgegeben wird.
+     * 
+     * @param geheim
+     *            ReferenzSpielKombination
+     * @param geraten
+     *            Rateversuch
+     * @return ErgebnisKombination für den Rateversuch
+     */
+    ErgebnisKombination berechneErgebnis(SpielKombination geheim, SpielKombination geraten);
 
 }

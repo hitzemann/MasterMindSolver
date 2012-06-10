@@ -10,37 +10,37 @@ import org.hitzemann.mms.model.SpielKombination;
  * 
  */
 public final class Main {
-	/**
-	 * Anzahl der Pins in dem Spiel (Länge der SpielKombination).
-	 */
-	static final int PINS = 4;
-	
-	/**
-	 * Privater Konstruktor, wird eh nicht gebraucht...
-	 */
-	private Main() {
-	}
+    /**
+     * Anzahl der Pins in dem Spiel (Länge der SpielKombination).
+     */
+    static final int PINS = 4;
 
-	/**
-	 * Hauptschleife.
-	 * 
-	 * @param argv Unused
-	 */
-	public static void main(final String[] argv) {
-		final IUserInteraktion userInterface = new TextUserInteraktion();
-		final IErgebnisBerechnung berechner = new LinearerErgebnisBerechner();
-		final ISolver spielSolver = new KnuthSolver(berechner, PINS);
-		while (true) {
-			final SpielKombination ratekombi = spielSolver.getNeuerZug();
-			final ErgebnisKombination ergebnis = userInterface
-					.frageantwort(ratekombi);
-			if (ergebnis.getSchwarz() == PINS) {
-				userInterface.gewonnen();
-				break;
-			}
-			spielSolver.setLetzterZug(ratekombi, ergebnis);
-		}
+    /**
+     * Privater Konstruktor, wird eh nicht gebraucht...
+     */
+    private Main() {
+    }
 
-	}
+    /**
+     * Hauptschleife.
+     * 
+     * @param argv
+     *            Unused
+     */
+    public static void main(final String[] argv) {
+        final IUserInteraktion userInterface = new TextUserInteraktion();
+        final IErgebnisBerechnung berechner = new LinearerErgebnisBerechner();
+        final ISolver spielSolver = new KnuthSolver(berechner, PINS);
+        while (true) {
+            final SpielKombination ratekombi = spielSolver.getNeuerZug();
+            final ErgebnisKombination ergebnis = userInterface.frageantwort(ratekombi);
+            if (ergebnis.getSchwarz() == PINS) {
+                userInterface.gewonnen();
+                break;
+            }
+            spielSolver.setLetzterZug(ratekombi, ergebnis);
+        }
+
+    }
 
 }

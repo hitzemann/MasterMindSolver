@@ -10,23 +10,20 @@ import org.hitzemann.mms.solver.rule.IRule;
  */
 public final class KnuthRuleFactory implements IKnuthRuleFactory {
 
-	@Override
-	public IRule createGuessFirstRule(final int minimumCandidateCount,
-			final int maximumCandidateCount) {
-		return new GuessFirstRule(minimumCandidateCount, maximumCandidateCount,
-				this);
-	}
+    @Override
+    public IRule createGuessFirstRule(final int minimumCandidateCount, final int maximumCandidateCount) {
+        return new GuessFirstRule(minimumCandidateCount, maximumCandidateCount, this);
+    }
 
-	@Override
-	public IRule createGuessFixedSimpleRule(final int expectedCandidateCount,
-			final SpielKombination guess, final IRule nextRule) {
-		return new GuessFixedSimpleRule(expectedCandidateCount, guess, nextRule);
-	}
+    @Override
+    public IRule createGuessFixedSimpleRule(final int expectedCandidateCount, final SpielKombination guess,
+            final IRule nextRule) {
+        return new GuessFixedSimpleRule(expectedCandidateCount, guess, nextRule);
+    }
 
-	@Override
-	public IRule createGuessFixedComplexRule(final int expectedCandidateCount,
-			final SpielKombination guess, final IRule[][] nextRules) {
-		return new GuessFixedComplexRule(expectedCandidateCount, guess,
-				nextRules);
-	}
+    @Override
+    public IRule createGuessFixedComplexRule(final int expectedCandidateCount, final SpielKombination guess,
+            final IRule[][] nextRules) {
+        return new GuessFixedComplexRule(expectedCandidateCount, guess, nextRules);
+    }
 }

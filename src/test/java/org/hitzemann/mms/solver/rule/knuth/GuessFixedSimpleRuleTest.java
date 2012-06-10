@@ -23,111 +23,103 @@ import org.junit.Test;
  */
 public final class GuessFixedSimpleRuleTest {
 
-	/**
-	 * Logger für Testausgaben.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(GuessFirstRule.class
-			.getName());
+    /**
+     * Logger für Testausgaben.
+     */
+    private static final Logger LOGGER = Logger.getLogger(GuessFirstRule.class.getName());
 
-	/**
-	 * Eine zu ratende {@link SpielKombination}.
-	 */
-	private final SpielKombination guess = new SpielKombination(new int[0]);
+    /**
+     * Eine zu ratende {@link SpielKombination}.
+     */
+    private final SpielKombination guess = new SpielKombination(new int[0]);
 
-	/**
-	 * Der Mock für eine Folge-Regel.
-	 */
-	private final IRule nextRuleMock = mock(IRule.class);
+    /**
+     * Der Mock für eine Folge-Regel.
+     */
+    private final IRule nextRuleMock = mock(IRule.class);
 
-	/**
-	 * Testet den Aufruf von
-	 * {@link GuessFixedSimpleRule#GuessFixedSimpleRule(int, SpielKombination, IRule)}
-	 * mit <code>null</code> als zu ratende {@link SpielKombination}.
-	 */
-	@Test
-	public void testNullGuess() {
-		try {
-			new GuessFixedSimpleRule(123, null, nextRuleMock);
-			fail("expected Exception not thrown");
-		} catch (IllegalArgumentException e) {
-			LOGGER.log(Level.FINEST, "expected exception", e);
-		}
+    /**
+     * Testet den Aufruf von {@link GuessFixedSimpleRule#GuessFixedSimpleRule(int, SpielKombination, IRule)} mit
+     * <code>null</code> als zu ratende {@link SpielKombination}.
+     */
+    @Test
+    public void testNullGuess() {
+        try {
+            new GuessFixedSimpleRule(123, null, nextRuleMock);
+            fail("expected Exception not thrown");
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(Level.FINEST, "expected exception", e);
+        }
 
-		verifyNoMoreInteractions(nextRuleMock);
-	}
+        verifyNoMoreInteractions(nextRuleMock);
+    }
 
-	/**
-	 * Testet den Aufruf von
-	 * {@link GuessFixedSimpleRule#GuessFixedSimpleRule(int, SpielKombination, IRule)}
-	 * mit <code>null</code> als Folge-Regel.
-	 */
-	@Test
-	public void testNullNextRule() {
-		try {
-			new GuessFixedSimpleRule(123, guess, null);
-			fail("expected Exception not thrown");
-		} catch (IllegalArgumentException e) {
-			LOGGER.log(Level.FINEST, "expected exception", e);
-		}
-	}
+    /**
+     * Testet den Aufruf von {@link GuessFixedSimpleRule#GuessFixedSimpleRule(int, SpielKombination, IRule)} mit
+     * <code>null</code> als Folge-Regel.
+     */
+    @Test
+    public void testNullNextRule() {
+        try {
+            new GuessFixedSimpleRule(123, guess, null);
+            fail("expected Exception not thrown");
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(Level.FINEST, "expected exception", e);
+        }
+    }
 
-	/**
-	 * Testet den regulären Aufruf von
-	 * {@link IRule#getGuess(List<SpielKombination>)}.
-	 */
-	@Test
-	public void testGetGuess() {
-		final IRule underTest = new GuessFixedSimpleRule(123, guess,
-				nextRuleMock);
+    /**
+     * Testet den regulären Aufruf von {@link IRule#getGuess(List<SpielKombination>)}.
+     */
+    @Test
+    public void testGetGuess() {
+        final IRule underTest = new GuessFixedSimpleRule(123, guess, nextRuleMock);
 
-		@SuppressWarnings("unchecked")
-		final List<SpielKombination> candidatesMock = mock(List.class);
+        @SuppressWarnings("unchecked")
+        final List<SpielKombination> candidatesMock = mock(List.class);
 
-		when(candidatesMock.size()).thenReturn(123);
+        when(candidatesMock.size()).thenReturn(123);
 
-		assertSame(guess, underTest.getGuess(candidatesMock));
+        assertSame(guess, underTest.getGuess(candidatesMock));
 
-		verify(candidatesMock).size();
-		verifyNoMoreInteractions(nextRuleMock, candidatesMock);
-	}
+        verify(candidatesMock).size();
+        verifyNoMoreInteractions(nextRuleMock, candidatesMock);
+    }
 
-	/**
-	 * Testet den Aufruf von {@link IRule#getGuess(List<SpielKombination>)} mit
-	 * einer falschen Anzahl an Kandidaten.
-	 */
-	@Test
-	public void testGetGuessInvalidCandidateCount() {
-		final IRule underTest = new GuessFixedSimpleRule(15, guess,
-				nextRuleMock);
+    /**
+     * Testet den Aufruf von {@link IRule#getGuess(List<SpielKombination>)} mit einer falschen Anzahl an Kandidaten.
+     */
+    @Test
+    public void testGetGuessInvalidCandidateCount() {
+        final IRule underTest = new GuessFixedSimpleRule(15, guess, nextRuleMock);
 
-		@SuppressWarnings("unchecked")
-		final List<SpielKombination> candidatesMock = mock(List.class);
+        @SuppressWarnings("unchecked")
+        final List<SpielKombination> candidatesMock = mock(List.class);
 
-		when(candidatesMock.size()).thenReturn(14);
+        when(candidatesMock.size()).thenReturn(14);
 
-		try {
-			underTest.getGuess(candidatesMock);
-			fail("expected Exception not thrown");
-		} catch (IllegalArgumentException e) {
-			LOGGER.log(Level.FINEST, "expected exception", e);
-		}
+        try {
+            underTest.getGuess(candidatesMock);
+            fail("expected Exception not thrown");
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(Level.FINEST, "expected exception", e);
+        }
 
-		verify(candidatesMock).size();
-		verifyNoMoreInteractions(nextRuleMock, candidatesMock);
-	}
+        verify(candidatesMock).size();
+        verifyNoMoreInteractions(nextRuleMock, candidatesMock);
+    }
 
-	/**
-	 * Testet den Aufruf von
-	 * {@link IRule#getRuleForResponse(ErgebnisKombination)}.
-	 */
-	@Test
-	public void testGetNextRule() {
-		final IRule underTest = new GuessFixedSimpleRule(1, guess, nextRuleMock);
+    /**
+     * Testet den Aufruf von {@link IRule#getRuleForResponse(ErgebnisKombination)}.
+     */
+    @Test
+    public void testGetNextRule() {
+        final IRule underTest = new GuessFixedSimpleRule(1, guess, nextRuleMock);
 
-		final ErgebnisKombination responseMock = mock(ErgebnisKombination.class);
+        final ErgebnisKombination responseMock = mock(ErgebnisKombination.class);
 
-		assertSame(nextRuleMock, underTest.getRuleForResponse(responseMock));
+        assertSame(nextRuleMock, underTest.getRuleForResponse(responseMock));
 
-		verifyNoMoreInteractions(nextRuleMock, responseMock);
-	}
+        verifyNoMoreInteractions(nextRuleMock, responseMock);
+    }
 }
