@@ -127,13 +127,84 @@ public class ErgebnisKombinationTest {
 	}
 
 	/**
-	 * Testet, ob {@link ErgebnisKombination#hashCode} korrekt für einen festen
-	 * Wert ist.
+	 * Testet, ob {@link ErgebnisKombination#hashCode()} korrekt für einen
+	 * festen Wert ist.
 	 */
 	@Test
 	public final void testSingleHashCode() {
 		final ErgebnisKombination a = new ErgebnisKombination(1, 1);
 		assertEquals("hashCode inconsistent a = " + a.hashCode()
 				+ ", should be 993.", a.hashCode(), 993);
+	}
+
+	/**
+	 * Testet {@link ErgebnisKombination#equals(Object)} für a.equals(a).
+	 */
+	@Test
+	public final void testSameEquals() {
+		final Random rng = new Random(1);
+		for (int i = 0; i < SAMPLES; i++) {
+			final int aSchwarz = rng.nextInt(MAX_PINS);
+			final int aWeiss = rng.nextInt(MAX_PINS - aSchwarz);
+			final ErgebnisKombination a = new ErgebnisKombination(aSchwarz,
+					aWeiss);
+			final boolean eq = a.equals(a);
+			assertTrue("equals is false for a.equals(a)", eq);
+		}
+	}
+
+	/**
+	 * Testet {@link ErgebnisKombination#equals(Object)} für a.equals(b) wenn b
+	 * keine ErgebnisKombination ist.
+	 */
+	@Test
+	public final void testDifferentClassEquals() {
+		final Random rng = new Random(1);
+		for (int i = 0; i < SAMPLES; i++) {
+			final int aSchwarz = rng.nextInt(MAX_PINS);
+			final int aWeiss = rng.nextInt(MAX_PINS - aSchwarz);
+			final ErgebnisKombination a = new ErgebnisKombination(aSchwarz,
+					aWeiss);
+			final Integer[] b = new Integer[MAX_PINS];
+			final boolean eq = a.equals(b);
+			assertFalse("equals is true for a.equals(Integer[] b)", eq);
+		}
+	}
+
+	/**
+	 * Testet {@link ErgebnisKombination#equals(Object)} für a.equals(b) wenn b
+	 * null ist.
+	 */
+	@Test
+	public final void testUninitializedClassEquals() {
+		final Random rng = new Random(1);
+		for (int i = 0; i < SAMPLES; i++) {
+			final int aSchwarz = rng.nextInt(MAX_PINS);
+			final int aWeiss = rng.nextInt(MAX_PINS - aSchwarz);
+			final ErgebnisKombination a = new ErgebnisKombination(aSchwarz,
+					aWeiss);
+			final ErgebnisKombination b = null;
+			final boolean eq = a.equals(b);
+			assertFalse("equals is true for a.equals(b)", eq);
+		}
+	}
+
+	/**
+	 * Tested {@link ErgebnisKombination#toString()}.
+	 */
+	@Test
+	public final void testToString() {
+		final Random rng = new Random(1);
+		for (int i = 0; i < SAMPLES; i++) {
+			final int aSchwarz = rng.nextInt(MAX_PINS);
+			final int aWeiss = rng.nextInt(MAX_PINS - aSchwarz);
+			final ErgebnisKombination a = new ErgebnisKombination(aSchwarz,
+					aWeiss);
+			final String str = "ErgebnisKombination [schwarz=" + aSchwarz
+					+ ", weiss=" + aWeiss + "]";
+			assertEquals(
+					"a.toString is not equal to assumed string: "
+							+ a.toString() + " vs " + str, a.toString(), str);
+		}
 	}
 }
