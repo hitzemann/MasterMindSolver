@@ -1,6 +1,5 @@
-// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-05-31 00:26:47
+// $ANTLR 3.4 C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g 2012-06-10 17:56:00
 
-// CHECKSTYLE:OFF
 package org.hitzemann.mms.solver.rule.knuth;
 
 
@@ -42,8 +41,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__5;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:12:6: ( '(' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:12:8: '('
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:11:6: ( '(' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:11:8: '('
             {
             match('('); 
 
@@ -63,8 +62,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__6;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:13:6: ( ')' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:13:8: ')'
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:12:6: ( ')' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:12:8: ')'
             {
             match(')'); 
 
@@ -84,8 +83,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__7;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:14:6: ( ',' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:14:8: ','
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:13:6: ( ',' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:13:8: ','
             {
             match(','); 
 
@@ -105,8 +104,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__8;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:15:6: ( ':' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:15:8: ':'
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:14:6: ( ':' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:14:8: ':'
             {
             match(':'); 
 
@@ -126,8 +125,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__9;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:16:6: ( ';' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:16:8: ';'
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:15:6: ( ';' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:15:8: ';'
             {
             match(';'); 
 
@@ -147,8 +146,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__10;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:17:7: ( 'x' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:17:9: 'x'
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:16:7: ( 'x' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:16:9: 'x'
             {
             match('x'); 
 
@@ -168,8 +167,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__11;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:18:7: ( '{' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:18:9: '{'
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:17:7: ( '{' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:17:9: '{'
             {
             match('{'); 
 
@@ -189,8 +188,8 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = T__12;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:19:7: ( '}' )
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:19:9: '}'
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:18:7: ( '}' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:18:9: '}'
             {
             match('}'); 
 
@@ -210,7 +209,7 @@ public class KnuthRuleLexer extends Lexer {
         try {
             int _type = DIGIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:140:3: ( '0' .. '9' )
+            // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:159:3: ( '0' .. '9' )
             // C:\\Dokumente und Einstellungen\\schusterc\\git\\MasterMindSolver\\src\\main\\antlr\\KnuthRule.g:
             {
             if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {

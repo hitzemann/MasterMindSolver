@@ -24,84 +24,110 @@ private static final SpielStein[] colorValues = SpielStein.values();
 
 private IKnuthRuleFactory ruleFactory;
 
-public void setKnuthRuleFactory(IKnuthRuleFactory theRuleFactory) {
+public final void setKnuthRuleFactory(IKnuthRuleFactory theRuleFactory) {
 	ruleFactory = theRuleFactory;
 }
 }
 
 start returns [IRule value]
+@after {
+$value = $r.value;
+}
   :
-  r=rule 
-         {
-          $value = $r.value;
-         }
-  EOF
+  r=rule EOF
   ;
 
 rule returns [IRule value]
+@after {
+$value = $r.value;
+}
   :
-  n=integer 
-            {
-             $value = ruleFactory.createGuessFirstRule($n.value.intValue(),
-             		$n.value.intValue());
-            }
-  | n=integer '(' c=combination 
-                                {
-                                 int maxNextCandidates = 1;
-                                }
-  ('x' 
-       {
-        maxNextCandidates = 2;
-       })? ')' 
-               {
-                $value = ruleFactory.createGuessFixedSimpleRule($n.value.intValue(), $c.value,
-                		ruleFactory.createGuessFirstRule(0, maxNextCandidates));
-               }
-  | n=integer '(' c=combination ':' rll=rulelistlist ')' 
-                                                         {
-                                                          $value = ruleFactory.createGuessFixedComplexRule($n.value.intValue(), $c.value,
-                                                          		$rll.value);
-                                                         }
+  r=ruleAtMostTwo
+  | r=ruleGuessFixedLeavesAtMostOne
+  | r=ruleGuessFixedLeavesAtMostTwo
+  | r=ruleGuessFixedLeavesMoreThanTwo
   ;
 
-rulelistlist returns [IRule[\][\] value]
+ruleAtMostTwo returns [IRule value]
+@after {
+final int candidateCount = $n.value.intValue();
+$value = ruleFactory.createGuessFirstRule(candidateCount, candidateCount);
+}
   :
-  r=rulelist 
+  n=integer
+  ;
+
+ruleGuessFixedLeavesAtMostOne returns [IRule value]
+@after {
+$value = ruleFactory.createGuessFixedSimpleRule($n.value.intValue(), $c.value,
+		ruleFactory.createGuessFirstRule(0, 1));
+}
+  :
+  n=integer '(' c=combination ')'
+  ;
+
+ruleGuessFixedLeavesAtMostTwo returns [IRule value]
+@after {
+$value = ruleFactory.createGuessFixedSimpleRule($n.value.intValue(), $c.value,
+		ruleFactory.createGuessFirstRule(0, 2));
+}
+  :
+  n=integer '(' c=combination 'x' ')'
+  ;
+
+ruleGuessFixedLeavesMoreThanTwo returns [IRule value]
+@after {
+$value = ruleFactory.createGuessFixedComplexRule($n.value.intValue(), $c.value,
+		$rll.value);
+}
+  :
+  n=integer '(' c=combination ':' rll=ruleListList ')'
+  ;
+
+ruleListList returns [IRule[\][\] value]
+@init {
+final List<IRule[]> resultList = new LinkedList<IRule[]>();
+}
+@after {
+$value = resultList.toArray(new IRule[resultList.size()][]);
+}
+  :
+  r=ruleList 
              {
-              List<IRule[]> resultList = new LinkedList<IRule[]>();
               resultList.add($r.value);
              }
-  (';' r=rulelist 
+  (';' r=ruleList 
                   {
                    resultList.add($r.value);
-                  })* 
-                      {
-                       $value = resultList.toArray(new IRule[resultList.size()][]);
-                      }
+                  })*
   ;
 
-rulelist returns [IRule[\] value]
+ruleList returns [IRule[\] value]
+@init {
+final List<IRule> resultList = new LinkedList<IRule>();
+}
+@after {
+$value = resultList.toArray(new IRule[resultList.size()]);
+}
   :
   r=rule 
          {
-          List<IRule> resultList = new LinkedList<IRule>();
           resultList.add($r.value);
          }
   (',' r=rule 
               {
                resultList.add($r.value);
-              })* 
-                  {
-                   $value = resultList.toArray(new IRule[resultList.size()]);
-                  }
+              })*
   ;
 
 combination returns [SpielKombination value]
+@init {
+final List<SpielStein> tempList = new LinkedList<SpielStein>();
+}
+@after {
+$value = new SpielKombination(tempList.toArray(new SpielStein[tempList.size()]));
+}
   :
-  
-   {
-    List<SpielStein> tempList = new LinkedList<SpielStein>();
-   }
   (
     d=DIGIT 
             {
@@ -113,25 +139,20 @@ combination returns [SpielKombination value]
                          tempList.add(colorValues[$i.value.intValue() - 1]);
                         }
   )+
-  
-   {
-    $value = new SpielKombination(tempList.toArray(new SpielStein[tempList.size()]));
-   }
   ;
 
 integer returns [BigInteger value]
+@init {
+final StringBuilder builder = new StringBuilder();
+}
+@after {
+$value = new BigInteger(builder.toString());
+}
   :
-  
-   {
-    StringBuilder builder = new StringBuilder();
-   }
   (d=DIGIT 
            {
             builder.append($d.text);
-           })+ 
-               {
-                $value = new BigInteger(builder.toString());
-               }
+           })+
   ;
 
 DIGIT
