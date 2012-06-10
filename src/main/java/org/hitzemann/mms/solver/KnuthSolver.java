@@ -68,22 +68,27 @@ public final class KnuthSolver implements ISolver {
 	 * die Anzahl an Lösungen, die mindestens eliminiert werden.
 	 */
 	private Map<SpielKombination, Long> scoreMap;
-	
+
 	/**
 	 * Konstruktor für den Solver, der den ersten Rateversuch setzt.
 	 * 
 	 * @param berechner
-	 * 			Objekt, welches {@link IErgebnisBerechnung} implementiert
+	 *            Objekt, welches {@link IErgebnisBerechnung} implementiert
 	 * @param paramPins
-	 * 			Anzahl der Pins
+	 *            Anzahl der Pins
 	 * @param firstGuess
-	 * 			Erste zu ratende {@link SpielKombination}
+	 *            Erste zu ratende {@link SpielKombination}
 	 */
-	public KnuthSolver(final IErgebnisBerechnung berechner, final int paramPins, final SpielKombination firstGuess) {
+	public KnuthSolver(final IErgebnisBerechnung berechner,
+			final int paramPins, final SpielKombination firstGuess) {
 		this(berechner, paramPins);
 		if (firstGuess.getSpielSteineCount() != paramPins) {
-			throw new IllegalArgumentException("Erster Rateversuch muss die gleiche Länge haben wie Pins im Spiel sind.");
+			throw new IllegalArgumentException(
+					"Erster Rateversuch muss die gleiche Länge haben wie Pins im Spiel sind.");
 		}
+		// Ideal für 4 Pins - bleibt immer unter 6 Rateversuchen und brauch im
+		// Schnitt am wenigsten Versuche:
+		// CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
 		CACHE.put(alleMoeglichkeiten, firstGuess);
 	}
 
@@ -98,32 +103,18 @@ public final class KnuthSolver implements ISolver {
 	public KnuthSolver(final IErgebnisBerechnung berechner, final int paramPins) {
 		this.ergebnisBerechner = berechner;
 		pins = paramPins;
-                if (paramPins < 1) {
-                    throw new IllegalArgumentException("Anzahl der Pins muss > 0 sein");
-                }
+		if (paramPins < 1) {
+			throw new IllegalArgumentException("Anzahl der Pins muss > 0 sein");
+		}
 		maxscore = Math.round(Math.pow(SpielStein.values().length, pins)) + 1;
-		
-		initialisiereAlleMoeglichkeiten();
-		// Cache mit festem ersten Zug vorbelegen
-		// CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 1, 2, 2));
-		// Diese Möglichkeit wurde durch SolverTheoryIT als beste Vorbelegung
-		// ermittelt. Sie schafft alle Kombinationen in unter 6 Zügen zu lösen
-		// und braucht im Schnitt 4.742 anstatt 4.760 Versuche.
-		//if (pins == 4) {
-		//	CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
-		//}
-		
+
+		final ISpielKombinationFactory factory = new DefaultSpielKombinationFactory();
+		alleMoeglichkeiten = new TreeSet<SpielKombination>(
+				factory.erzeugeAlle(pins));
+
 		scoreMap = new TreeMap<SpielKombination, Long>();
 		initialisiereErgebnisMoeglichkeiten();
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
-	}
-
-	/**
-	 * Alle Farbmöglichkeiten der Spielsteine vorberechnen.
-	 */
-	private void initialisiereAlleMoeglichkeiten() {
-		final ISpielKombinationFactory factory = new DefaultSpielKombinationFactory();
-		alleMoeglichkeiten = new TreeSet<SpielKombination>(factory.erzeugeAlle(pins));
 	}
 
 	/**
@@ -270,12 +261,14 @@ public final class KnuthSolver implements ISolver {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * Die Kandidatenmenge ist veränderlich und daher als Cache-Schlüssel ungeeignet,
-	 * deswegen müssen wir eine Kopie der Kandidatenmenge als Schlüssel verwenden.
+	 * Die Kandidatenmenge ist veränderlich und daher als Cache-Schlüssel
+	 * ungeeignet, deswegen müssen wir eine Kopie der Kandidatenmenge als
+	 * Schlüssel verwenden.
 	 */
 	@Override
 	public SpielKombination getNeuerZug() {
-		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel ungeeignet
+		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel
+		// ungeeignet
 		// Kopie der Kandidatenmenge als Schlüssel verwenden!
 		final Set<SpielKombination> key = new HashSet<SpielKombination>(
 				geheimMoeglichkeiten);
@@ -287,6 +280,10 @@ public final class KnuthSolver implements ISolver {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 */
 	@Override
 	public void setLetzterZug(final SpielKombination zug,
 			final ErgebnisKombination antwort) {
