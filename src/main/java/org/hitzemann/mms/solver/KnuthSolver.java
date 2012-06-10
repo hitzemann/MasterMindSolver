@@ -66,12 +66,24 @@ public final class KnuthSolver implements ISolver {
 	 * die Anzahl an Lösungen, die mindestens eliminiert werden.
 	 */
 	private Map<SpielKombination, Long> scoreMap;
-
+	
 	/**
-	 * Set mit allen noch gültigen SpielKombinationen, die noch geraten werden
-	 * können. Verhindert, dass Kombinationen mehrfach benutzt werden.
+	 * Konstruktor für den Solver, der den ersten Rateversuch setzt.
+	 * 
+	 * @param berechner
+	 * 			Objekt, welches {@link IErgebnisBerechnung} implementiert
+	 * @param paramPins
+	 * 			Anzahl der Pins
+	 * @param firstGuess
+	 * 			Erste zu ratende {@link SpielKombination}
 	 */
-	// private SortedSet<SpielKombination> rateSet;
+	public KnuthSolver(final IErgebnisBerechnung berechner, final int paramPins, final SpielKombination firstGuess) {
+		this(berechner, paramPins);
+		if (firstGuess.getSpielSteineCount() != paramPins) {
+			throw new IllegalArgumentException("Erster Rateversuch muss die gleiche Länge haben wie Pins im Spiel sind.");
+		}
+		CACHE.put(alleMoeglichkeiten, firstGuess);
+	}
 
 	/**
 	 * Standardkonstruktor für den Solver.
@@ -95,14 +107,13 @@ public final class KnuthSolver implements ISolver {
 		// Diese Möglichkeit wurde durch SolverTheoryIT als beste Vorbelegung
 		// ermittelt. Sie schafft alle Kombinationen in unter 6 Zügen zu lösen
 		// und braucht im Schnitt 4.742 anstatt 4.760 Versuche.
-		if (pins == 4) {
-			CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
-		}
+		//if (pins == 4) {
+		//	CACHE.put(alleMoeglichkeiten, new SpielKombination(1, 4, 1, 4));
+		//}
 		
 		scoreMap = new TreeMap<SpielKombination, Long>();
 		initialisiereErgebnisMoeglichkeiten();
 		geheimMoeglichkeiten = new TreeSet<SpielKombination>(alleMoeglichkeiten);
-		// rateSet = new TreeSet<SpielKombination>(alleMoeglichkeiten);
 	}
 
 	/**
@@ -129,7 +140,10 @@ public final class KnuthSolver implements ISolver {
 	 * @param ergebnisSet
 	 *            Das {@link Set} zum Einsammeln der erzeugten
 	 *            {@link SpielKombination}en.
+	 * 
+	 * @deprecated {@link ISpielKombinationFactory} bietet diese Funktionalität an.
 	 */
+	@Deprecated
 	private void erzeugeAlleKombinationenRekursiv(
 			final SpielStein[] spielSteine, final int iterierOffset,
 			final Set<SpielKombination> ergebnisSet) {
@@ -287,10 +301,15 @@ public final class KnuthSolver implements ISolver {
 		return tempkomb;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Die Kandidatenmenge ist veränderlich und daher als Cache-Schlüssel ungeeignet,
+	 * deswegen müssen wir eine Kopie der Kandidatenmenge als Schlüssel verwenden.
+	 */
 	@Override
 	public SpielKombination getNeuerZug() {
-		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel
-		// ungeeignet
+		// Kandidatenmenge ist veränderlich und deshalb als Cache-Schlüssel ungeeignet
 		// Kopie der Kandidatenmenge als Schlüssel verwenden!
 		final Set<SpielKombination> key = new HashSet<SpielKombination>(
 				geheimMoeglichkeiten);
