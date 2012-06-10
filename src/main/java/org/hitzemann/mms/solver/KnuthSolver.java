@@ -127,40 +127,6 @@ public final class KnuthSolver implements ISolver {
 	}
 
 	/**
-	 * Rekursiver Algorithmus zur Erzeugung aller {@link SpielKombination}en.
-	 * 
-	 * @param spielSteine
-	 *            Das rekursiv zu füllende Array mit {@link SpielStein}en. Die
-	 *            Länge dieses Arrays bestimmt die Länge der erzeugten
-	 *            Kombinationen.
-	 * @param iterierOffset
-	 *            Das in diesem Aufruf zu iterierende Offset in das
-	 *            spielSteine-Array. Alle höheren Indizes werden durch rekursive
-	 *            Aufrufe dieser Methode befüllt.
-	 * @param ergebnisSet
-	 *            Das {@link Set} zum Einsammeln der erzeugten
-	 *            {@link SpielKombination}en.
-	 * 
-	 * @deprecated {@link ISpielKombinationFactory} bietet diese Funktionalität an.
-	 */
-	@Deprecated
-	private void erzeugeAlleKombinationenRekursiv(
-			final SpielStein[] spielSteine, final int iterierOffset,
-			final Set<SpielKombination> ergebnisSet) {
-		if (iterierOffset < spielSteine.length) {
-			for (SpielStein spielStein : SpielStein.values()) {
-				spielSteine[iterierOffset] = spielStein;
-				erzeugeAlleKombinationenRekursiv(spielSteine,
-						iterierOffset + 1, ergebnisSet);
-			}
-		} else {
-			// Array klonen, damit nicht alle erzeugten Kombinationen das
-			// gleiche benutzen
-			ergebnisSet.add(new SpielKombination(spielSteine.clone()));
-		}
-	}
-
-	/**
 	 * Für's Iterieren ein Set mit allen gültigen Ergebnissen für 4 Steine
 	 * anlegen.
 	 */
