@@ -13,7 +13,9 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.hitzemann.mms.model.DefaultSpielKombinationFactory;
 import org.hitzemann.mms.model.ErgebnisKombination;
+import org.hitzemann.mms.model.ISpielKombinationFactory;
 import org.hitzemann.mms.model.SpielKombination;
 import org.hitzemann.mms.model.SpielStein;
 
@@ -120,10 +122,8 @@ public final class KnuthSolver implements ISolver {
 	 * Alle Farbmöglichkeiten der Spielsteine vorberechnen.
 	 */
 	private void initialisiereAlleMoeglichkeiten() {
-
-		alleMoeglichkeiten = new TreeSet<SpielKombination>();
-		erzeugeAlleKombinationenRekursiv(new SpielStein[pins], 0,
-				alleMoeglichkeiten);
+		final ISpielKombinationFactory factory = new DefaultSpielKombinationFactory();
+		alleMoeglichkeiten = new TreeSet<SpielKombination>(factory.erzeugeAlle(pins));
 	}
 
 	/**
