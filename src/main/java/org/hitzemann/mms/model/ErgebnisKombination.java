@@ -41,7 +41,7 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 	}
 
 	/**
-	 * Standard Geter für Attribut weiss.
+	 * Standard Getter für Attribut weiss.
 	 * 
 	 * @return Anzahl der Steine mit korrekten Farben und falschen Positionen.
 	 */
