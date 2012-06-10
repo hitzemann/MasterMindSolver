@@ -13,11 +13,12 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 	 * Anzahl der korrekten Steine.
 	 */
 	private final int schwarz;
+
 	/**
 	 * Anzahl der Steine mit korrekten Farben und falschen Positionen.
 	 */
 	private final int weiss;
-	
+
 	/**
 	 * Konstruktor für ein ErgebnisKombination Objekt.
 	 * 
@@ -49,6 +50,9 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 		return weiss;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int hashCode() {
 		final int prime = 31;
@@ -58,6 +62,9 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final boolean equals(final Object obj) {
 		if (this == obj) {
@@ -79,12 +86,18 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
 		return "ErgebnisKombination [schwarz=" + schwarz + ", weiss=" + weiss
 				+ "]";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int compareTo(final ErgebnisKombination o) {
 		if (this.getSchwarz() > o.getSchwarz()) {
@@ -100,6 +113,5 @@ public class ErgebnisKombination implements Comparable<ErgebnisKombination> {
 		}
 		return 0;
 	}
-
 
 }
