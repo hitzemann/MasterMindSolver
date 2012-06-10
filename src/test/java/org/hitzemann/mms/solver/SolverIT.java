@@ -20,7 +20,6 @@ import org.hitzemann.mms.solver.rule.entropy.EntropyRule;
 import org.hitzemann.mms.solver.rule.knuth.KnuthRule;
 import org.hitzemann.mms.solver.rule.mostparts.MostPartsRule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -75,7 +74,8 @@ public final class SolverIT {
     @Parameters
     public static List<Object[]> erzeugeParameter() {
         final List<Object[]> parameter = new LinkedList<Object[]>();
-        parameter.add(new Object[] { new KnuthSolverFactory(), 5 });
+        parameter.add(new Object[] { new KnuthSolverFactory(3), 5 });
+        parameter.add(new Object[] { new KnuthSolverFactory(4), 5 });
         parameter.add(new Object[] { new CachedEntropyRuleSolverFactory(3), 1000 });
         parameter.add(new Object[] { new CachedEntropyRuleSolverFactory(4), 100 });
         parameter.add(new Object[] { new CachedEntropyRuleSolverFactory(5), 1 });
@@ -178,9 +178,25 @@ public final class SolverIT {
      */
     private static final class KnuthSolverFactory implements ISolverFactory {
 
+        /**
+         * Anzahl der Pins.
+         */
+        private final int pins;
+        
+        /**
+         * 
+         * Standardkonstruktor.
+         * 
+         * @param paramPins
+         * Anzahl der Pins, die der Solver behandeln soll.
+         */
+        public KnuthSolverFactory(final int paramPins) {
+        	pins = paramPins;
+        }
+
         @Override
         public ISolverInfo createSolverInfo() {
-            final ISolver newSolver = new KnuthSolver(BERECHNER, 4);
+            final ISolver newSolver = new KnuthSolver(BERECHNER, pins);
             return new ISolverInfo() {
                 @Override
                 public ISolver getSolver() {
@@ -189,7 +205,7 @@ public final class SolverIT {
 
                 @Override
                 public int getAnzahlPins() {
-                    return 4;
+                    return pins;
                 }
             };
         }
