@@ -101,4 +101,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/hitzeman/MasterMindSolver/issues</url>
+    </issueManagement>
+    <scm>
+        <url>https://github.com/hitzeman/MasterMindSolver</url>
+        <connection>https://github.com/hitzeman/MasterMindSolver.git</connection>
+    </scm>
 </project>
